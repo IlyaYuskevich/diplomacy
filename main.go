@@ -1,22 +1,13 @@
 package main
 
 import (
+	"encoding/json"
+	"net/http"
+
+	"github.com/ilyayuskevich/diplomacy/api/consumers"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"net/http"
-	"os"
 )
-
-type Player struct {
-	id   string
-	name string
-}
-
-type Game struct {
-	Id        string
-	StartedAt string
-	Status    string
-}
 
 func main() {
 	e := echo.New()
@@ -25,17 +16,19 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.GET("/", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, "Hello, Docker! <3")
+		moves := consumers.GetMoves("d42830dd-a75c-40c5-ade3-56a38db0fd00")
+		b, err := json.Marshal(moves)
+		if err != nil {
+			println(err)
+		}
+		return c.HTML(http.StatusOK, string(b))
 	})
 
 	e.GET("/ping", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, struct{ Status string }{Status: "OK"})
 	})
 
-	httpPort := os.Getenv("HTTP_PORT")
-	if httpPort == "" {
-		httpPort = "8080"
-	}
-
+	httpPort := "8080"
 	e.Logger.Fatal(e.Start(":" + httpPort))
+
 }
