@@ -28,7 +28,7 @@ func main() {
 		return c.JSON(http.StatusOK, struct{ Status string }{Status: "OK"})
 	})
 
-	httpPort := "8080"
+	httpPort := "8000"
 	e.Logger.Fatal(e.Start(":" + httpPort))
 
 }

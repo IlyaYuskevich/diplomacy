@@ -6,6 +6,8 @@ type UnitType int16
 
 type MoveStatus int16
 
+type ProvinceType int16
+
 const (
 	BUILD MoveType = iota
 	DESTROY
@@ -16,8 +18,8 @@ const (
 )
 
 const (
-	A UnitType = iota
-	F
+	Army UnitType = iota
+	Fleet
 )
 
 const (
@@ -26,6 +28,20 @@ const (
 	UNDONE
 	EFFECTLESS
 )
+
+const (
+	Land ProvinceType = iota
+	Coast
+	Sea
+)
+
+type Province struct {
+	Name      string
+	ShortName string
+	Type      ProvinceType
+	Neighbors []string
+	Coasts    []string
+}
 
 type PlayerGame struct {
 	id   string
