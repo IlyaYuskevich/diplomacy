@@ -1,0 +1,9 @@
+{{define "map.html"}}
+    <h1>Diplomacy</h1>
+    {{range .}}
+        {{.}}
+    {{end}}
+
+    {{template "map.svg" .}}
+
+{{end}}
