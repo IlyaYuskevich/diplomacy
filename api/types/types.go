@@ -1,5 +1,7 @@
 package types
 
+type Country string
+
 type MoveType int16
 
 type UnitType int16
@@ -27,6 +29,16 @@ const (
 	FAILED
 	UNDONE
 	EFFECTLESS
+)
+
+const (
+	FRANCE  Country = "france"
+	GERMANY Country = "germany"
+	ITALY   Country = "italy"
+	RUSSIA  Country = "russia"
+	AUSTRIA Country = "austria"
+	ENGLAND Country = "england"
+	TURKEY  Country = "turkey"
 )
 
 const (
@@ -66,4 +78,12 @@ type Move struct {
 	Status     string `json:"status"`
 	PlayerGamr string `json:"player_game"`
 	Game       string `json:"game"`
+}
+
+type UnitPositions struct {
+	UnitType UnitType
+	Origin   string
+	Country  Country
+	X        float32
+	Y        float32
 }
