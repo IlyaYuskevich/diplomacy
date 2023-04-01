@@ -759,7 +759,12 @@
     <!-- drawing layer: units -->
     <g id="UnitLayer">
         {{range .}}
-            <use xlink:href="#Army" x="{{.X}}" y="{{.Y}}" width="40" height="40" class="{{.Country}}"></use>
+             {{if eq .UnitType "A"}}
+                <use xlink:href="#Army" x="{{.X}}" y="{{.Y}}" width="40" height="40" class="{{.Country}}"></use>
+            {{end}}
+            {{if eq .UnitType "F"}}
+                <use xlink:href="#Fleet" x="{{.X}}" y="{{.Y}}" width="40" height="40" class="{{.Country}}"></use>
+            {{end}}
         {{end}}
     </g>
 

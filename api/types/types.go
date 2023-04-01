@@ -4,7 +4,7 @@ type Country string
 
 type MoveType int16
 
-type UnitType int16
+type UnitType string
 
 type MoveStatus int16
 
@@ -20,8 +20,8 @@ const (
 )
 
 const (
-	Army UnitType = iota
-	Fleet
+	Army  UnitType = "A"
+	Fleet UnitType = "F"
 )
 
 const (
