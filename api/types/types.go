@@ -67,23 +67,16 @@ type Game struct {
 }
 
 type Move struct {
-	Id         string `json:"id"`
-	CreatedAt  string `json:"created_at"`
-	Type       string `json:"type"`
-	Origin     string `json:"origin"` // also make Enum
-	From       string `json:"from"`
-	To         string `json:"to,omitempty"`
-	Turn       string `json:"turn,omitempty"`
-	UnitType   string `json:"unit_type"`
-	Status     string `json:"status"`
-	PlayerGamr string `json:"player_game"`
-	Game       string `json:"game"`
-}
-
-type UnitPositions struct {
-	UnitType UnitType
-	Origin   string
-	Country  Country
-	X        float32
-	Y        float32
+	Id         string   `json:"id"`
+	CreatedAt  string   `json:"created_at"`
+	Type       string   `json:"type"`
+	Origin     string   `json:"origin"` // also make Enum
+	From       string   `json:"from"`
+	To         string   `json:"to,omitempty"`
+	Turn       string   `json:"turn,omitempty"`
+	UnitType   UnitType `json:"unit_type"`
+	Status     string   `json:"status"`
+	PlayerGamr string   `json:"player_game"`
+	Game       string   `json:"game"`
+	Country    Country
 }
