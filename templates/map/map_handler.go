@@ -7,11 +7,18 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type UnitPositions struct {
+	types.Move
+	UnitLocation
+}
+
 func MapHandler(c echo.Context) error {
-	data := []types.UnitPositions{
-		{UnitType: types.Army, Origin: "Ber", Country: types.GERMANY, X: 488, Y: 845},
-		{UnitType: types.Army, Origin: "Ber", Country: types.FRANCE, X: 200, Y: 412},
-		{UnitType: types.Army, Origin: "Ber", Country: types.ITALY, X: 510, Y: 123},
+	unitLoc := ParseProvinceData()
+
+	data := []UnitPositions{
+		{types.Move{UnitType: types.Army, Origin: "Ber", Country: types.GERMANY}, unitLoc["ber"]},
+		{types.Move{UnitType: types.Army, Origin: "Kie", Country: types.GERMANY}, unitLoc["kie"]},
 	}
+
 	return c.Render(http.StatusOK, "map.html", data)
 }
