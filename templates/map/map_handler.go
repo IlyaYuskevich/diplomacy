@@ -17,7 +17,7 @@ func MapHandler(c echo.Context) error {
 
 	data := []UnitPositions{
 		{types.Move{UnitType: types.Army, Origin: "Ber", Country: types.GERMANY}, unitLoc["ber"]},
-		{types.Move{UnitType: types.Army, Origin: "Kie", Country: types.GERMANY}, unitLoc["kie"]},
+		{types.Move{UnitType: types.Fleet, Origin: "Nth", Country: types.GERMANY}, unitLoc["nth"]},
 	}
 
 	return c.Render(http.StatusOK, "map.html", data)
