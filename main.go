@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/ilyayuskevich/diplomacy/api/consumers"
+	"github.com/ilyayuskevich/diplomacy/internal/rules"
 	"github.com/ilyayuskevich/diplomacy/templates/map"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -45,6 +46,19 @@ func main() {
 
 	e.GET("/ping", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, struct{ Status string }{Status: "OK"})
+	})
+
+	e.POST("/get-possible-moves", func(c echo.Context) error {
+		type Payload struct {
+			Province string `json:"province"`
+		}
+		var payload Payload
+		err := c.Bind(&payload)
+		if err != nil {
+			return c.String(http.StatusBadRequest, "bad request")
+		}
+		possibleMoves := rules.GetPossibleMoves(payload.Province)
+		return c.JSON(http.StatusOK, possibleMoves)
 	})
 
 	httpPort := "8000"

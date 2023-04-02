@@ -6,7 +6,7 @@ import (
 	"github.com/ilyayuskevich/diplomacy/api/types"
 )
 
-var provinces = map[string]types.Province{
+var Provinces = map[string]types.Province{
 	"Adr": {
 		Name: "Adriatic Sea",
 		Type: types.Sea,
