@@ -27,6 +27,11 @@ func main() {
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:4000"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+		AllowMethods: []string{echo.OPTIONS, echo.GET, echo.POST},
+	  }))
 
 	e.GET("/", func(c echo.Context) error {
 		moves := consumers.GetMoves("d42830dd-a75c-40c5-ade3-56a38db0fd00")
