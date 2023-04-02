@@ -1,6 +1,23 @@
 {{define "map.html"}}
     <h1>Diplomacy</h1>
 
-    {{template "map.svg" .}}
+    {{template "map.svg" .UnitPositions}}
+    <div>
+        {{range $key, $value := .PossibleMoves}}
+            <button id={{$key}} class="make-move-btn" style="margin: 0.2rem 0.1rem">{{$value}}</button>
+        {{end}}
+    </div>
+
+    <script>
+        [...document.getElementsByClassName("make-move-btn")].forEach(btn => {
+            btn.addEventListener("click", () => {
+            fetch("get-possible-moves", {
+                method: "POST",
+                body: JSON.stringify({province: btn.id}),
+                headers: {"Content-Type": "application/json"},
+                });
+            });
+        })
+    </script>
 
 {{end}}

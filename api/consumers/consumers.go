@@ -25,7 +25,6 @@ func GetMoves(gameId string) (moves []types.Move) {
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
-	println(string(body))
 	jsonErr := json.Unmarshal(body, &moves)
 	if jsonErr != nil {
 		log.Fatal(jsonErr)
