@@ -1,5 +1,5 @@
 import { Head } from "$fresh/runtime.ts";
-import Counter from "../islands/Counter.tsx";
+import PossibleMoves from "../islands/PossibleMoves.tsx";
 
 export default function Home() {
   return (
@@ -14,6 +14,7 @@ export default function Home() {
           height="1000"
           alt="the fresh logo: a sliced lemon dripping with juice"
         />
+        <PossibleMoves origin="Ber"/>
       </div>
     </>
   );
