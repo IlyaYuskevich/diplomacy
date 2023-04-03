@@ -4,8 +4,9 @@ interface PossibleMovesProps {
   origin: string;
 }
 
-export default function Counter(props: PossibleMovesProps) {
+export default function PossibleMoves(props: PossibleMovesProps) {
   const [origin, setOrigin] = useState(props.origin);
+  const [adjacentProvinces, setAdjacentProvinces] = useState<{[key: string]: string}>({});
 
   useEffect(() => {
     void async function getMoves() {
@@ -17,12 +18,16 @@ export default function Counter(props: PossibleMovesProps) {
                 body: JSON.stringify({province: origin}),
             });
             const jsonData = await response.json();
-            console.log(jsonData);
+            setAdjacentProvinces(jsonData)
     }()
-  }, [origin])
+  }, [origin, setAdjacentProvinces])
+
+
+
   return (
     <div>
       <p>{origin}</p>
+      {Object.keys(adjacentProvinces).map((key: string) => <button onClick={() => setOrigin(key)}>{adjacentProvinces[key]}</button>)}
     </div>
   );
 }

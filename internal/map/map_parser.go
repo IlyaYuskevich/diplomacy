@@ -1,4 +1,4 @@
-package templates
+package rules
 
 import (
 	"encoding/xml"
@@ -28,7 +28,7 @@ type SVG struct {
 }
 
 func ParseProvinceData() map[string]UnitLocation {
-	file, err := os.Open("./templates/map/map.svg")
+	file, err := os.Open("./internal/map/map.svg")
 	if err != nil {
 		panic(err)
 	}
