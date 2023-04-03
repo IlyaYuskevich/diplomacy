@@ -2,25 +2,13 @@ package main
 
 import (
 	"encoding/json"
-	"html/template"
-	"io"
 	"net/http"
 
 	"github.com/ilyayuskevich/diplomacy/api/consumers"
 	"github.com/ilyayuskevich/diplomacy/internal/rules"
-	"github.com/ilyayuskevich/diplomacy/templates/map"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
-
-type TemplateRegistry struct {
-	templates *template.Template
-}
-
-// Implement e.Renderer interface
-func (t *TemplateRegistry) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	return t.templates.ExecuteTemplate(w, name, data)
-}
 
 func main() {
 	e := echo.New()
@@ -42,17 +30,6 @@ func main() {
 		return c.HTML(http.StatusOK, string(b))
 	})
 
-	renderer := &TemplateRegistry{
-		templates: template.Must(template.ParseGlob("templates/map/*")),
-	}
-	e.Renderer = renderer
-
-	e.GET("/map", templates.MapHandler)
-
-	e.GET("/ping", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, struct{ Status string }{Status: "OK"})
-	})
-
 	e.POST("/get-possible-moves", func(c echo.Context) error {
 		type Payload struct {
 			Province string `json:"province"`
@@ -64,6 +41,11 @@ func main() {
 		}
 		possibleMoves := rules.GetPossibleMoves(payload.Province)
 		return c.JSON(http.StatusOK, possibleMoves)
+	})
+
+	e.POST("/units-loc-map", func(c echo.Context) error {
+		locMap := rules.ParseProvinceData()
+		return c.JSON(http.StatusOK, locMap)
 	})
 
 	httpPort := "8000"

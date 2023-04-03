@@ -1,4 +1,3 @@
-{{define "map.svg"}}
 <!-- ========================================================================================== -->
 <!-- Detailed Standard Map                                                                      -->
 <!--   background (and quite nice) map bitmap by J. Fatula III                                  -->
@@ -758,14 +757,6 @@
 
     <!-- drawing layer: units -->
     <g id="UnitLayer">
-        {{range .}}
-             {{if eq .UnitType "A"}}
-                <use xlink:href="#Army" x="{{.X}}" y="{{.Y}}" width="40" height="40" class="{{.Country}}"></use>
-            {{end}}
-            {{if eq .UnitType "F"}}
-                <use xlink:href="#Fleet" x="{{.X}}" y="{{.Y}}" width="40" height="40" class="{{.Country}}"></use>
-            {{end}}
-        {{end}}
     </g>
 
     <!-- drawing layer: dislodged units -->
@@ -952,4 +943,3 @@
     </g>
 
 </svg>
-{{end}}
