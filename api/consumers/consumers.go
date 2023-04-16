@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/ilyayuskevich/diplomacy/api/types"
+	"diplomacy/api/types"
 )
 
 func GetMoves(gameId string) (moves []types.Move) {

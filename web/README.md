@@ -2,6 +2,8 @@
 
 ### Usage
 
+Install deno code extension for your favorite IDE and enable it for current workspace.
+
 Start the project:
 
 ```
