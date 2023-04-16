@@ -3,7 +3,7 @@
 package rules
 
 import (
-	"github.com/ilyayuskevich/diplomacy/api/types"
+	"diplomacy/api/types"
 )
 
 var Provinces = map[string]types.Province{

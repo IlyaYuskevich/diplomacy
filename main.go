@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/ilyayuskevich/diplomacy/api/consumers"
-	"github.com/ilyayuskevich/diplomacy/internal/rules"
+	"diplomacy/api/consumers"
+	"diplomacy/internal/rules"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -43,8 +43,9 @@ func main() {
 		return c.JSON(http.StatusOK, possibleMoves)
 	})
 
-	e.POST("/units-loc-map", func(c echo.Context) error {
+	e.GET("/units-loc-map", func(c echo.Context) error {
 		locMap := rules.ParseProvinceData()
+		println(locMap)
 		return c.JSON(http.StatusOK, locMap)
 	})
 

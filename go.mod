@@ -1,4 +1,4 @@
-module github.com/ilyayuskevich/diplomacy
+module diplomacy
 
 go 1.20
 
