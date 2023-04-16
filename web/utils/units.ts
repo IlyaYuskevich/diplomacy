@@ -16,4 +16,4 @@ export interface IUnitLocation {
     country: string
   }
 
-export const units = signal<IUnit[]>([{province: "Ber", type: UnitType.A, country: "Germany" }]);
+export const units = signal<IUnit[]>([{province: "Ion", type: UnitType.F, country: "Germany" }]);

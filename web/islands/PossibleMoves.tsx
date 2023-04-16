@@ -14,11 +14,10 @@ export default function PossibleMoves() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ province: units.value[0].province }),
+      body: JSON.stringify({ province: units.value[0].province, unitType: units.value[0].type }),
     });
     const jsonData = await response.json();
     setAdjacentProvinces(jsonData)
-    console.log(units.value)
   }
 
   function handlePossibleMove(newProvince: string) {

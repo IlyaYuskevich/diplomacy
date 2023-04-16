@@ -5,7 +5,9 @@ import (
 	"net/http"
 
 	"diplomacy/api/consumers"
+	"diplomacy/api/types"
 	"diplomacy/internal/rules"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -19,7 +21,7 @@ func main() {
 		AllowOrigins: []string{"http://localhost:4000"},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 		AllowMethods: []string{echo.OPTIONS, echo.GET, echo.POST},
-	  }))
+	}))
 
 	e.GET("/", func(c echo.Context) error {
 		moves := consumers.GetMoves("d42830dd-a75c-40c5-ade3-56a38db0fd00")
@@ -32,14 +34,20 @@ func main() {
 
 	e.POST("/get-possible-moves", func(c echo.Context) error {
 		type Payload struct {
-			Province string `json:"province"`
+			Province string         `json:"province"`
+			UnitType types.UnitType `json:"unitType"`
 		}
 		var payload Payload
 		err := c.Bind(&payload)
 		if err != nil {
 			return c.String(http.StatusBadRequest, "bad request")
 		}
-		possibleMoves := rules.GetPossibleMoves(payload.Province)
+		var possibleMoves map[string]string
+		if payload.UnitType == types.Army {
+			possibleMoves = rules.GetPossibleArmyMoves(payload.Province)
+		} else {
+			possibleMoves = rules.GetPossibleFleetMoves(payload.Province)
+		}
 		return c.JSON(http.StatusOK, possibleMoves)
 	})
 
