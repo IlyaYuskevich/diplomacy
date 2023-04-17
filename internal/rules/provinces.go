@@ -378,7 +378,7 @@ var FleetBorders = map[string][]string{
 	"Pie":  {"Mar", "Tus", "GoL"},
 	"Pic":  {"Bel", "Bre", "Eng"},
 	"Por":  {"SpaN", "SpaS", "Mid"},
-	"Pru":  {"Ber", "Bal", "Lvn"},
+	"Pru":  {"Ber", "Bal", "Lvn", "War"},
 	"Rom":  {"Nap", "Tus", "Tyn"},
 	"Rum":  {"Sev", "Bla", "BulE"},
 	"Sev":  {"Arm", "Rum", "Bla"},

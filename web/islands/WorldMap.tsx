@@ -1,4 +1,4 @@
-import { IUnit, IUnitLocation, units } from "../utils/units.ts";
+import { IUnit, IUnitLocation, UnitType, units } from "../utils/units.ts";
 import { computed } from "@preact/signals";
 
 type Props = {
@@ -314,7 +314,7 @@ export default function WorldMap(props: Props) {
 
                 <g id="UnitLayer">
                     {unitsWithPositions.value.map(unit => (
-                        <use xlinkHref={`#${unit.type}`}
+                        <use xlinkHref={unit.type === UnitType.Army ? "#Army" : "#Fleet"}
                             x={unit.x}
                             y={unit.y}
                             width="40" height="40"
