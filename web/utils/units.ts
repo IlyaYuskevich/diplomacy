@@ -6,8 +6,8 @@ export interface IUnitLocation {
   }
   
   export enum UnitType {
-    A = "Army",
-    F = "Fleet"
+    Army = "A",
+    Fleet = "F"
   }
   
   export interface IUnit {
@@ -16,4 +16,4 @@ export interface IUnitLocation {
     country: string
   }
 
-export const units = signal<IUnit[]>([{province: "Ion", type: UnitType.F, country: "Germany" }]);
+export const units = signal<IUnit[]>([{province: "Ber", type: UnitType.Army, country: "Germany" }]);
