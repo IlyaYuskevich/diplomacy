@@ -2,21 +2,21 @@ package types
 
 type Country string
 
-type MoveType int16
+type MoveType string
 
 type UnitType string
 
-type MoveStatus int16
+type MoveStatus string
 
 type ProvinceType int16
 
 const (
-	BUILD MoveType = iota
-	DESTROY
-	MOVE
-	SUPPORT
-	CONVOY
-	DEFEND
+	BUILD   MoveType = "BUILD"
+	DESTROY MoveType = "DESTROY"
+	MOVE    MoveType = "MOVE"
+	SUPPORT MoveType = "SUPPORT"
+	CONVOY  MoveType = "CONVOY"
+	DEFEND  MoveType = "DEFEND"
 )
 
 const (
@@ -25,10 +25,11 @@ const (
 )
 
 const (
-	SUCCEED MoveStatus = iota
-	FAILED
-	UNDONE
-	EFFECTLESS
+	SUCCEED    MoveStatus = "succeed"
+	FAILED     MoveStatus = "failed"
+	UNDONE     MoveStatus = "undone"
+	EFFECTLESS MoveStatus = "effectless"
+	SUBMITTED  MoveStatus = "submitted"
 )
 
 const (
@@ -67,16 +68,21 @@ type Game struct {
 }
 
 type Move struct {
-	Id         string   `json:"id"`
-	CreatedAt  string   `json:"created_at"`
-	Type       string   `json:"type"`
-	Origin     string   `json:"origin"` // also make Enum
-	From       string   `json:"from"`
-	To         string   `json:"to,omitempty"`
-	Turn       string   `json:"turn,omitempty"`
-	UnitType   UnitType `json:"unit_type"`
-	Status     string   `json:"status"`
-	PlayerGamr string   `json:"player_game"`
-	Game       string   `json:"game"`
+	Id         string     `json:"id"`
+	CreatedAt  string     `json:"created_at"`
+	Type       MoveType   `json:"type"`
+	Origin     string     `json:"origin"` // also make Enum
+	From       string     `json:"from"`
+	To         string     `json:"to,omitempty"`
+	Turn       string     `json:"turn,omitempty"`
+	UnitType   UnitType   `json:"unit_type"`
+	Status     MoveStatus `json:"status"`
+	PlayerGame string     `json:"player_game"`
+	Game       string     `json:"game"`
 	Country    Country
+}
+
+type GamePosition struct {
+	Domains      map[Country][]string
+	UnitLocation map[Country][]string
 }

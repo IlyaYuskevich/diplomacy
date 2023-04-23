@@ -25,7 +25,7 @@ func main() {
 
 	e.GET("/", func(c echo.Context) error {
 		moves := consumers.GetMoves("d42830dd-a75c-40c5-ade3-56a38db0fd00")
-		b, err := json.Marshal(moves)
+		b, err := json.MarshalIndent(moves, "<br>", "'\t'\t'\t")
 		if err != nil {
 			println(err)
 		}
