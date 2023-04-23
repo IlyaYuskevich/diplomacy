@@ -63,13 +63,13 @@ func calcMoveStatus(move types.Move, strength map[string]map[types.Country]int) 
 		return types.SUCCEED
 	}
 	if move.Type == types.MOVE {
-		if strongestCountry(strength[move.To]) == move.Country {
+		if strongestCountry(strength[move.To]) == move.PlayerGame.Country {
 			return types.SUCCEED
 		}
 	}
 	if move.Type == types.DEFEND {
 		country := strongestCountry(strength[move.Origin])
-		if country == move.Country || country == "equal" {
+		if country == move.PlayerGame.Country || country == "equal" {
 			return types.SUCCEED
 		}
 	}
@@ -112,16 +112,16 @@ func ProcessMoves(submittedMoves []types.Move) []types.Move {
 			strength[move.Origin] = make(map[types.Country]int)
 		}
 		if move.Type == types.MOVE { // adds a point if unit attempts to move to a province
-			strength[move.To][move.Country] += 1
+			strength[move.To][move.PlayerGame.Country] += 1
 		}
 		if move.Type == types.DEFEND {
-			strength[move.Origin][move.Country] += 1
+			strength[move.Origin][move.PlayerGame.Country] += 1
 		}
 		if move.Type == types.SUPPORT {
 			supportedMoveIndex := findMoveToSupport(move, activeMoves)
 			if supportedMoveIndex != -1 {
 				supportedMove := activeMoves[supportedMoveIndex]
-				strength[supportedMove.To][supportedMove.Country] += 1
+				strength[supportedMove.To][supportedMove.PlayerGame.Country] += 1
 			}
 		}
 	}

@@ -23,9 +23,31 @@ func main() {
 		AllowMethods: []string{echo.OPTIONS, echo.GET, echo.POST},
 	}))
 
-	e.GET("/", func(c echo.Context) error {
-		moves := consumers.GetMoves("d42830dd-a75c-40c5-ade3-56a38db0fd00")
-		b, err := json.MarshalIndent(moves, "<br>", "'\t'\t'\t")
+	e.POST("/api/moves", func(c echo.Context) error {
+		type Payload struct {
+			GameId string `json:"gameId"`
+		}
+		var payload Payload
+		err := c.Bind(&payload)
+		moves := consumers.GetMoves(payload.GameId)
+		b, err := json.Marshal(moves)
+		if err != nil {
+			println(err)
+		}
+		return c.HTML(http.StatusOK, string(b))
+	})
+
+	e.POST("/player-games", func(c echo.Context) error {
+		type Payload struct {
+			PlayerId string `json:"playerId"`
+		}
+		var payload Payload
+		err := c.Bind(&payload)
+		if err != nil {
+			return c.String(http.StatusBadRequest, "bad request")
+		}
+		playerGames := consumers.GetPlayerGames(payload.PlayerId)
+		b, err := json.Marshal(playerGames)
 		if err != nil {
 			println(err)
 		}
@@ -51,9 +73,8 @@ func main() {
 		return c.JSON(http.StatusOK, possibleMoves)
 	})
 
-	e.GET("/units-loc-map", func(c echo.Context) error {
+	e.GET("/units-loc-map/:game", func(c echo.Context) error {
 		locMap := rules.ParseProvinceData()
-		println(locMap)
 		return c.JSON(http.StatusOK, locMap)
 	})
 

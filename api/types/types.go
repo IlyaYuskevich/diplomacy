@@ -57,14 +57,30 @@ type Province struct {
 }
 
 type PlayerGame struct {
-	id   string
-	name string
+	Id        string    `json:"id"`
+	Name      string    `json:"name"`
+	StartedAt string    `json:"started_at"`
+	Country   Country   `json:"country"`
+	Color     string    `json:"color"`
+	Game      GameShort `json:"games"`
+	Player    string    `json:"player"`
+}
+
+type PlayerGameShort struct {
+	Country Country `json:"country"`
 }
 
 type Game struct {
 	Id        string
 	StartedAt string
 	Status    string
+}
+
+type GameShort struct {
+	Id          string `json:"id"`
+	StartedAt   string `json:"started_at"`
+	Status      string `json:"status"`
+	CurrentTurn string `json:"current_turn"`
 }
 
 type Move struct {
@@ -77,9 +93,10 @@ type Move struct {
 	Turn       string     `json:"turn,omitempty"`
 	UnitType   UnitType   `json:"unit_type"`
 	Status     MoveStatus `json:"status"`
-	PlayerGame string     `json:"player_game"`
 	Game       string     `json:"game"`
-	Country    Country
+	PlayerGame struct {
+		Country Country `json:"country"`
+	} `json:"player_games"`
 }
 
 type GamePosition struct {
