@@ -18,9 +18,8 @@ func TestProcessMovesSimpleMove(t *testing.T) {
 			Turn:       "Fall 1901",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.FRANCE,
+			PlayerGame: types.PlayerGameShort{Country: types.FRANCE},
 		}, types.Move{
 			Id:         "2",
 			CreatedAt:  "01-01-01",
@@ -31,9 +30,8 @@ func TestProcessMovesSimpleMove(t *testing.T) {
 			Turn:       "Fall 1901",
 			UnitType:   types.Army,
 			Status:     types.UNDONE,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.FRANCE,
+			PlayerGame: types.PlayerGameShort{Country: types.FRANCE},
 		})
 	moves = ProcessMoves(moves)
 	if types.MoveType(moves[0].Status) != types.MoveType(types.SUCCEED) {
@@ -54,9 +52,8 @@ func TestProcessMovesFailed(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.FRANCE,
+			PlayerGame: types.PlayerGameShort{Country: types.FRANCE},
 		}, types.Move{
 			Id:         "2",
 			CreatedAt:  "01-01-01",
@@ -67,9 +64,8 @@ func TestProcessMovesFailed(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.GERMANY,
+			PlayerGame: types.PlayerGameShort{Country: types.GERMANY},
 		})
 	moves = ProcessMoves(moves)
 	if types.MoveType(moves[0].Status) != types.MoveType(types.FAILED) {
@@ -93,9 +89,8 @@ func TestProcessSuccessfulAttackSupport(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.FRANCE,
+			PlayerGame: types.PlayerGameShort{Country: types.FRANCE},
 		}, types.Move{
 			Id:         "2",
 			CreatedAt:  "01-01-01",
@@ -106,9 +101,8 @@ func TestProcessSuccessfulAttackSupport(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.GERMANY,
+			PlayerGame: types.PlayerGameShort{Country: types.GERMANY},
 		},
 		types.Move{
 			Id:         "3",
@@ -120,9 +114,8 @@ func TestProcessSuccessfulAttackSupport(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.ITALY,
+			PlayerGame: types.PlayerGameShort{Country: types.ITALY},
 		},
 	)
 	moves = ProcessMoves(moves)
@@ -150,9 +143,8 @@ func TestProcessSuccessfulDefenceSupport(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.FRANCE,
+			PlayerGame: types.PlayerGameShort{Country: types.FRANCE},
 		}, types.Move{
 			Id:         "2",
 			CreatedAt:  "01-01-01",
@@ -163,9 +155,8 @@ func TestProcessSuccessfulDefenceSupport(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.GERMANY,
+			PlayerGame: types.PlayerGameShort{Country: types.GERMANY},
 		},
 		types.Move{
 			Id:         "3",
@@ -177,9 +168,8 @@ func TestProcessSuccessfulDefenceSupport(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.ITALY,
+			PlayerGame: types.PlayerGameShort{Country: types.ITALY},
 		},
 	)
 	moves = ProcessMoves(moves)
@@ -207,9 +197,8 @@ func TestProcessUsuccessfulSupport(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.FRANCE,
+			PlayerGame: types.PlayerGameShort{Country: types.FRANCE},
 		}, types.Move{
 			Id:         "2",
 			CreatedAt:  "01-01-01",
@@ -220,9 +209,8 @@ func TestProcessUsuccessfulSupport(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.GERMANY,
+			PlayerGame: types.PlayerGameShort{Country: types.GERMANY},
 		},
 		types.Move{
 			Id:         "3",
@@ -234,9 +222,8 @@ func TestProcessUsuccessfulSupport(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.ITALY,
+			PlayerGame: types.PlayerGameShort{Country: types.ITALY},
 		},
 		types.Move{
 			Id:         "4",
@@ -248,9 +235,8 @@ func TestProcessUsuccessfulSupport(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.FRANCE,
+			PlayerGame: types.PlayerGameShort{Country: types.FRANCE},
 		},
 	)
 	moves = ProcessMoves(moves)
@@ -281,9 +267,8 @@ func TestProcessNoEffectSupport(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.UNDONE,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.FRANCE,
+			PlayerGame: types.PlayerGameShort{Country: types.FRANCE},
 		}, types.Move{
 			Id:         "2",
 			CreatedAt:  "01-01-01",
@@ -294,9 +279,8 @@ func TestProcessNoEffectSupport(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.GERMANY,
+			PlayerGame: types.PlayerGameShort{Country: types.GERMANY},
 		},
 		types.Move{
 			Id:         "3",
@@ -308,9 +292,8 @@ func TestProcessNoEffectSupport(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.ITALY,
+			PlayerGame: types.PlayerGameShort{Country: types.ITALY},
 		},
 		types.Move{
 			Id:         "4",
@@ -322,9 +305,8 @@ func TestProcessNoEffectSupport(t *testing.T) {
 			Turn:       "Fall 1903",
 			UnitType:   types.Army,
 			Status:     types.SUBMITTED,
-			PlayerGame: "",
 			Game:       "",
-			Country:    types.ENGLAND,
+			PlayerGame: types.PlayerGameShort{Country: types.ENGLAND},
 		},
 	)
 	moves = ProcessMoves(moves)

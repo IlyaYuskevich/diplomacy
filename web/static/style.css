@@ -53,3 +53,11 @@ svg { font-size: 0.8rem }
 .shadowdash {stroke-width:10; fill:none; stroke:black; opacity:0.45;}
 .varwidthorder {fill:none;}
 .varwidthshadow {fill:none; stroke:black;}
+
+
+
+.playerGamePicker {
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+}

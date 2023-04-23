@@ -3,17 +3,21 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import config from "./deno.json" assert { type: "json" };
-import * as $0 from "./routes/index.tsx";
-import * as $$0 from "./islands/PossibleMoves.tsx";
-import * as $$1 from "./islands/WorldMap.tsx";
+import * as $0 from "./routes/[gameId].tsx";
+import * as $1 from "./routes/index.tsx";
+import * as $$0 from "./islands/PlayerGames.tsx";
+import * as $$1 from "./islands/PossibleMoves.tsx";
+import * as $$2 from "./islands/WorldMap.tsx";
 
 const manifest = {
   routes: {
-    "./routes/index.tsx": $0,
+    "./routes/[gameId].tsx": $0,
+    "./routes/index.tsx": $1,
   },
   islands: {
-    "./islands/PossibleMoves.tsx": $$0,
-    "./islands/WorldMap.tsx": $$1,
+    "./islands/PlayerGames.tsx": $$0,
+    "./islands/PossibleMoves.tsx": $$1,
+    "./islands/WorldMap.tsx": $$2,
   },
   baseUrl: import.meta.url,
   config,
