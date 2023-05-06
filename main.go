@@ -3,8 +3,11 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 
 	"diplomacy/api/consumers"
+	"diplomacy/api/endpoints"
+	"diplomacy/api/orm"
 	"diplomacy/api/types"
 	"diplomacy/internal/rules"
 
@@ -18,10 +21,12 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:4000"},
+		AllowOrigins: []string{os.Getenv("FRONTEND_URL")},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 		AllowMethods: []string{echo.OPTIONS, echo.GET, echo.POST},
 	}))
+
+	orm.ConnectSupabase()
 
 	e.POST("/api/moves", func(c echo.Context) error {
 		type Payload struct {
@@ -77,6 +82,8 @@ func main() {
 		locMap := rules.ParseProvinceData()
 		return c.JSON(http.StatusOK, locMap)
 	})
+
+	e = endpoints.ConfigureGameEndpoints(e)
 
 	httpPort := "8000"
 	e.Logger.Fatal(e.Start(":" + httpPort))
