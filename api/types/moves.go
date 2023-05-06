@@ -70,19 +70,6 @@ type PlayerGameShort struct {
 	Country Country `json:"country"`
 }
 
-type Game struct {
-	Id        string
-	StartedAt string
-	Status    string
-}
-
-type GameShort struct {
-	Id          string `json:"id"`
-	StartedAt   string `json:"started_at"`
-	Status      string `json:"status"`
-	CurrentTurn string `json:"current_turn"`
-}
-
 type Move struct {
 	Id         string     `json:"id"`
 	CreatedAt  string     `json:"created_at"`
