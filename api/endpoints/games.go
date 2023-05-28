@@ -1,15 +1,17 @@
 package endpoints
 
 import (
-	"diplomacy/api/consumers"
+	"diplomacy/api/handlers"
+
 	"github.com/labstack/echo/v4"
 )
 
-func ConfigureGameEndpoints(e *echo.Echo) *echo.Echo {
-	e.POST("/games", consumers.CreateGame)
-	e.GET("/games/:id", consumers.GetGame)
-	e.GET("/games", consumers.GetGames)
-	e.PATCH("/games/:id", consumers.PatchGame)
-	e.DELETE("/games/:id", consumers.DeleteGame)
+func ConfigureGamesEndpoints(e *echo.Echo) *echo.Echo {
+	db := handlers.ConnectSupabase()
+	e.POST("/games", handlers.CreateGame(db))
+	e.GET("/games/:id", handlers.GetGame(db))
+	e.GET("/games", handlers.GetGames(db))
+	e.PATCH("/games/:id", handlers.PatchGame(db))
+	e.DELETE("/games/:id", handlers.DeleteGame(db))
 	return e
 }

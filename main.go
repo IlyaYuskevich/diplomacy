@@ -5,9 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"diplomacy/api/consumers"
 	"diplomacy/api/endpoints"
-	"diplomacy/api/orm"
+	"diplomacy/api/handlers"
 	"diplomacy/api/types"
 	"diplomacy/internal/rules"
 
@@ -26,15 +25,13 @@ func main() {
 		AllowMethods: []string{echo.OPTIONS, echo.GET, echo.POST},
 	}))
 
-	orm.ConnectSupabase()
-
 	e.POST("/api/moves", func(c echo.Context) error {
 		type Payload struct {
 			GameId string `json:"gameId"`
 		}
 		var payload Payload
 		err := c.Bind(&payload)
-		moves := consumers.GetMoves(payload.GameId)
+		moves := handlers.GetMoves(payload.GameId)
 		b, err := json.Marshal(moves)
 		if err != nil {
 			println(err)
@@ -51,7 +48,7 @@ func main() {
 		if err != nil {
 			return c.String(http.StatusBadRequest, "bad request")
 		}
-		playerGames := consumers.GetPlayerGames(payload.PlayerId)
+		playerGames := handlers.GetPlayerGames(payload.PlayerId)
 		b, err := json.Marshal(playerGames)
 		if err != nil {
 			println(err)
@@ -83,7 +80,7 @@ func main() {
 		return c.JSON(http.StatusOK, locMap)
 	})
 
-	e = endpoints.ConfigureGameEndpoints(e)
+	e = endpoints.ConfigureGamesEndpoints(e)
 
 	httpPort := "8000"
 	e.Logger.Fatal(e.Start(":" + httpPort))
