@@ -78,8 +78,10 @@ func TestMain(m *testing.M) {
 		panic("failed to connect database with gorm")
 	}
 
-	db.AutoMigrate(&types.Game{})
+	db.AutoMigrate(&types.Game{}, &types.Player{}, &types.PlayerGame{})
 	PopulateGames(db)
+	PopulatePlayers(db)
+	PopulatePlayerGames(db)
 	//Run tests
 	code := m.Run()
 

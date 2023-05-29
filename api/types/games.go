@@ -21,7 +21,7 @@ const (
 )
 
 type Game struct {
-	Id                    string     `json:"id"`
+	ID                    string     `json:"id" gorm:"primaryKey"`
 	StartedAt             string     `json:"started_at"`
 	Status                GameStatus `json:"status"`
 	DiplomaticPhaseSpring string     `json:"diplomatic_phase_spring"`

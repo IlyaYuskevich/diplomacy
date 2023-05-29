@@ -39,23 +39,6 @@ func main() {
 		return c.HTML(http.StatusOK, string(b))
 	})
 
-	e.POST("/player-games", func(c echo.Context) error {
-		type Payload struct {
-			PlayerId string `json:"playerId"`
-		}
-		var payload Payload
-		err := c.Bind(&payload)
-		if err != nil {
-			return c.String(http.StatusBadRequest, "bad request")
-		}
-		playerGames := handlers.GetPlayerGames(payload.PlayerId)
-		b, err := json.Marshal(playerGames)
-		if err != nil {
-			println(err)
-		}
-		return c.HTML(http.StatusOK, string(b))
-	})
-
 	e.POST("/get-possible-moves", func(c echo.Context) error {
 		type Payload struct {
 			Province string         `json:"province"`
@@ -81,6 +64,8 @@ func main() {
 	})
 
 	e = endpoints.ConfigureGamesEndpoints(e)
+	e = endpoints.ConfigurePlayersEndpoints(e)
+	e = endpoints.ConfigurePlayerGamesEndpoints(e)
 
 	httpPort := "8000"
 	e.Logger.Fatal(e.Start(":" + httpPort))

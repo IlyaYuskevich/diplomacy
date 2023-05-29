@@ -56,34 +56,20 @@ type Province struct {
 	Coasts    []string
 }
 
-type PlayerGame struct {
-	Id        string    `json:"id"`
-	Name      string    `json:"name"`
-	StartedAt string    `json:"started_at"`
-	Country   Country   `json:"country"`
-	Color     string    `json:"color"`
-	Game      GameShort `json:"games"`
-	Player    string    `json:"player"`
-}
-
-type PlayerGameShort struct {
-	Country Country `json:"country"`
-}
-
 type Move struct {
-	Id         string     `json:"id"`
-	CreatedAt  string     `json:"created_at"`
-	Type       MoveType   `json:"type"`
-	Origin     string     `json:"origin"` // also make Enum
-	From       string     `json:"from"`
-	To         string     `json:"to,omitempty"`
-	Turn       string     `json:"turn,omitempty"`
-	UnitType   UnitType   `json:"unit_type"`
-	Status     MoveStatus `json:"status"`
-	Game       string     `json:"game"`
-	PlayerGame struct {
-		Country Country `json:"country"`
-	} `json:"player_games"`
+	ID           string     `json:"id" gorm:"primaryKey"`
+	CreatedAt    string     `json:"created_at"`
+	Type         MoveType   `json:"type"`
+	Origin       string     `json:"origin"` // also make Enum
+	From         string     `json:"from"`
+	To           string     `json:"to,omitempty"`
+	Turn         string     `json:"turn,omitempty"`
+	UnitType     UnitType   `json:"unit_type"`
+	Status       MoveStatus `json:"status"`
+	GameID       string
+	Game         Game `json:"game"`
+	PlayerGameID string
+	PlayerGame   PlayerGame `json:"player_game"`
 }
 
 type GamePosition struct {
