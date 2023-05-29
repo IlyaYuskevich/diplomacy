@@ -16,7 +16,11 @@ import (
 // CreateGame function creates a new game.
 func CreateGame(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		game := new(types.Game)
+		game := types.Game{}
+		err := c.Bind(&game)
+		if err != nil {
+			return err
+		}
 
 		// Set default values for optional fields if not provided.
 		game.StartedAt = time.Now().String()
@@ -39,8 +43,8 @@ func CreateGame(db *gorm.DB) echo.HandlerFunc {
 			game.GainingLoosingPhase = "30m"
 		}
 
-		err := db.Create(&game).Error
-		if errors.Is(err, gorm.ErrInvalidData) {
+		resp := db.Create(&game)
+		if errors.Is(resp.Error, gorm.ErrInvalidData) {
 			return echo.NewHTTPError(http.StatusBadRequest)
 		}
 
@@ -80,19 +84,15 @@ func GetGame(db *gorm.DB) echo.HandlerFunc {
 // PatchGame function updates a game by ID.
 func PatchGame(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		id := c.Param("id")
-		payload := new(types.Game)
-		err := c.Bind(payload)
-		if err != nil {
-			return err
-		}
-
-		resp := db.Model(types.Game{Id: id}).Updates(payload)
-		if errors.Is(resp.Error, gorm.ErrInvalidData) {
+		game := types.Game{ID: c.Param("id")}
+		resp1 := db.First(&game)
+		c.Bind(&game)
+		resp2 := db.Save(&game)
+		if errors.Is(errors.Join(resp1.Error, resp2.Error), gorm.ErrInvalidData) {
 			return echo.NewHTTPError(http.StatusBadRequest)
 		}
 
-		return c.JSON(http.StatusOK, "")
+		return c.JSON(http.StatusOK, game)
 	}
 }
 
