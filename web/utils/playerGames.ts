@@ -2,7 +2,7 @@ import { signal } from "@preact/signals";
 
 export interface Game {
   id: string,
-	started_at: string,
+	startedAt: string,
 	status: string,
 	current_turn: string,
 }
@@ -10,7 +10,7 @@ export interface Game {
 export interface IPlayerGame {
 	id: string,
 	name: string,
-	started_at: string,
+	startedAt: string,
 	country: string,
 	color: string,
 	games: Game,

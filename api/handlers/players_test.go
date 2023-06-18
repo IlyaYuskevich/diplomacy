@@ -16,12 +16,12 @@ import (
 )
 
 var (
-	samplePlayer1Json        = `{"id":"d42830pp-a75c-40c5-ade3-56a38db0fd01","name":"Luke Skywalker","created_at":"2023-02-18T14:45:13.69505Z"}`
-	samplePlayer2Json        = `{"id":"d42830pp-a75c-40c5-ade3-56a38db0fd02","name":"Darth Weider","created_at":"2023-02-18T14:45:13.69505Z"}`
-	samplePlayer3Json        = `{"id":"d42830pp-a75c-40c5-ade3-56a38db0fd03","name":"Boba Fett","created_at":"2023-02-18T14:45:13.69505Z"}`
+	samplePlayer1Json        = `{"id":"d42830pp-a75c-40c5-ade3-56a38db0fd01","name":"Luke Skywalker","createdAt":"2023-02-18T14:45:13.69505Z"}`
+	samplePlayer2Json        = `{"id":"d42830pp-a75c-40c5-ade3-56a38db0fd02","name":"Darth Weider","createdAt":"2023-02-18T14:45:13.69505Z"}`
+	samplePlayer3Json        = `{"id":"d42830pp-a75c-40c5-ade3-56a38db0fd03","name":"Boba Fett","createdAt":"2023-02-18T14:45:13.69505Z"}`
 	samplePlayerJsonPayload1 = `{"name":"Chewbacca"}`
 	samplePlayerJsonPayload2 = `{"name":"Han Solo"}`
-	samplePlayer1JsonPatched = `{"id":"d42830pp-a75c-40c5-ade3-56a38db0fd01","name":"Han Solo","created_at":"2023-02-18T14:45:13.69505Z"}`
+	samplePlayer1JsonPatched = `{"id":"d42830pp-a75c-40c5-ade3-56a38db0fd01","name":"Han Solo","createdAt":"2023-02-18T14:45:13.69505Z"}`
 )
 
 var samplePlayers = []types.Player{

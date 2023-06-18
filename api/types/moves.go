@@ -60,18 +60,18 @@ type Province struct {
 
 type Move struct {
 	ID           string         `json:"id" gorm:"primaryKey"`
-	CreatedAt    string         `json:"created_at"`
+	CreatedAt    string         `json:"createdAt"`
 	Type         MoveType       `json:"type"`
 	Origin       string         `json:"origin"` // also make Enum
 	From         string         `json:"from"`
 	To           string         `json:"to,omitempty"`
 	Phase        Phase          `json:"phase"`
 	Year         uint16         `json:"year"`
-	UnitType     UnitType       `json:"unit_type"`
+	UnitType     UnitType       `json:"unitType"`
 	Status       MoveStatus     `json:"status"`
-	GameID       string         `json:"game_id,omitempty"`
-	PlayerGameID string         `json:"player_game_id,omitempty"`
-	PlayerGame   PlayerGame     `json:"player_game"`
+	GameID       string         `json:"gameId,omitempty"`
+	PlayerGameID string         `json:"playerGameId,omitempty"`
+	PlayerGame   PlayerGame     `json:"playerGame"`
 	DeletedAt    gorm.DeletedAt `json:"-"`
 }
 

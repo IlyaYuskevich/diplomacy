@@ -12,7 +12,7 @@ export interface IMove {
 	unitType: UnitType,
 	status: string,
 	game: string,
-	player_games: {country: string}
+	playerGames: {country: string}
 }
 
 export const units = signal<IMove[]>([]);

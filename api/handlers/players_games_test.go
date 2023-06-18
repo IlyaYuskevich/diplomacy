@@ -16,11 +16,11 @@ import (
 )
 
 var (
-	samplePlayerGame1Json        = fmt.Sprintf(`{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","started_at":"2023-02-18T14:45:13.69505Z","country":"england","color":"white","player":%s,"game":%s}`, samplePlayer1Json, sampleGame1PatchedJson)
-	samplePlayerGame2Json        = fmt.Sprintf(`{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd02","started_at":"2023-02-18T14:45:13.69505Z","country":"france","color":"blue","player":%s,"game":%s}`, samplePlayer1Json, sampleGame1PatchedJson)
-	samplePlayerGameJsonPayload1 = `{"player_id":"d42830pp-a75c-40c5-ade3-56a38db0fd02","game_id":"d42830gg-a75c-40c5-ade3-56a38db0fd01","country":"france"}`
+	samplePlayerGame1Json        = fmt.Sprintf(`{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","startedAt":"2023-02-18T14:45:13.69505Z","country":"england","color":"white","player":%s,"game":%s}`, samplePlayer1Json, sampleGame1PatchedJson)
+	samplePlayerGame2Json        = fmt.Sprintf(`{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd02","startedAt":"2023-02-18T14:45:13.69505Z","country":"france","color":"blue","player":%s,"game":%s}`, samplePlayer1Json, sampleGame1PatchedJson)
+	samplePlayerGameJsonPayload1 = `{"playerId":"d42830pp-a75c-40c5-ade3-56a38db0fd02","gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01","country":"france"}`
 	samplePlayerGameJsonPayload2 = `{"country":"turkey"}`
-	samplePlayerGame1Patched     = fmt.Sprintf(`{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","started_at":"2023-02-18T14:45:13.69505Z","country":"turkey","color":"white","player":%s,"player_id":"d42830pp-a75c-40c5-ade3-56a38db0fd01","game":%s,"game_id":"d42830gg-a75c-40c5-ade3-56a38db0fd01"}`, samplePlayer1Json, sampleGame1PatchedJson)
+	samplePlayerGame1Patched     = fmt.Sprintf(`{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","startedAt":"2023-02-18T14:45:13.69505Z","country":"turkey","color":"white","player":%s,"playerId":"d42830pp-a75c-40c5-ade3-56a38db0fd01","game":%s,"gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01"}`, samplePlayer1Json, sampleGame1PatchedJson)
 )
 
 var samplePlayerGames = []types.PlayerGame{
