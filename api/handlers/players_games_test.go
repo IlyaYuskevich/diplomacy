@@ -17,6 +17,7 @@ import (
 
 var (
 	samplePlayerGame1Json        = fmt.Sprintf(`{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","started_at":"2023-02-18T14:45:13.69505Z","country":"england","color":"white","player":%s,"game":%s}`, samplePlayer1Json, sampleGame1PatchedJson)
+	samplePlayerGame2Json        = fmt.Sprintf(`{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd02","started_at":"2023-02-18T14:45:13.69505Z","country":"france","color":"blue","player":%s,"game":%s}`, samplePlayer1Json, sampleGame1PatchedJson)
 	samplePlayerGameJsonPayload1 = `{"player_id":"d42830pp-a75c-40c5-ade3-56a38db0fd02","game_id":"d42830gg-a75c-40c5-ade3-56a38db0fd01","country":"france"}`
 	samplePlayerGameJsonPayload2 = `{"country":"turkey"}`
 	samplePlayerGame1Patched     = fmt.Sprintf(`{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","started_at":"2023-02-18T14:45:13.69505Z","country":"turkey","color":"white","player":%s,"player_id":"d42830pp-a75c-40c5-ade3-56a38db0fd01","game":%s,"game_id":"d42830gg-a75c-40c5-ade3-56a38db0fd01"}`, samplePlayer1Json, sampleGame1PatchedJson)
@@ -30,6 +31,14 @@ var samplePlayerGames = []types.PlayerGame{
 		GameID:    "d42830gg-a75c-40c5-ade3-56a38db0fd01",
 		Color:     "white",
 		Country:   types.ENGLAND,
+	},
+	{
+		ID:        "d42830pg-a75c-40c5-ade3-56a38db0fd02",
+		StartedAt: "2023-02-18T14:45:13.69505Z",
+		PlayerID:  "d42830pp-a75c-40c5-ade3-56a38db0fd01",
+		GameID:    "d42830gg-a75c-40c5-ade3-56a38db0fd01",
+		Color:     "blue",
+		Country:   types.FRANCE,
 	},
 }
 
@@ -46,7 +55,7 @@ func TestGetPlayerGames(t *testing.T) {
 	h := handlers.GetPlayerGames(db)
 	if assert.NoError(t, h(ctx)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
-		assert.Equal(t, fmt.Sprintf("[%s]\n", samplePlayerGame1Json), rec.Body.String())
+		assert.Equal(t, fmt.Sprintf("[%s,%s]\n", samplePlayerGame1Json, samplePlayerGame2Json), rec.Body.String())
 	}
 }
 
@@ -99,10 +108,10 @@ func TestDeletePlayerGame(t *testing.T) {
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	ctx.SetParamNames("id")
-	ctx.SetParamValues("d42830pg-a75c-40c5-ade3-56a38db0fd01")
+	ctx.SetParamValues("d42830pg-a75c-40c5-ade3-56a38db0fd02")
 	h := handlers.DeletePlayerGame(db)
 	if assert.NoError(t, h(ctx)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
-		assert.Equal(t, fmt.Sprintf("\"PlayerGame %s deleted\"\n", "d42830pg-a75c-40c5-ade3-56a38db0fd01"), rec.Body.String())
+		assert.Equal(t, fmt.Sprintf("\"PlayerGame %s deleted\"\n", "d42830pg-a75c-40c5-ade3-56a38db0fd02"), rec.Body.String())
 	}
 }
