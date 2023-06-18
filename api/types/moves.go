@@ -1,5 +1,7 @@
 package types
 
+import "gorm.io/gorm"
+
 type Country string
 
 type MoveType string
@@ -57,19 +59,20 @@ type Province struct {
 }
 
 type Move struct {
-	ID           string     `json:"id" gorm:"primaryKey"`
-	CreatedAt    string     `json:"created_at"`
-	Type         MoveType   `json:"type"`
-	Origin       string     `json:"origin"` // also make Enum
-	From         string     `json:"from"`
-	To           string     `json:"to,omitempty"`
-	Phase        Phase      `json:"phase"`
-	Year         uint16     `json:"year"`
-	UnitType     UnitType   `json:"unit_type"`
-	Status       MoveStatus `json:"status"`
-	GameID       string     `json:"game_id,omitempty"`
-	PlayerGameID string     `json:"player_game_id,omitempty"`
-	PlayerGame   PlayerGame `json:"player_game"`
+	ID           string         `json:"id" gorm:"primaryKey"`
+	CreatedAt    string         `json:"created_at"`
+	Type         MoveType       `json:"type"`
+	Origin       string         `json:"origin"` // also make Enum
+	From         string         `json:"from"`
+	To           string         `json:"to,omitempty"`
+	Phase        Phase          `json:"phase"`
+	Year         uint16         `json:"year"`
+	UnitType     UnitType       `json:"unit_type"`
+	Status       MoveStatus     `json:"status"`
+	GameID       string         `json:"game_id,omitempty"`
+	PlayerGameID string         `json:"player_game_id,omitempty"`
+	PlayerGame   PlayerGame     `json:"player_game"`
+	DeletedAt    gorm.DeletedAt `json:"-"`
 }
 
 type GamePosition struct {
