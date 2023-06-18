@@ -38,3 +38,6 @@ _test
 # For example, set up .git/info/exclude or use a global .gitignore.
 
 .env.local
+
+# IDE
+.vscode
