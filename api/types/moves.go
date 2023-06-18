@@ -11,12 +11,12 @@ type MoveStatus string
 type ProvinceType int16
 
 const (
-	BUILD   MoveType = "BUILD"
-	DESTROY MoveType = "DESTROY"
-	MOVE    MoveType = "MOVE"
-	SUPPORT MoveType = "SUPPORT"
-	CONVOY  MoveType = "CONVOY"
-	DEFEND  MoveType = "DEFEND"
+	BUILD   MoveType = "build"
+	DESTROY MoveType = "destroy"
+	MOVE    MoveType = "move"
+	SUPPORT MoveType = "support"
+	CONVOY  MoveType = "convoy"
+	DEFEND  MoveType = "defend"
 )
 
 const (
@@ -63,12 +63,12 @@ type Move struct {
 	Origin       string     `json:"origin"` // also make Enum
 	From         string     `json:"from"`
 	To           string     `json:"to,omitempty"`
-	Turn         string     `json:"turn,omitempty"`
+	Phase        Phase      `json:"phase"`
+	Year         uint16     `json:"year"`
 	UnitType     UnitType   `json:"unit_type"`
 	Status       MoveStatus `json:"status"`
-	GameID       string
-	Game         Game `json:"game"`
-	PlayerGameID string
+	GameID       string     `json:"game_id,omitempty"`
+	PlayerGameID string     `json:"player_game_id,omitempty"`
 	PlayerGame   PlayerGame `json:"player_game"`
 }
 

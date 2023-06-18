@@ -30,7 +30,7 @@ type Game struct {
 	GainingLoosingPhase   string     `json:"gaining_loosing_phase"`
 	GameType              GameType   `json:"game_type"`
 	Phase                 Phase      `json:"phase"`
-	Year                  int16      `json:"year"`
+	Year                  uint16     `json:"year"`
 }
 
 type GameShort struct {

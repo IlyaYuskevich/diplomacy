@@ -1,12 +1,10 @@
 package main
 
 import (
-	"encoding/json"
 	"net/http"
 	"os"
 
 	"diplomacy/api/endpoints"
-	"diplomacy/api/handlers"
 	"diplomacy/api/types"
 	"diplomacy/internal/rules"
 
@@ -24,20 +22,6 @@ func main() {
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 		AllowMethods: []string{echo.OPTIONS, echo.GET, echo.POST},
 	}))
-
-	e.POST("/api/moves", func(c echo.Context) error {
-		type Payload struct {
-			GameId string `json:"gameId"`
-		}
-		var payload Payload
-		err := c.Bind(&payload)
-		moves := handlers.GetMoves(payload.GameId)
-		b, err := json.Marshal(moves)
-		if err != nil {
-			println(err)
-		}
-		return c.HTML(http.StatusOK, string(b))
-	})
 
 	e.POST("/get-possible-moves", func(c echo.Context) error {
 		type Payload struct {
@@ -66,6 +50,7 @@ func main() {
 	e = endpoints.ConfigureGamesEndpoints(e)
 	e = endpoints.ConfigurePlayersEndpoints(e)
 	e = endpoints.ConfigurePlayerGamesEndpoints(e)
+	e = endpoints.ConfigureMovesEndpoints(e)
 
 	httpPort := "8000"
 	e.Logger.Fatal(e.Start(":" + httpPort))
