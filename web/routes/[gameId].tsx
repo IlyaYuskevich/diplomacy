@@ -7,33 +7,37 @@ import { IUnitLocation } from "../utils/units.ts";
 import { IMove } from "../utils/moves.ts";
 
 
-export const handler: Handlers<{ unitLocation: Record<string, IUnitLocation>, moves: IMove[] } | null> = {
+export const handler: Handlers<{ unitLocations: Record<string, IUnitLocation>, moves: IMove[] } | null> = {
   async GET(_, ctx) {
     const { gameId } = ctx.params;
     const respUnitLocations = await fetch(`http://localhost:8000/units-loc-map/${gameId}`);
     if (respUnitLocations.status === 404) {
       return ctx.render(null);
     }
-    const respMoves = await fetch(`http://localhost:8000/api/moves`, {
-      method: 'POST',
+    const reader = respUnitLocations.body!.pipeThrough(new TextDecoderStream()).getReader();
+    const resp = await reader.read();
+    const unitLocations: Record<string, IUnitLocation> = resp.value && JSON.parse(resp.value);
+
+    const respMoves = await fetch(`http://localhost:8000/moves?gameId=${gameId}`, {
+      method: 'GET',
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ gameId })
     });
+    console.log(respMoves)
     if (respMoves.status === 404) {
       return ctx.render(null);
     }
-    const unitLocations: Record<string, IUnitLocation> = await respUnitLocations.json();
     const moves: IMove[] = await respMoves.json();
-    console.log(moves)
-    return ctx.render({ unitLocation: unitLocations, moves: moves });
+    console.log({ unitLocations: unitLocations, moves: moves })
+    return ctx.render({ unitLocations: unitLocations, moves: moves });
   },
 };
 
-type Props = { unitLocation: Record<string, IUnitLocation>, moves: IMove[] }
+type Props = { unitLocations: Record<string, IUnitLocation>, moves: IMove[] }
 
-export default function Home({ data }: PageProps<Props>) {
+export default function GamePage({ data }: PageProps<Props>) {
+  console.log(data)
 
   return (
     <>
@@ -42,7 +46,7 @@ export default function Home({ data }: PageProps<Props>) {
         <link rel="stylesheet" href={asset("style.css")} />
       </Head>
       <div>
-        <WorldMap unitLocations={data.unitLocation} />
+        <WorldMap unitLocations={data.unitLocations} />
         <PossibleMoves />
       </div>
     </>
