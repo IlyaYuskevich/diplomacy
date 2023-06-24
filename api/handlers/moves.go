@@ -39,11 +39,18 @@ func CreateMove(db *gorm.DB) echo.HandlerFunc {
 func GetMoves(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
+		gameId := c.QueryParam("gameId")
+		fmt.Println(gameId)
+
 		var moves []types.Move
-		resp := db.Preload("PlayerGame",
+		query := db.Preload("PlayerGame",
 			func(db *gorm.DB) *gorm.DB {
 				return db.Select("id, color, country")
-			}).Find(&moves)
+			})
+		if gameId != "" {
+			query = query.Where("game_id = ?", gameId)
+		}
+		resp := query.Find(&moves)
 		if resp.Error != nil {
 			return resp.Error
 		}

@@ -1,20 +1,24 @@
 import { signal } from "@preact/signals";
+import { IGame } from "./games.ts";
+import { IPlayer } from "./player.ts";
 
-export interface Game {
-  id: string,
-	startedAt: string,
-	status: string,
-	current_turn: string,
+enum Country {
+	France = "FRANCE",
+	Germany = "GERMANY",
+	Italy = "ITALY",
+	Russia = "RUSSIA",
+	Austria = "AUSTRIA",
+	England = "ENGLAND",
+	Turkey = "TURKEY",
 }
 
 export interface IPlayerGame {
 	id: string,
-	name: string,
 	startedAt: string,
-	country: string,
+	country: Country,
 	color: string,
-	games: Game,
-	player: string
+	game: IGame,
+	player: IPlayer
 }
 
 export const playerGame = signal<IPlayerGame | null>(null);
