@@ -1,7 +1,7 @@
 import { Head, asset } from "$fresh/runtime.ts";
 import { PageProps } from "$fresh/server.ts";
 import { Handlers } from "$fresh/server.ts";
-import { IPlayerGame } from "../utils/playerGames.ts";
+import { IPlayerGame } from "../types/playerGames.ts";
 import PlayerGames from "../islands/PlayerGames.tsx";
 
 
@@ -9,11 +9,10 @@ export const handler: Handlers<IPlayerGame[] | null> = {
   async GET(_, ctx) {
     const resp = await fetch(`http://localhost:8000/player-games`,
       {
-        method: 'POST',
+        method: 'GET',
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ playerId: 'd6433abc-96e5-4cc4-9120-d042358bf4ba' })
       });
     if (resp.status === 404) {
       return ctx.render(null);

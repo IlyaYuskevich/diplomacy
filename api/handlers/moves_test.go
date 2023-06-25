@@ -16,10 +16,10 @@ import (
 )
 
 var (
-	sampleMove1Json        = fmt.Sprintf(`{"id":"d42830mv-a75c-40c5-ade3-56a38db0fd01","created_at":"2023-02-18T14:45:13.69505Z","type":"support","origin":"Par","from":"Par","to":"Bur","phase":"S","year":1903,"unit_type":"A","status":"submitted","game_id":"d42830gg-a75c-40c5-ade3-56a38db0fd01","player_game_id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","player_game":{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","country":"england","color":"white"}}`)
-	sampleMoveJsonPayload1 = `{"type":"move","origin":"Ber","to":"Mun","phase":"S","year":1903,"unit_type":"A","player_game_id":"d42830pg-a75c-40c5-ade3-56a38db0fd02","game_id":"d42830gg-a75c-40c5-ade3-56a38db0fd01"}`
+	sampleMove1Json        = `{"id":"d42830mv-a75c-40c5-ade3-56a38db0fd01","createdAt":"2023-02-18T14:45:13.69505Z","type":"support","origin":"Par","from":"Par","to":"Bur","phase":"S","year":1903,"unitType":"A","status":"submitted","gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01","playerGameId":"d42830pg-a75c-40c5-ade3-56a38db0fd01","playerGame":{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","country":"england","color":"white"}}`
+	sampleMoveJsonPayload1 = `{"type":"move","origin":"Ber","to":"Mun","phase":"S","year":1903,"unitType":"A","playerGameId":"d42830pg-a75c-40c5-ade3-56a38db0fd02","gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01"}`
 	sampleMoveJsonPayload2 = `{"status":"undone"}`
-	sampleMove1Patched     = fmt.Sprintf(`{"id":"d42830mv-a75c-40c5-ade3-56a38db0fd01","created_at":"2023-02-18T14:45:13.69505Z","type":"support","origin":"Par","from":"Par","to":"Bur","phase":"S","year":1903,"unit_type":"A","status":"undone","game_id":"d42830gg-a75c-40c5-ade3-56a38db0fd01","player_game":%s}`, samplePlayerGame1Json)
+	sampleMove1Patched     = `{"id":"d42830mv-a75c-40c5-ade3-56a38db0fd01","createdAt":"2023-02-18T14:45:13.69505Z","type":"support","origin":"Par","from":"Par","to":"Bur","phase":"S","year":1903,"unitType":"A","status":"undone","gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01","playerGameId":"d42830pg-a75c-40c5-ade3-56a38db0fd01","playerGame":{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","country":"england","color":"white"}}`
 )
 
 var sampleMoves = []types.Move{
@@ -32,7 +32,7 @@ var sampleMoves = []types.Move{
 		To:           "Bur",
 		Phase:        types.SPRING,
 		Year:         1903,
-		UnitType:     types.Army,
+		UnitType:     types.ARMY,
 		Status:       types.SUBMITTED,
 		PlayerGameID: "d42830pg-a75c-40c5-ade3-56a38db0fd01",
 		GameID:       "d42830gg-a75c-40c5-ade3-56a38db0fd01",
@@ -109,6 +109,6 @@ func TestDeleteMove(t *testing.T) {
 	h := handlers.DeleteMove(db)
 	if assert.NoError(t, h(ctx)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
-		assert.Equal(t, fmt.Sprintf("\"PlayerGame %s deleted\"\n", "d42830mv-a75c-40c5-ade3-56a38db0fd01"), rec.Body.String())
+		assert.Equal(t, fmt.Sprintf("\"Move %s deleted\"\n", "d42830mv-a75c-40c5-ade3-56a38db0fd01"), rec.Body.String())
 	}
 }

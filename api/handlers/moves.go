@@ -39,10 +39,18 @@ func CreateMove(db *gorm.DB) echo.HandlerFunc {
 func GetMoves(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
+		gameId := c.QueryParam("gameId")
+		fmt.Println(gameId)
+
 		var moves []types.Move
-		resp := db.Preload("PlayerGame", func(db *gorm.DB) *gorm.DB {
-			return db.Select("id, color, country")
-		}).Find(&moves)
+		query := db.Preload("PlayerGame",
+			func(db *gorm.DB) *gorm.DB {
+				return db.Select("id, color, country")
+			})
+		if gameId != "" {
+			query = query.Where("game_id = ?", gameId)
+		}
+		resp := query.Find(&moves)
 		if resp.Error != nil {
 			return resp.Error
 		}
@@ -57,7 +65,10 @@ func GetMove(db *gorm.DB) echo.HandlerFunc {
 
 		var move types.Move
 
-		resp := db.Preload("PlayerGame", func(db *gorm.DB) *gorm.DB { return db.Omit("Player", "Game") }).Omit("PlayerGameID").First(&move, "id = ?", id)
+		resp := db.Preload("PlayerGame",
+			func(db *gorm.DB) *gorm.DB {
+				return db.Select("id, color, country")
+			}).First(&move, "id = ?", id)
 		if errors.Is(resp.Error, gorm.ErrRecordNotFound) {
 			return echo.NewHTTPError(http.StatusNotFound)
 		}
@@ -70,7 +81,10 @@ func GetMove(db *gorm.DB) echo.HandlerFunc {
 func PatchMove(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		move := types.Move{ID: c.Param("id")}
-		resp1 := db.Preload("PlayerGame", func(db *gorm.DB) *gorm.DB { return db.Omit("Player", "Game") }).First(&move)
+		resp1 := db.Preload("PlayerGame",
+			func(db *gorm.DB) *gorm.DB {
+				return db.Select("id, color, country")
+			}).First(&move)
 		c.Bind(&move)
 		resp2 := db.Save(&move)
 		if errors.Is(errors.Join(resp1.Error, resp2.Error), gorm.ErrInvalidData) {

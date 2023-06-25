@@ -2,12 +2,13 @@ package rules
 
 import (
 	"diplomacy/api/types"
+	"diplomacy/api/types/prv"
 )
 
-func GetPossibleArmyMoves(Origin string) map[string]string {
+func GetPossibleArmyMoves(Origin prv.ShortName) map[prv.ShortName]string {
 	moves := ArmyBorders[Origin]
 
-	possibleMoves := map[string]string{}
+	possibleMoves := map[prv.ShortName]string{}
 
 	for _, v := range moves {
 		possibleMoves[v] = Provinces[v].Name
@@ -15,10 +16,10 @@ func GetPossibleArmyMoves(Origin string) map[string]string {
 	return possibleMoves
 }
 
-func GetPossibleFleetMoves(Origin string) map[string]string {
+func GetPossibleFleetMoves(Origin prv.ShortName) map[prv.ShortName]string {
 	moves := FleetBorders[Origin]
 
-	possibleMoves := map[string]string{}
+	possibleMoves := map[prv.ShortName]string{}
 
 	for _, v := range moves {
 		possibleMoves[v] = Provinces[v].Name
@@ -36,8 +37,8 @@ func findMoveToSupport(supportingMove types.Move, moves []types.Move) (supported
 	return -1
 }
 
-func calcMoveStatus(move types.Move, strength map[string]map[types.Country]int) (moveStatus types.MoveStatus) {
-	// retruns move status taking into account other moves made in this turn
+func calcMoveStatus(move types.Move, strength map[prv.ShortName]map[types.Country]int) (moveStatus types.MoveStatus) {
+	// returns move status taking into account other moves made in this turn
 	strongestCountry := func(strength map[types.Country]int) types.Country {
 		// returns the strongest country after all moves or "" if equals
 		var winner types.Country
@@ -103,7 +104,7 @@ func ProcessMoves(submittedMoves []types.Move) []types.Move {
 		return res
 	}(submittedMoves)
 
-	strength := make(map[string]map[types.Country]int) // map[War:map[austria:1 germany:1 russia:3]]
+	strength := make(map[prv.ShortName]map[types.Country]int) // map[War:map[austria:1 germany:1 russia:3]]
 	for _, move := range append(activeMoves, supportMoves...) {
 		if strength[move.To] == nil { // creating strength map for a given province if it does not exist
 			strength[move.To] = make(map[types.Country]int)

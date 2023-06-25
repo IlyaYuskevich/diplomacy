@@ -16,11 +16,11 @@ import (
 )
 
 var (
-	sampleGame1Json        = `{"id":"d42830gg-a75c-40c5-ade3-56a38db0fd01","started_at":"2023-02-18T14:45:13.69505Z","status":"FINISHED","diplomatic_phase_spring":"23h","diplomatic_phase_fall":"22h","retreat_phase":"1h","gaining_loosing_phase":"1h","game_type":"MULTI","phase":"S","year":1901}`
-	sampleGame2Json        = `{"id":"d42830gg-a75c-40c5-ade3-56a38db0fd02","started_at":"2023-02-18T14:45:13.69505Z","status":"ACTIVE","diplomatic_phase_spring":"23h","diplomatic_phase_fall":"22h","retreat_phase":"1h","gaining_loosing_phase":"1h","game_type":"MULTI","phase":"S","year":1901}`
-	sampleGameJsonPayload1 = `{"diplomatic_phase_spring":"23h","diplomatic_phase_fall":"22h","retreat_phase":"1h","gaining_loosing_phase":"1h","game_type":"MULTI"}`
+	sampleGame1Json        = `{"id":"d42830gg-a75c-40c5-ade3-56a38db0fd01","startedAt":"2023-02-18T14:45:13.69505Z","status":"FINISHED","diplomaticPhaseSpring":"23h","diplomaticPhaseFall":"22h","retreatPhase":"1h","gainingLoosingPhase":"1h","gameType":"MULTI","phase":"S","year":1901}`
+	sampleGame2Json        = `{"id":"d42830gg-a75c-40c5-ade3-56a38db0fd02","startedAt":"2023-02-18T14:45:13.69505Z","status":"ACTIVE","diplomaticPhaseSpring":"23h","diplomaticPhaseFall":"22h","retreatPhase":"1h","gainingLoosingPhase":"1h","gameType":"MULTI","phase":"S","year":1901}`
+	sampleGameJsonPayload1 = `{"diplomaticPhaseSpring":"23h","diplomaticPhaseFall":"22h","retreatPhase":"1h","gainingLoosingPhase":"1h","gameType":"MULTI"}`
 	sampleGameJsonPayload2 = `{"phase":"F","year":1905}`
-	sampleGame1PatchedJson = `{"id":"d42830gg-a75c-40c5-ade3-56a38db0fd01","started_at":"2023-02-18T14:45:13.69505Z","status":"FINISHED","diplomatic_phase_spring":"23h","diplomatic_phase_fall":"22h","retreat_phase":"1h","gaining_loosing_phase":"1h","game_type":"MULTI","phase":"F","year":1905}`
+	sampleGame1PatchedJson = `{"id":"d42830gg-a75c-40c5-ade3-56a38db0fd01","startedAt":"2023-02-18T14:45:13.69505Z","status":"FINISHED","diplomaticPhaseSpring":"23h","diplomaticPhaseFall":"22h","retreatPhase":"1h","gainingLoosingPhase":"1h","gameType":"MULTI","phase":"F","year":1905}`
 )
 
 var sampleGames = []types.Game{

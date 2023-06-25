@@ -1,5 +1,7 @@
 package types
 
+import "gorm.io/gorm"
+
 type GameStatus string
 type GameType string
 type Phase string
@@ -21,21 +23,22 @@ const (
 )
 
 type Game struct {
-	ID                    string     `json:"id" gorm:"primaryKey"`
-	StartedAt             string     `json:"started_at"`
-	Status                GameStatus `json:"status"`
-	DiplomaticPhaseSpring string     `json:"diplomatic_phase_spring"`
-	DiplomaticPhaseFall   string     `json:"diplomatic_phase_fall"`
-	RetreatPhase          string     `json:"retreat_phase"`
-	GainingLoosingPhase   string     `json:"gaining_loosing_phase"`
-	GameType              GameType   `json:"game_type"`
-	Phase                 Phase      `json:"phase"`
-	Year                  uint16     `json:"year"`
+	ID                    string         `json:"id" gorm:"primaryKey"`
+	StartedAt             string         `json:"startedAt"`
+	Status                GameStatus     `json:"status"`
+	DiplomaticPhaseSpring string         `json:"diplomaticPhaseSpring"`
+	DiplomaticPhaseFall   string         `json:"diplomaticPhaseFall"`
+	RetreatPhase          string         `json:"retreatPhase"`
+	GainingLoosingPhase   string         `json:"gainingLoosingPhase"`
+	GameType              GameType       `json:"gameType"`
+	Phase                 Phase          `json:"phase"`
+	Year                  uint16         `json:"year"`
+	DeletedAt             gorm.DeletedAt `json:"-"`
 }
 
 type GameShort struct {
 	Id        string     `json:"id"`
-	StartedAt string     `json:"started_at"`
+	StartedAt string     `json:"startedAt"`
 	Status    GameStatus `json:"status"`
 	Phase     Phase      `json:"phase"`
 	Year      int8       `json:"year"`
