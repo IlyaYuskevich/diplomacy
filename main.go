@@ -6,6 +6,7 @@ import (
 
 	"diplomacy/api/endpoints"
 	"diplomacy/api/types"
+	"diplomacy/api/types/prv"
 	"diplomacy/internal/rules"
 
 	"github.com/labstack/echo/v4"
@@ -25,15 +26,15 @@ func main() {
 
 	e.POST("/get-possible-moves", func(c echo.Context) error {
 		type Payload struct {
-			Province string         `json:"province"`
-			UnitType types.UnitType `json:"unitType"`
+			Province prv.ProvShortName `json:"province"`
+			UnitType types.UnitType    `json:"unitType"`
 		}
 		var payload Payload
 		err := c.Bind(&payload)
 		if err != nil {
 			return c.String(http.StatusBadRequest, "bad request")
 		}
-		var possibleMoves map[string]string
+		var possibleMoves map[prv.ProvShortName]string
 		if payload.UnitType == types.Army {
 			possibleMoves = rules.GetPossibleArmyMoves(payload.Province)
 		} else {
