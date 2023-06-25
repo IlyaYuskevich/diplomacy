@@ -26,16 +26,16 @@ func main() {
 
 	e.POST("/get-possible-moves", func(c echo.Context) error {
 		type Payload struct {
-			Province prv.ProvShortName `json:"province"`
-			UnitType types.UnitType    `json:"unitType"`
+			Province prv.ShortName  `json:"province"`
+			UnitType types.UnitType `json:"unitType"`
 		}
 		var payload Payload
 		err := c.Bind(&payload)
 		if err != nil {
 			return c.String(http.StatusBadRequest, "bad request")
 		}
-		var possibleMoves map[prv.ProvShortName]string
-		if payload.UnitType == types.Army {
+		var possibleMoves map[prv.ShortName]string
+		if payload.UnitType == types.ARMY {
 			possibleMoves = rules.GetPossibleArmyMoves(payload.Province)
 		} else {
 			possibleMoves = rules.GetPossibleFleetMoves(payload.Province)
@@ -46,6 +46,10 @@ func main() {
 	e.GET("/units-loc-map/:game", func(c echo.Context) error {
 		locMap := rules.ParseProvinceData()
 		return c.JSON(http.StatusOK, locMap)
+	})
+
+	e.GET("/current-position/:game", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, rules.StartingPosition)
 	})
 
 	e = endpoints.ConfigureGamesEndpoints(e)

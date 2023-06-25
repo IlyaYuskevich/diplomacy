@@ -7,7 +7,7 @@ import (
 	"diplomacy/api/types/prv"
 )
 
-var Provinces = map[prv.ProvShortName]types.Province{
+var Provinces = map[prv.ShortName]types.Province{
 	"Adr": {
 		Name: "Adriatic Sea",
 		Type: types.Sea,
@@ -334,7 +334,7 @@ var Provinces = map[prv.ProvShortName]types.Province{
 	},
 }
 
-var FleetBorders = map[prv.ProvShortName][]prv.ProvShortName{
+var FleetBorders = map[prv.ShortName][]prv.ShortName{
 	"Adr":  {"Alb", "Apu", "Tri", "Ven", "Ion"},
 	"Aeg":  {"Con", "BulS", "Eas", "Gre", "Smy", "Ion"},
 	"Alb":  {"Adr", "Gre", "Tri", "Ion"},
@@ -400,7 +400,7 @@ var FleetBorders = map[prv.ProvShortName][]prv.ProvShortName{
 	"Wes":  {"Mid", "NAf", "Tus", "SpaS", "Tun", "Tyn"},
 	"Yor":  {"Edi", "Lon", "Nth"}}
 
-var ArmyBorders = map[prv.ProvShortName][]prv.ProvShortName{
+var ArmyBorders = map[prv.ShortName][]prv.ShortName{
 	"Alb": {"Gre", "Ser", "Tri"},
 	"Ank": {"Arm", "Con", "Smy"},
 	"Apu": {"Nap", "Ven", "Rom"},
