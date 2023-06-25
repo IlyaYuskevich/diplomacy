@@ -4,9 +4,10 @@ package rules
 
 import (
 	"diplomacy/api/types"
+	"diplomacy/api/types/prv"
 )
 
-var Provinces = map[string]types.Province{
+var Provinces = map[prv.ProvShortName]types.Province{
 	"Adr": {
 		Name: "Adriatic Sea",
 		Type: types.Sea,
@@ -333,7 +334,7 @@ var Provinces = map[string]types.Province{
 	},
 }
 
-var FleetBorders = map[string][]string{
+var FleetBorders = map[prv.ProvShortName][]prv.ProvShortName{
 	"Adr":  {"Alb", "Apu", "Tri", "Ven", "Ion"},
 	"Aeg":  {"Con", "BulS", "Eas", "Gre", "Smy", "Ion"},
 	"Alb":  {"Adr", "Gre", "Tri", "Ion"},
@@ -399,7 +400,7 @@ var FleetBorders = map[string][]string{
 	"Wes":  {"Mid", "NAf", "Tus", "SpaS", "Tun", "Tyn"},
 	"Yor":  {"Edi", "Lon", "Nth"}}
 
-var ArmyBorders = map[string][]string{
+var ArmyBorders = map[prv.ProvShortName][]prv.ProvShortName{
 	"Alb": {"Gre", "Ser", "Tri"},
 	"Ank": {"Arm", "Con", "Smy"},
 	"Apu": {"Nap", "Ven", "Rom"},

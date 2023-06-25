@@ -1,6 +1,9 @@
 package types
 
-import "gorm.io/gorm"
+import (
+	"diplomacy/api/types/prv"
+	"gorm.io/gorm"
+)
 
 type Country string
 
@@ -51,28 +54,29 @@ const (
 )
 
 type Province struct {
-	Name      string
-	ShortName string
-	Type      ProvinceType
-	Neighbors []string
-	Coasts    []string
+	Name string
+	Type ProvinceType
 }
 
 type Move struct {
-	ID           string         `json:"id" gorm:"primaryKey"`
-	CreatedAt    string         `json:"createdAt"`
-	Type         MoveType       `json:"type"`
-	Origin       string         `json:"origin"` // also make Enum
-	From         string         `json:"from"`
-	To           string         `json:"to,omitempty"`
-	Phase        Phase          `json:"phase"`
-	Year         uint16         `json:"year"`
-	UnitType     UnitType       `json:"unitType"`
-	Status       MoveStatus     `json:"status"`
-	GameID       string         `json:"gameId,omitempty"`
-	PlayerGameID string         `json:"playerGameId,omitempty"`
-	PlayerGame   PlayerGame     `json:"playerGame"`
-	DeletedAt    gorm.DeletedAt `json:"-"`
+	ID           string            `json:"id" gorm:"primaryKey"`
+	CreatedAt    string            `json:"createdAt"`
+	Type         MoveType          `json:"type"`
+	Origin       prv.ProvShortName `json:"origin"` // also make Enum
+	From         prv.ProvShortName `json:"from"`
+	To           prv.ProvShortName `json:"to,omitempty"`
+	Phase        Phase             `json:"phase"`
+	Year         uint16            `json:"year"`
+	UnitType     UnitType          `json:"unitType"`
+	Status       MoveStatus        `json:"status"`
+	GameID       string            `json:"gameId,omitempty"`
+	PlayerGameID string            `json:"playerGameId,omitempty"`
+	PlayerGame   PlayerGame        `json:"playerGame"`
+	DeletedAt    gorm.DeletedAt    `json:"-"`
+}
+
+type UnitPosition struct {
+	Province string
 }
 
 type GamePosition struct {
