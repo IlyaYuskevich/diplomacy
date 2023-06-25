@@ -1,5 +1,5 @@
+import { Country, selectedCountry } from "../types/country.ts";
 import { IGamePosition, gamePosition } from "../types/gamePosition.ts";
-import { Country } from "../types/playerGames.ts";
 import { IUnit, IUnitLocation, UnitType } from "../types/units.ts";
 import { computed } from "@preact/signals";
 
@@ -33,9 +33,6 @@ export default function WorldMap(props: Props) {
         [Country.Austria, Country.England, Country.France, Country.Germany, Country.Italy, Country.Russia, Country.Turkey]
             .flatMap((country) => mapUnitPositions(country, gamePosition.unitPositions))
         ))
-
-        console.log(unitsWithLocation.value.at(0)?.unitType)
-
 
     return (
         <div>
