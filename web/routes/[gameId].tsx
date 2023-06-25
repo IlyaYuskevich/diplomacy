@@ -1,10 +1,10 @@
 import { Head, asset } from "$fresh/runtime.ts";
 import { PageProps } from "$fresh/server.ts";
-import PossibleMoves from "../islands/PossibleMoves.tsx";
 import WorldMap from "../islands/WorldMap.tsx";
 import { Handlers } from "$fresh/server.ts";
-import { IUnitLocation } from "../types/units.ts";
+import { IUnitLocation, selectedUnit } from "../types/units.ts";
 import { IGamePosition } from "../types/gamePosition.ts";
+import Controls from "../islands/Controls.tsx";
 
 
 export const handler: Handlers<{ unitLocationsMap: Record<string, IUnitLocation>, gamePosition: IGamePosition } | null> = {
@@ -43,8 +43,8 @@ export default function GamePage({ data }: PageProps<Props>) {
       </Head>
       <div>
         <WorldMap {...data} />
-        <PossibleMoves />
+        <Controls gamePosition={data.gamePosition} />
       </div>
-    </>
+      </>
   );
 }

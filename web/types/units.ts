@@ -1,3 +1,5 @@
+import { signal } from "@preact/signals";
+
 export interface IUnitLocation {
     X: number
     Y: number
@@ -12,3 +14,5 @@ export interface IUnit {
   province: string
   unitType: UnitType
 }
+
+export const selectedUnit = signal<IUnit | null>(null)

@@ -1,6 +1,6 @@
 import { signal } from "@preact/signals";
-import { Country } from "./playerGames.ts";
 import { IUnit } from "./units.ts";
+import { Country } from "./country.ts";
 
 export interface IGamePosition {
   domains: { [K in Country]: string[] };
