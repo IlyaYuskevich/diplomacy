@@ -1,7 +1,7 @@
 import { Head, asset } from "$fresh/runtime.ts";
 import { PageProps } from "$fresh/server.ts";
 import { Handlers } from "$fresh/server.ts";
-import { IPlayerGame } from "../utils/playerGames.ts";
+import { IPlayerGame } from "../types/playerGames.ts";
 import PlayerGames from "../islands/PlayerGames.tsx";
 
 

@@ -1,4 +1,4 @@
-import { IUnit, IUnitLocation, UnitType, units } from "../utils/units.ts";
+import { IUnit, IUnitLocation, UnitType, units } from "../types/units.ts";
 import { computed } from "@preact/signals";
 
 type Props = {

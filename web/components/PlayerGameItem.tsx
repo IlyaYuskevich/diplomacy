@@ -1,4 +1,4 @@
-import { IPlayerGame } from "../utils/playerGames.ts"
+import { IPlayerGame } from "../types/playerGames.ts"
 
 export default function PlayerGameItem(props: IPlayerGame) {
     return <div className="playerGamePicker">

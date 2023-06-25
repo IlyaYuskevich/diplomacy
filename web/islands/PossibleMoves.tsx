@@ -1,5 +1,5 @@
 import { useEffect, useState } from "preact/hooks";
-import { units } from "../utils/units.ts";
+import { units } from "../types/units.ts";
 
 export default function PossibleMoves() {
   const [adjacentProvinces, setAdjacentProvinces] = useState<{ [key: string]: string }>({});
