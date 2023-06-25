@@ -1,5 +1,5 @@
 import PlayerGameItem from "../components/PlayerGameItem.tsx";
-import { IPlayerGame } from "../utils/playerGames.ts"
+import { IPlayerGame } from "../types/playerGames.ts"
 
 type Props = {
     playerGames: IPlayerGame[],

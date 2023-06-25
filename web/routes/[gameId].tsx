@@ -3,8 +3,8 @@ import { PageProps } from "$fresh/server.ts";
 import PossibleMoves from "../islands/PossibleMoves.tsx";
 import WorldMap from "../islands/WorldMap.tsx";
 import { Handlers } from "$fresh/server.ts";
-import { IUnitLocation } from "../utils/units.ts";
-import { IMove } from "../utils/moves.ts";
+import { IUnitLocation } from "../types/units.ts";
+import { IMove } from "../types/moves.ts";
 
 
 export const handler: Handlers<{ unitLocations: Record<string, IUnitLocation>, moves: IMove[] } | null> = {
@@ -14,22 +14,17 @@ export const handler: Handlers<{ unitLocations: Record<string, IUnitLocation>, m
     if (respUnitLocations.status === 404) {
       return ctx.render(null);
     }
-    const reader = respUnitLocations.body!.pipeThrough(new TextDecoderStream()).getReader();
-    const resp = await reader.read();
-    const unitLocations: Record<string, IUnitLocation> = resp.value && JSON.parse(resp.value);
-
+    const unitLocations = await respUnitLocations.json();
     const respMoves = await fetch(`http://localhost:8000/moves?gameId=${gameId}`, {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
       },
     });
-    console.log(respMoves)
     if (respMoves.status === 404) {
       return ctx.render(null);
     }
     const moves: IMove[] = await respMoves.json();
-    console.log({ unitLocations: unitLocations, moves: moves })
     return ctx.render({ unitLocations: unitLocations, moves: moves });
   },
 };
@@ -37,7 +32,6 @@ export const handler: Handlers<{ unitLocations: Record<string, IUnitLocation>, m
 type Props = { unitLocations: Record<string, IUnitLocation>, moves: IMove[] }
 
 export default function GamePage({ data }: PageProps<Props>) {
-  console.log(data)
 
   return (
     <>
