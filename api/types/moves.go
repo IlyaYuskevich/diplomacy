@@ -2,6 +2,7 @@ package types
 
 import (
 	"diplomacy/api/types/prv"
+
 	"gorm.io/gorm"
 )
 
@@ -25,8 +26,8 @@ const (
 )
 
 const (
-	Army  UnitType = "A"
-	Fleet UnitType = "F"
+	ARMY  UnitType = "A"
+	FLEET UnitType = "F"
 )
 
 const (
@@ -38,13 +39,13 @@ const (
 )
 
 const (
-	FRANCE  Country = "france"
-	GERMANY Country = "germany"
-	ITALY   Country = "italy"
-	RUSSIA  Country = "russia"
-	AUSTRIA Country = "austria"
-	ENGLAND Country = "england"
-	TURKEY  Country = "turkey"
+	FRANCE  Country = "FRANCE"
+	GERMANY Country = "GERMANY"
+	ITALY   Country = "ITALY"
+	RUSSIA  Country = "RUSSIA"
+	AUSTRIA Country = "AUSTRIA"
+	ENGLAND Country = "ENGLAND"
+	TURKEY  Country = "TURKEY"
 )
 
 const (
@@ -59,27 +60,28 @@ type Province struct {
 }
 
 type Move struct {
-	ID           string            `json:"id" gorm:"primaryKey"`
-	CreatedAt    string            `json:"createdAt"`
-	Type         MoveType          `json:"type"`
-	Origin       prv.ProvShortName `json:"origin"` // also make Enum
-	From         prv.ProvShortName `json:"from"`
-	To           prv.ProvShortName `json:"to,omitempty"`
-	Phase        Phase             `json:"phase"`
-	Year         uint16            `json:"year"`
-	UnitType     UnitType          `json:"unitType"`
-	Status       MoveStatus        `json:"status"`
-	GameID       string            `json:"gameId,omitempty"`
-	PlayerGameID string            `json:"playerGameId,omitempty"`
-	PlayerGame   PlayerGame        `json:"playerGame"`
-	DeletedAt    gorm.DeletedAt    `json:"-"`
+	ID           string         `json:"id" gorm:"primaryKey"`
+	CreatedAt    string         `json:"createdAt"`
+	Type         MoveType       `json:"type"`
+	Origin       prv.ShortName  `json:"origin"` // also make Enum
+	From         prv.ShortName  `json:"from"`
+	To           prv.ShortName  `json:"to,omitempty"`
+	Phase        Phase          `json:"phase"`
+	Year         uint16         `json:"year"`
+	UnitType     UnitType       `json:"unitType"`
+	Status       MoveStatus     `json:"status"`
+	GameID       string         `json:"gameId,omitempty"`
+	PlayerGameID string         `json:"playerGameId,omitempty"`
+	PlayerGame   PlayerGame     `json:"playerGame"`
+	DeletedAt    gorm.DeletedAt `json:"-"`
 }
 
 type UnitPosition struct {
-	Province string
+	Province prv.ShortName `json:"province"`
+	UnitType UnitType      `json:"unitType"`
 }
 
 type GamePosition struct {
-	Domains      map[Country][]string
-	UnitLocation map[Country][]string
+	Domains       map[Country][]prv.ShortName `json:"domains"`
+	UnitPositions map[Country][]UnitPosition  `json:"unitPositions"`
 }

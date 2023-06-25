@@ -1,5 +1,3 @@
-import { signal } from "@preact/signals";
-
 export interface IUnitLocation {
     X: number
     Y: number
@@ -12,8 +10,5 @@ export enum UnitType {
 
 export interface IUnit {
   province: string
-  type: UnitType
-  country: string
+  unitType: UnitType
 }
-
-export const units = signal<IUnit[]>([{province: "Ber", type: UnitType.Army, country: "Germany" }]);

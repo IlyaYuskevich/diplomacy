@@ -4,32 +4,34 @@ import PossibleMoves from "../islands/PossibleMoves.tsx";
 import WorldMap from "../islands/WorldMap.tsx";
 import { Handlers } from "$fresh/server.ts";
 import { IUnitLocation } from "../types/units.ts";
-import { IMove } from "../types/moves.ts";
+import { IGamePosition } from "../types/gamePosition.ts";
 
 
-export const handler: Handlers<{ unitLocations: Record<string, IUnitLocation>, moves: IMove[] } | null> = {
+export const handler: Handlers<{ unitLocationsMap: Record<string, IUnitLocation>, gamePosition: IGamePosition } | null> = {
   async GET(_, ctx) {
     const { gameId } = ctx.params;
     const respUnitLocations = await fetch(`http://localhost:8000/units-loc-map/${gameId}`);
     if (respUnitLocations.status === 404) {
       return ctx.render(null);
     }
-    const unitLocations = await respUnitLocations.json();
-    const respMoves = await fetch(`http://localhost:8000/moves?gameId=${gameId}`, {
+    const unitLocationsMap: Record<string, IUnitLocation> = await respUnitLocations.json();
+
+    const respCurrentPosition = await fetch(`http://localhost:8000/current-position/${gameId}`, {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
       },
     });
-    if (respMoves.status === 404) {
+    if (respCurrentPosition.status === 404) {
       return ctx.render(null);
     }
-    const moves: IMove[] = await respMoves.json();
-    return ctx.render({ unitLocations: unitLocations, moves: moves });
+    const gamePosition = await respCurrentPosition.json();
+    
+    return ctx.render({ unitLocationsMap, gamePosition });
   },
 };
 
-type Props = { unitLocations: Record<string, IUnitLocation>, moves: IMove[] }
+type Props = { unitLocationsMap: Record<string, IUnitLocation>, gamePosition: IGamePosition }
 
 export default function GamePage({ data }: PageProps<Props>) {
 
@@ -40,7 +42,7 @@ export default function GamePage({ data }: PageProps<Props>) {
         <link rel="stylesheet" href={asset("style.css")} />
       </Head>
       <div>
-        <WorldMap unitLocations={data.unitLocations} />
+        <WorldMap {...data} />
         <PossibleMoves />
       </div>
     </>

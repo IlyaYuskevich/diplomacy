@@ -32,7 +32,7 @@ var sampleMoves = []types.Move{
 		To:           "Bur",
 		Phase:        types.SPRING,
 		Year:         1903,
-		UnitType:     types.Army,
+		UnitType:     types.ARMY,
 		Status:       types.SUBMITTED,
 		PlayerGameID: "d42830pg-a75c-40c5-ade3-56a38db0fd01",
 		GameID:       "d42830gg-a75c-40c5-ade3-56a38db0fd01",

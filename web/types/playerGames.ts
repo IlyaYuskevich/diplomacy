@@ -2,7 +2,7 @@ import { signal } from "@preact/signals";
 import { IGame } from "./games.ts";
 import { IPlayer } from "./player.ts";
 
-enum Country {
+export enum Country {
 	France = "FRANCE",
 	Germany = "GERMANY",
 	Italy = "ITALY",
