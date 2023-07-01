@@ -1,6 +1,7 @@
 {
   "version": "2",
   "remote": {
+    "https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js": "302bc1ae10ae5fc18db74826bf4ea46788c6222d51d9035a4a469d8d1ce29c5b",
     "https://deno.land/std@0.140.0/_util/assert.ts": "e94f2eb37cebd7f199952e242c77654e43333c1ac4c5c700e929ea3aa5489f74",
     "https://deno.land/std@0.140.0/_util/os.ts": "3b4c6e27febd119d36a416d7a97bd3b0251b77c88942c8f16ee5953ea13e2e49",
     "https://deno.land/std@0.140.0/fs/_util.ts": "0fb24eb4bfebc2c194fb1afdb42b9c3dda12e368f43e8f2321f84fc77d42cb0f",
@@ -122,6 +123,69 @@
     "https://esm.sh/v115/@preact/signals-core@1.0.1/X-ZS8q/dist/signals-core.d.ts": "7a2bc0ea4bb4197fe888236017e1429cb3129ca64eb37146f11f102d9513c54d",
     "https://esm.sh/v115/@preact/signals-core@1.0.1/X-ZS8q/dist/signals-core.js": "a1c3154fa3c5902e680d5877eecb99885f7b65be75b0f1f735ebb05a162b0c8b",
     "https://esm.sh/v115/@preact/signals@1.0.3/X-ZS8q/deno/signals.mjs": "d6a26e41496e6a6b75be60bae065b161e051a93594a3f53b42a64eb709b774ee",
-    "https://esm.sh/v115/@preact/signals@1.0.3/X-ZS8q/dist/signals.d.ts": "f4fbae092f6622b348cc45503aef1a2076ea0c4bf37ab78a691a77220217a027"
+    "https://esm.sh/v115/@preact/signals@1.0.3/X-ZS8q/dist/signals.d.ts": "f4fbae092f6622b348cc45503aef1a2076ea0c4bf37ab78a691a77220217a027",
+    "https://esm.sh/v127/*color@4.2.3": "4dd233c2a6ab9df2c6061e133508621186ed76f696031676a24f5c1ceffbc341",
+    "https://esm.sh/v127/@svgdotjs/svg.js@3.2.0": "06493ed7ed8f0cdf5246b43f62a212652b8e00d4a14cf30852d647e881d49eda",
+    "https://esm.sh/v127/@svgdotjs/svg.js@3.2.0/deno/svg.mjs": "d8daabbd9d4695b64f65fd38174cfd3ec41beae0d4089170c42fa2042b2210fc",
+    "https://esm.sh/v127/@svgdotjs/svg.js@3.2.0/svg.js.d.ts": "8165079e867a203ff48ad674b72917c8b3a5ae7782eed4b01c55dcdfcd076e9a",
+    "https://esm.sh/v127/@types/color-convert@2.0.0/X-ZS8q/conversions.d.ts": "98c6bbaf34aff5740ddf92ee162f944fad9ad44123ef21d507fbf9c39b9fdfa9",
+    "https://esm.sh/v127/@types/color-convert@2.0.0/X-ZS8q/index.d.ts": "44f075fbef97f6765a23cc4034ece67689f76c60c2006dfc2be0248898f573a8",
+    "https://esm.sh/v127/@types/color-convert@2.0.0/X-ZS8q/route.d.ts": "2f5f924a00bdd82c068c25639c3980b0f640726d82efbe238b0da68dfbb0998c",
+    "https://esm.sh/v127/@types/color-convert@2.0.0/conversions.d.ts": "5ae8d3823c9ef88f5bd1bef6857f1eff060e8e2ccf87f3865765fcdd9e8f3938",
+    "https://esm.sh/v127/@types/color-convert@2.0.0/index.d.ts": "44f075fbef97f6765a23cc4034ece67689f76c60c2006dfc2be0248898f573a8",
+    "https://esm.sh/v127/@types/color-convert@2.0.0/route.d.ts": "2f5f924a00bdd82c068c25639c3980b0f640726d82efbe238b0da68dfbb0998c",
+    "https://esm.sh/v127/@types/color-name@1.1.1/X-ZS8q/index.d.ts": "f0cb4b3ab88193e3e51e9e2622e4c375955003f1f81239d72c5b7a95415dad3e",
+    "https://esm.sh/v127/@types/color-name@1.1.1/index.d.ts": "f0cb4b3ab88193e3e51e9e2622e4c375955003f1f81239d72c5b7a95415dad3e",
+    "https://esm.sh/v127/@types/color-string@1.5.2/index.d.ts": "9992bf6c132b08048ec136537caea10fdefa29f615bde9e04ff314e4de6792ab",
+    "https://esm.sh/v127/@types/color@3.0.3/X-ZS8q/index.d.ts": "c9c8c2b05e036572e21fdd8793ce77794545509c96e05e5896227e1271731f8b",
+    "https://esm.sh/v127/color-convert@2.0.1": "f2d08923f1fb4c069f97749cfd9b48a70a9ce9838698ea97845aabdb59107645",
+    "https://esm.sh/v127/color-convert@2.0.1/deno/color-convert.mjs": "acb7898ae75fca38e4b866e8bc933e462a7f731da7d0135066ef571d93527467",
+    "https://esm.sh/v127/color-name@1.1.4/deno/color-name.mjs": "9b6d53df01f3de08e1c8343bf4ce28dda6c8b622cebf1bb8be3720d1db92b4af",
+    "https://esm.sh/v127/color-string@1.9.1": "995008bc13345e82264bb6195b31014f8011ca1e4e2392e3740cf55d8948f23c",
+    "https://esm.sh/v127/color-string@1.9.1/deno/color-string.mjs": "b505f353e42d4b04612d6619a1086c92d41b89070ebba48eb29f543d0b55afad",
+    "https://esm.sh/v127/color@4.2.3/X-ZS8q/deno/color.mjs": "ea2edb62765df205c996f30d977613141395d022f51a429429d3efc2ab43ffbf",
+    "https://esm.sh/v127/is-arrayish@0.3.2/deno/is-arrayish.mjs": "9d854a8953b510286f31dd356e7d0cbcc7541c3c55e8f07e67e72dc94a1b4dc3",
+    "https://esm.sh/v127/simple-swizzle@0.2.2/deno/simple-swizzle.mjs": "56339b527a44ab2f8b251e05fbccb2a562299007f652a6c01e67f0fc4c02621f"
+  },
+  "npm": {
+    "specifiers": {
+      "color": "color@4.2.3"
+    },
+    "packages": {
+      "color-convert@2.0.1": {
+        "integrity": "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==",
+        "dependencies": {
+          "color-name": "color-name@1.1.4"
+        }
+      },
+      "color-name@1.1.4": {
+        "integrity": "sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==",
+        "dependencies": {}
+      },
+      "color-string@1.9.1": {
+        "integrity": "sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==",
+        "dependencies": {
+          "color-name": "color-name@1.1.4",
+          "simple-swizzle": "simple-swizzle@0.2.2"
+        }
+      },
+      "color@4.2.3": {
+        "integrity": "sha512-1rXeuUUiGGrykh+CeBdu5Ie7OJwinCgQY0bc7GCRxy5xVHy+moaqkpL/jqQq0MtQOeYcrqEz4abc5f0KtU7W4A==",
+        "dependencies": {
+          "color-convert": "color-convert@2.0.1",
+          "color-string": "color-string@1.9.1"
+        }
+      },
+      "is-arrayish@0.3.2": {
+        "integrity": "sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==",
+        "dependencies": {}
+      },
+      "simple-swizzle@0.2.2": {
+        "integrity": "sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==",
+        "dependencies": {
+          "is-arrayish": "is-arrayish@0.3.2"
+        }
+      }
+    }
   }
 }
