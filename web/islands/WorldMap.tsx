@@ -1,7 +1,11 @@
+import { useEffect } from "https://esm.sh/preact@10.11.0/hooks";
 import { Country, selectedCountry } from "../types/country.ts";
 import { IGamePosition, gamePosition } from "../types/gamePosition.ts";
 import { IUnit, IUnitLocation, UnitType } from "../types/units.ts";
 import { computed } from "@preact/signals";
+import * as svg from "https://esm.sh/v127/@svgdotjs/svg.js@3.2.0";
+import Color from "https://esm.sh/v127/*color@4.2.3"
+
 
 type Props = { 
     unitLocationsMap: Record<string, IUnitLocation>, 
@@ -27,7 +31,26 @@ export default function WorldMap(props: Props) {
             }))
     } 
 
+    useEffect(() => {
+        const draw = svg.SVG().addTo('#world-map').size('100%', '100%')
+        drawLink(draw, 'mos', 'lvn', 'attack', '#757d91')
+        drawLink(draw, 'mun', 'bur', 'attack', '#a08a75')
+        drawLink(draw, 'lon', 'nth', 'attack', 'darkviolet')
+        drawLink(draw, 'par', 'pic', 'attack', 'royalblue')
+    }, [])
 
+    function drawLink(draw: any, origin: string, destination: string, type: string, color: string) {
+        const arrowColor = Color(color).darken(.5).toString()
+        // deno-lint-ignore no-explicit-any
+        const arrowHead = draw.marker(2, 2, function(add: any) {
+            add.path("M 0 0 L 2 1 L 0 2 z")
+          })
+        const start = unitLocationsMap[origin]
+        const end = unitLocationsMap[destination]
+        const path = draw.path(`M ${start.X} ${start.Y} C ${start.X -40} ${start.Y -40}, ${end.X  + 40} ${end.Y - 40}, ${end.X} ${end.Y}`)
+            .stroke({ width: 10, color: arrowColor }).fill('none')
+        path.marker('end', arrowHead.fill(arrowColor))
+    }
 
     const unitsWithLocation = computed(() => (
         [Country.Austria, Country.England, Country.France, Country.Germany, Country.Italy, Country.Russia, Country.Turkey]
@@ -36,7 +59,7 @@ export default function WorldMap(props: Props) {
 
     return (
         <div>
-            <svg color-rendering="optimizeQuality" height="680px" preserveAspectRatio="xMinYMin" version="1.0" viewBox="0 0 1835 1360" width="918px">
+            <svg id="world-map" color-rendering="optimizeQuality" height="680px" preserveAspectRatio="xMinYMin" version="1.0" viewBox="0 0 1835 1360" width="918px">
                 <defs>
                     <symbol id="WaivedBuild" viewBox="0 0 100 100" overflow="visible">
                         <linearGradient x1="15" y1="100" x2="100" y2="10" id="symWBGradient" gradientUnits="userSpaceOnUse">
