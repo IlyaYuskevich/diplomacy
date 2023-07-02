@@ -1,6 +1,15 @@
 import { signal } from "@preact/signals";
 import { UnitType } from "./units.ts";
 
+export enum MoveType {
+	Support = 'SUPPORT',
+	Move = 'MOVE',
+	Convoy = 'CONVOY',
+	Build = 'BUILD',
+	Destroy = 'DESTROY',
+	Defend = 'DEFEND',
+}
+
 export interface IMove {
 	id: string,
 	createdAt: string,
@@ -16,3 +25,4 @@ export interface IMove {
 }
 
 export const units = signal<IMove[]>([]);
+export const selectedMove = signal<MoveType | null>(null);
