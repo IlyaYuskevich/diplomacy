@@ -17,7 +17,7 @@ export default function Controls(props: Props) {
   }, [props.gamePosition])
 
   return (
-    <div>
+    <div class="w-full">
         <CountrySelector />
         {selectedCountry.value && <UnitSelector />}
         {selectedUnit.value && <MoveTypeSelector />}

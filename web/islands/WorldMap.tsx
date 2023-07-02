@@ -46,7 +46,7 @@ export default function WorldMap(props: Props) {
         ))
 
     return (
-        <div>
+        <div class="w-full">
             <svg id="world-map" color-rendering="optimizeQuality" height="680px" preserveAspectRatio="xMinYMin" version="1.0" viewBox="0 0 1835 1360" width="918px">
                 <defs>
                     <symbol id="WaivedBuild" viewBox="0 0 100 100" overflow="visible">

@@ -41,7 +41,7 @@ export default function GamePage({ data }: PageProps<Props>) {
         <title>Diplomacy</title>
         <link rel="stylesheet" href={asset("style.css")} />
       </Head>
-      <div>
+      <div class="container columns-2 gap-8">
         <WorldMap {...data} />
         <Controls gamePosition={data.gamePosition} />
       </div>
