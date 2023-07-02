@@ -26,11 +26,13 @@ export default function AdjacentProvinceSelector() {
     <div>
       {/* <p>{germany.province}</p> */}
       <h4>Select where you want to move the unit:</h4>
+      <div class="flex flex-row space-x-4">
       {Object.keys(adjacentProvinces).map((key: string) =>
-        <button onClick={() => console.log(key)}>
+        <button class="bg-gray-500 px-4 py-2 hover:bg-gray-600 rounded-md text-white"  onClick={() => console.log(key)}>
           {adjacentProvinces[key]}
         </button>
       )}
+      </div>
     </div>
   );
 }

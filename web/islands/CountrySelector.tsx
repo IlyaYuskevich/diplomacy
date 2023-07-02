@@ -13,11 +13,13 @@ export default function CountrySelector() {
   return (
     <div>
       <h4>Select country:</h4>
+      <div class="flex flex-row space-x-4">
       {Object.keys(Country).map((key) =>
-        <button onClick={() => selectCountry(Country[key as keyof typeof Country])}>
+        <button class="bg-gray-500 px-4 py-2 hover:bg-gray-600 rounded-md text-white" onClick={() => selectCountry(Country[key as keyof typeof Country])}>
           {key}
         </button>
       )}
+    </div>
     </div>
   );
 }
