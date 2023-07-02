@@ -1,10 +1,10 @@
-import { useEffect } from "https://esm.sh/preact@10.11.0/hooks";
 import { Country, selectedCountry } from "../types/country.ts";
 import { IGamePosition, gamePosition } from "../types/gamePosition.ts";
 import { IUnit, IUnitLocation, UnitType } from "../types/units.ts";
 import { computed } from "@preact/signals";
 import * as svg from "https://esm.sh/v127/@svgdotjs/svg.js@3.2.0";
-import Color from "https://esm.sh/v127/*color@4.2.3"
+import { drawLink } from "../utils/worldMapUtils.ts";
+import { useEffect } from "preact/hooks";
 
 
 type Props = { 
@@ -33,24 +33,12 @@ export default function WorldMap(props: Props) {
 
     useEffect(() => {
         const draw = svg.SVG().addTo('#world-map').size('100%', '100%')
-        drawLink(draw, 'mos', 'lvn', 'attack', '#757d91')
-        drawLink(draw, 'mun', 'bur', 'attack', '#a08a75')
-        drawLink(draw, 'lon', 'nth', 'attack', 'darkviolet')
-        drawLink(draw, 'par', 'pic', 'attack', 'royalblue')
+        drawLink(unitLocationsMap, draw, 'mos', 'lvn', 'move', '#5F8C3E')
+        drawLink(unitLocationsMap, draw, 'mun', 'bur', 'move', '#757d91')
+        drawLink(unitLocationsMap, draw, 'ber', 'sil', 'move', '#757d91')
+        drawLink(unitLocationsMap, draw, 'lon', 'nth', 'support', '#E74C3C')
+        drawLink(unitLocationsMap, draw, 'par', 'pic', 'move', 'royalblue')
     }, [])
-
-    function drawLink(draw: any, origin: string, destination: string, type: string, color: string) {
-        const arrowColor = Color(color).darken(.5).toString()
-        // deno-lint-ignore no-explicit-any
-        const arrowHead = draw.marker(2, 2, function(add: any) {
-            add.path("M 0 0 L 2 1 L 0 2 z")
-          })
-        const start = unitLocationsMap[origin]
-        const end = unitLocationsMap[destination]
-        const path = draw.path(`M ${start.X} ${start.Y} C ${start.X -40} ${start.Y -40}, ${end.X  + 40} ${end.Y - 40}, ${end.X} ${end.Y}`)
-            .stroke({ width: 10, color: arrowColor }).fill('none')
-        path.marker('end', arrowHead.fill(arrowColor))
-    }
 
     const unitsWithLocation = computed(() => (
         [Country.Austria, Country.England, Country.France, Country.Germany, Country.Italy, Country.Russia, Country.Turkey]

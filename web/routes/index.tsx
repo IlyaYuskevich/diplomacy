@@ -30,7 +30,6 @@ export default function Home({ data }: PageProps<IPlayerGame[]>) {
         <link rel="stylesheet" href={asset("style.css")} />
       </Head>
       <div>
-        {data}
         <PlayerGames playerGames={data} />
       </div>
     </>

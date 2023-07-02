@@ -5,12 +5,16 @@
 import config from "./deno.json" assert { type: "json" };
 import * as $0 from "./routes/[gameId].tsx";
 import * as $1 from "./routes/index.tsx";
-import * as $$0 from "./islands/Controls.tsx";
-import * as $$1 from "./islands/CountrySelector.tsx";
-import * as $$2 from "./islands/PlayerGames.tsx";
-import * as $$3 from "./islands/PossibleMoves.tsx";
-import * as $$4 from "./islands/UnitSelector.tsx";
-import * as $$5 from "./islands/WorldMap.tsx";
+import * as $$0 from "./islands/AdjacentProvinceSelector.tsx";
+import * as $$1 from "./islands/Controls.tsx";
+import * as $$2 from "./islands/ConvoyTheUnit.tsx";
+import * as $$3 from "./islands/CountrySelector.tsx";
+import * as $$4 from "./islands/MoveTheUnit.tsx";
+import * as $$5 from "./islands/MoveTypeSelector.tsx";
+import * as $$6 from "./islands/PlayerGames.tsx";
+import * as $$7 from "./islands/SupportTheUnit.tsx";
+import * as $$8 from "./islands/UnitSelector.tsx";
+import * as $$9 from "./islands/WorldMap.tsx";
 
 const manifest = {
   routes: {
@@ -18,12 +22,16 @@ const manifest = {
     "./routes/index.tsx": $1,
   },
   islands: {
-    "./islands/Controls.tsx": $$0,
-    "./islands/CountrySelector.tsx": $$1,
-    "./islands/PlayerGames.tsx": $$2,
-    "./islands/PossibleMoves.tsx": $$3,
-    "./islands/UnitSelector.tsx": $$4,
-    "./islands/WorldMap.tsx": $$5,
+    "./islands/AdjacentProvinceSelector.tsx": $$0,
+    "./islands/Controls.tsx": $$1,
+    "./islands/ConvoyTheUnit.tsx": $$2,
+    "./islands/CountrySelector.tsx": $$3,
+    "./islands/MoveTheUnit.tsx": $$4,
+    "./islands/MoveTypeSelector.tsx": $$5,
+    "./islands/PlayerGames.tsx": $$6,
+    "./islands/SupportTheUnit.tsx": $$7,
+    "./islands/UnitSelector.tsx": $$8,
+    "./islands/WorldMap.tsx": $$9,
   },
   baseUrl: import.meta.url,
   config,

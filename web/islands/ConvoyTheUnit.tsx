@@ -1,5 +1,4 @@
 import { useEffect, useState } from "preact/hooks";
-import { computed } from "@preact/signals";
 import { IUnit, selectedUnit } from "../types/units.ts";
 
 export default function PossibleMoves() {
@@ -22,13 +21,6 @@ export default function PossibleMoves() {
     const jsonData = await response.json();
     setAdjacentProvinces(jsonData)
   }
-
-  // function handlePossibleMove(newProvince: string) {
-  //   const updatedUnit = Object.assign({}, units.value[0]);
-  //   updatedUnit.province = newProvince;
-  //   units.value = [updatedUnit];
-  //   void getMoves()
-  // }
 
   return (
     <div>

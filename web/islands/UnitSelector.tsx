@@ -1,12 +1,13 @@
 import { selectedCountry } from "../types/country.ts";
 import { gamePosition } from "../types/gamePosition.ts";
+import { selectedMove } from "../types/moves.ts";
 import { IUnit, selectedUnit } from "../types/units.ts";
-import * as hooks from "preact/hooks";
 
 export default function UnitSelector() {
   
   function selectUnit(unit: IUnit) {
     selectedUnit.value = unit
+    selectedMove.value = null
   }
 
   return (
