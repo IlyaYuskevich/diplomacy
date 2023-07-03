@@ -1,9 +1,9 @@
-import { MoveType, selectedMove } from "../types/moves.ts";
+import { MoveType, selectedMoveType } from "../types/moves.ts";
 
 export default function MoveTypeSelector() {
   
   function selectMoveType(moveType: MoveType) {
-    selectedMove.value = moveType
+    selectedMoveType.value = moveType
   }
 
   return (

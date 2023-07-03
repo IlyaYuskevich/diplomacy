@@ -1,13 +1,13 @@
 import { selectedCountry } from "../types/country.ts";
 import { gamePosition } from "../types/gamePosition.ts";
-import { selectedMove } from "../types/moves.ts";
+import { selectedMoveType } from "../types/moves.ts";
 import { IUnit, selectedUnit } from "../types/units.ts";
 
 export default function UnitSelector() {
   
   function selectUnit(unit: IUnit) {
     selectedUnit.value = unit
-    selectedMove.value = null
+    selectedMoveType.value = null
   }
 
   return (
