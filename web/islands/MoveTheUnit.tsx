@@ -1,39 +1,34 @@
 import { useEffect, useState } from "preact/hooks";
-import { computed } from "@preact/signals";
-import { IUnit, selectedUnit } from "../types/units.ts";
+import AdjacentProvinceSelector from "./AdjacentProvinceSelector.tsx";
+import { IMove, moves, selectedMoveType } from "../types/moves.ts";
+import { selectedUnit } from "../types/units.ts";
+import { selectedCountry } from "../types/country.ts";
 
-export default function PossibleMoves() {
-  const [adjacentProvinces, setAdjacentProvinces] = useState<{ [key: string]: string }>({});
+export default function MoveTheUnit() {
+
+  const [destination, setDestination] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!selectedUnit.value) return
-    void getMoves(selectedUnit.value)
-  }, [selectedUnit.value])
-
-
-  async function getMoves(unit: IUnit) {
-    const response = await fetch("http://localhost:8000/get-possible-moves", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ province: unit.province, unitType: unit.unitType }),
-    });
-    const jsonData = await response.json();
-    setAdjacentProvinces(jsonData)
+    if (!destination) {
+      return
+    }
+    const newMove: IMove = {
+      type: selectedMoveType.value!,
+      origin: selectedUnit.value!.province,
+      to: destination,
+      unitType: selectedUnit.value!.unitType,
+      playerGames: {
+              country: selectedCountry.value!
+      }
   }
+    moves.value = [...moves.value, newMove]
+    selectedCountry.value = null
+  }, [destination])
 
   return (
     <div>
-      {/* <p>{germany.province}</p> */}
-      <h4>Select where you want to move the unit:</h4>
-      <div class="flex flex-row space-x-4">
-      {Object.keys(adjacentProvinces).map((key: string) =>
-        <button class="bg-gray-500 px-4 py-2 hover:bg-gray-600 rounded-md text-white" onClick={() => console.log(key)}>
-          {adjacentProvinces[key]}
-        </button>
-      )}
-      </div>
+      <p>Select destination province:</p>
+      <AdjacentProvinceSelector setter={setDestination} province={selectedUnit.value!.province} unitType={selectedUnit.value!.unitType}/>
     </div>
   );
 }

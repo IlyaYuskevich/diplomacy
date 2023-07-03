@@ -1,5 +1,5 @@
 import { Country, selectedCountry } from "../types/country.ts";
-import { selectedMove } from "../types/moves.ts";
+import { selectedMoveType } from "../types/moves.ts";
 import { selectedUnit } from "../types/units.ts";
 
 export default function CountrySelector() {
@@ -7,7 +7,7 @@ export default function CountrySelector() {
   function selectCountry(country: Country) {
     selectedCountry.value = country
     selectedUnit.value = null
-    selectedMove.value = null
+    selectedMoveType.value = null
   }
 
   return (

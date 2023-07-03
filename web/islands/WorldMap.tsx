@@ -4,7 +4,8 @@ import { IUnit, IUnitLocation, UnitType } from "../types/units.ts";
 import { computed } from "@preact/signals";
 import * as svg from "https://esm.sh/v127/@svgdotjs/svg.js@3.2.0";
 import { drawLink } from "../utils/worldMapUtils.ts";
-import { useEffect } from "preact/hooks";
+import { useEffect, useRef } from "preact/hooks";
+import { IMove, MoveType, moves } from "../types/moves.ts";
 
 
 type Props = { 
@@ -15,6 +16,11 @@ type Props = {
 export default function WorldMap(props: Props) {
 
     const { unitLocationsMap, gamePosition } = props;
+    const arrowDrawer = useRef()
+
+    useEffect(() => {
+        arrowDrawer.current = svg.SVG().addTo('#world-map').size('100%', '100%')
+    }, [])
 
     function provinceColor(province: string) {
         return [Country.Austria, Country.England, Country.France, Country.Germany, Country.Italy, Country.Russia, Country.Turkey].filter(country => 
@@ -32,13 +38,8 @@ export default function WorldMap(props: Props) {
     } 
 
     useEffect(() => {
-        const draw = svg.SVG().addTo('#world-map').size('100%', '100%')
-        drawLink(unitLocationsMap, draw, 'mos', 'lvn', 'move', '#5F8C3E')
-        drawLink(unitLocationsMap, draw, 'mun', 'bur', 'move', '#757d91')
-        drawLink(unitLocationsMap, draw, 'ber', 'sil', 'move', '#757d91')
-        drawLink(unitLocationsMap, draw, 'lon', 'nth', 'support', '#E74C3C')
-        drawLink(unitLocationsMap, draw, 'par', 'pic', 'move', 'royalblue')
-    }, [])
+        moves.value.forEach((val: IMove) => drawLink(unitLocationsMap, arrowDrawer.current, val.origin, val.to || null, val.from || null, val.type, val.playerGames.country))
+    }, [moves.value])
 
     const unitsWithLocation = computed(() => (
         [Country.Austria, Country.England, Country.France, Country.Germany, Country.Italy, Country.Russia, Country.Turkey]
