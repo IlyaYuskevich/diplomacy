@@ -16,10 +16,10 @@ import (
 )
 
 var (
-	sampleMove1Json        = `{"id":"d42830mv-a75c-40c5-ade3-56a38db0fd01","createdAt":"2023-02-18T14:45:13.69505Z","type":"support","origin":"Par","from":"Par","to":"Bur","phase":"S","year":1903,"unitType":"A","status":"submitted","gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01","playerGameId":"d42830pg-a75c-40c5-ade3-56a38db0fd01","playerGame":{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","country":"england","color":"white"}}`
+	sampleMove1Json        = `{"id":"d42830mv-a75c-40c5-ade3-56a38db0fd01","createdAt":"2023-02-18T14:45:13.69505Z","type":"support","origin":"Par","from":"Par","to":"Bur","phase":"S","year":1903,"unitType":"A","status":"submitted","gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01","playerGameId":"d42830pg-a75c-40c5-ade3-56a38db0fd01","playerGame":{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","country":"ENGLAND","color":"white"}}`
 	sampleMoveJsonPayload1 = `{"type":"move","origin":"Ber","to":"Mun","phase":"S","year":1903,"unitType":"A","playerGameId":"d42830pg-a75c-40c5-ade3-56a38db0fd02","gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01"}`
 	sampleMoveJsonPayload2 = `{"status":"undone"}`
-	sampleMove1Patched     = `{"id":"d42830mv-a75c-40c5-ade3-56a38db0fd01","createdAt":"2023-02-18T14:45:13.69505Z","type":"support","origin":"Par","from":"Par","to":"Bur","phase":"S","year":1903,"unitType":"A","status":"undone","gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01","playerGameId":"d42830pg-a75c-40c5-ade3-56a38db0fd01","playerGame":{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","country":"england","color":"white"}}`
+	sampleMove1Patched     = `{"id":"d42830mv-a75c-40c5-ade3-56a38db0fd01","createdAt":"2023-02-18T14:45:13.69505Z","type":"support","origin":"Par","from":"Par","to":"Bur","phase":"S","year":1903,"unitType":"A","status":"undone","gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01","playerGameId":"d42830pg-a75c-40c5-ade3-56a38db0fd01","playerGame":{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","country":"ENGLAND","color":"white"}}`
 )
 
 var sampleMoves = []types.Move{
