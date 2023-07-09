@@ -1,5 +1,5 @@
 import { selectedCountry } from "../types/country.ts";
-import { IUnit, selectedUnit } from "../types/units.ts";
+import { IUnit, UnitType, selectedUnit, unitLocationsMap } from "../types/units.ts";
 import { useEffect, useState } from "preact/hooks";
 import CountrySelector from "./CountrySelector.tsx";
 import UnitSelector from "./UnitSelector.tsx";
@@ -9,14 +9,19 @@ import MoveTypeSelector from "./MoveTypeSelector.tsx";
 import MoveTheUnit from "./MoveTheUnit.tsx";
 import SupportTheUnit from "./SupportTheUnit.tsx";
 import ConvoyTheUnit from "./ConvoyTheUnit.tsx";
+import { FetchedProps } from "../routes/[gameId].tsx";
+import { currentGame } from "../types/games.ts";
+import { provincesMap } from "../types/provinces.ts";
+import CoastialProvinceSelector from "./CoastialProvinceSelector.tsx";
 
-type Props = { gamePosition: IGamePosition }
-
-export default function Controls(props: Props) {
+export default function Controls(props: FetchedProps) {
 
   useEffect(() => {
     gamePosition.value = props.gamePosition
-  }, [props.gamePosition])
+    currentGame.value = props.game
+    provincesMap.value = props.provinces
+    unitLocationsMap.value = props.unitLocationsMap
+  }, [props])
 
   function renderMoveBuilder() {
      switch(selectedMoveType.value) {
@@ -25,7 +30,11 @@ export default function Controls(props: Props) {
       case MoveType.Support:
         return <SupportTheUnit/>;
       case MoveType.Convoy:
-        return <ConvoyTheUnit/>;
+        if (selectedUnit.value!.unitType == UnitType.Fleet) {
+          return <ConvoyTheUnit/>;
+        } else {
+          return <CoastialProvinceSelector/>;
+        }
     }
   }
 
