@@ -1,21 +1,15 @@
-import { Country, selectedCountry } from "../types/country.ts";
-import { IGamePosition, gamePosition } from "../types/gamePosition.ts";
-import { IUnit, IUnitLocation, UnitType } from "../types/units.ts";
+import { Country } from "../types/country.ts";
+import { gamePosition } from "../types/gamePosition.ts";
+import { IUnit, UnitType, unitLocationsMap } from "../types/units.ts";
 import { computed } from "@preact/signals";
 import * as svg from "https://esm.sh/v127/@svgdotjs/svg.js@3.2.0";
 import { drawLink } from "../utils/worldMapUtils.ts";
 import { useEffect, useRef } from "preact/hooks";
-import { IMove, MoveType, moves } from "../types/moves.ts";
+import { IMove, moves } from "../types/moves.ts";
+import { GamePhaseName, currentGame } from "../types/games.ts";
 
+export default function WorldMap() {
 
-type Props = { 
-    unitLocationsMap: Record<string, IUnitLocation>, 
-    gamePosition: IGamePosition 
-}
-
-export default function WorldMap(props: Props) {
-
-    const { unitLocationsMap, gamePosition } = props;
     const arrowDrawer = useRef()
 
     useEffect(() => {
@@ -24,26 +18,26 @@ export default function WorldMap(props: Props) {
 
     function provinceColor(province: string) {
         return [Country.Austria, Country.England, Country.France, Country.Germany, Country.Italy, Country.Russia, Country.Turkey].filter(country => 
-            props.gamePosition.domains[country].map(x => x.toLowerCase()).includes(province.toLowerCase())
+            gamePosition.value.domains[country].map(x => x.toLowerCase()).includes(province.toLowerCase())
         ).at(0)?.toLowerCase() || "nopower" 
     }
 
     function mapUnitPositions(country: Country, unitPositions: { [K in Country]: IUnit[] }) {
         return unitPositions[country].map(unit => ({
                 ...unit,
-                x: unitLocationsMap![unit.province.toLowerCase()].X,
-                y: unitLocationsMap![unit.province.toLowerCase()].Y,
+                x: unitLocationsMap.value![unit.province.toLowerCase()].X,
+                y: unitLocationsMap.value![unit.province.toLowerCase()].Y,
                 country: country
             }))
     } 
 
     useEffect(() => {
-        moves.value.forEach((val: IMove) => drawLink(unitLocationsMap, arrowDrawer.current, val.origin, val.to || null, val.from || null, val.type, val.playerGames.country))
+        moves.value.forEach((val: IMove) => drawLink(unitLocationsMap.value, arrowDrawer.current, val.origin, val.to || null, val.from || null, val.type, val.playerGames.country))
     }, [moves.value])
 
     const unitsWithLocation = computed(() => (
         [Country.Austria, Country.England, Country.France, Country.Germany, Country.Italy, Country.Russia, Country.Turkey]
-            .flatMap((country) => mapUnitPositions(country, gamePosition.unitPositions))
+            .flatMap((country) => mapUnitPositions(country, gamePosition.value.unitPositions))
         ))
 
     return (
@@ -440,7 +434,7 @@ export default function WorldMap(props: Props) {
                 <rect x="25" y="25" height="70" width="750" className="currentnoterect" />
                 <text x="35" y="50" className="currentnotetext" id="CurrentNote"></text>
                 <text x="35" y="85" className="currentnotetext" id="CurrentNote2"></text>
-                <text x="1650" y="1325" className="currentphasetext" id="CurrentPhase">S1901M</text>
+                {currentGame.value && <text x="1650" y="1325" className="currentphasetext" id="CurrentPhase">{`${GamePhaseName[currentGame.value.phase]} ${currentGame.value.year}`}</text>}
 
                 <g id="MouseLayer" className="invisibleContent" transform="translate(-195 -170)">
                     <g id="con">

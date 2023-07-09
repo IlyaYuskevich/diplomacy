@@ -35,3 +35,9 @@ func GetPossibleMoves() echo.HandlerFunc {
 		return c.JSON(http.StatusOK, possibleMoves)
 	}
 }
+
+func GetProvinces() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return c.JSON(http.StatusOK, rules.Provinces)
+	}
+}

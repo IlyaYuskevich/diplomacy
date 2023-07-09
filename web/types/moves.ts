@@ -9,6 +9,17 @@ export enum MoveType {
 	Build = 'BUILD',
 	Destroy = 'DESTROY',
 	Defend = 'DEFEND',
+	Retreat = 'RETREAT',
+}
+
+export const MoveTypeNames = {
+	SUPPORT: 'Support',
+	MOVE: 'Move',
+	CONVOY: 'Convoy',
+	BUILD: 'Build',
+	DESTROY: 'Destroy',
+	DEFEND: 'Defend',
+	RETREAT: 'Retreat',
 }
 
 export enum MoveStatus {

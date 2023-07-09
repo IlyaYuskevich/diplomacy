@@ -14,7 +14,7 @@ type UnitType string
 
 type MoveStatus string
 
-type ProvinceType int16
+type ProvinceType string
 
 const (
 	BUILD   MoveType = "build"
@@ -49,14 +49,14 @@ const (
 )
 
 const (
-	Land ProvinceType = iota
-	Coast
-	Sea
+	Land  ProvinceType = "LAND"
+	Coast ProvinceType = "COAST"
+	Sea   ProvinceType = "SEA"
 )
 
 type Province struct {
-	Name string
-	Type ProvinceType
+	Name string       `json:"name"`
+	Type ProvinceType `json:"type"`
 }
 
 type Move struct {

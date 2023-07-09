@@ -4,7 +4,7 @@ import { MoveType } from "../types/moves.ts";
 import {Country, CountryColors} from "../types/country.ts"
 
 export function drawLink(
-  unitLocationsMap: Record<string, IUnitLocation>,
+  unitLocationsMap: Record<string, IUnitLocation> | null,
   drawer: any,
   origin: string,
   to: string | null,
@@ -12,7 +12,7 @@ export function drawLink(
   type: MoveType,
   country: Country,
 ) {
-  if (!drawer || !to) return
+  if (!drawer || !to || !unitLocationsMap) return
   const arrowColor = Color(CountryColors[country]).darken(.5).alpha(0.8).toString();
   // deno-lint-ignore no-explicit-any
   const arrowHead = drawer.marker(2, 2, function (add: any) {
