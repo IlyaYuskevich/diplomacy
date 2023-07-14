@@ -2,15 +2,19 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import config from "./deno.json" assert { type: "json" };
 import * as $0 from "./routes/[gameId].tsx";
 import * as $1 from "./routes/index.tsx";
-import * as $$0 from "./islands/Controls.tsx";
-import * as $$1 from "./islands/CountrySelector.tsx";
-import * as $$2 from "./islands/PlayerGames.tsx";
-import * as $$3 from "./islands/PossibleMoves.tsx";
-import * as $$4 from "./islands/UnitSelector.tsx";
-import * as $$5 from "./islands/WorldMap.tsx";
+import * as $$0 from "./islands/AdjacentProvinceSelector.tsx";
+import * as $$1 from "./islands/CoastialProvinceSelector.tsx";
+import * as $$2 from "./islands/Controls.tsx";
+import * as $$3 from "./islands/ConvoyTheUnit.tsx";
+import * as $$4 from "./islands/CountrySelector.tsx";
+import * as $$5 from "./islands/MoveTheUnit.tsx";
+import * as $$6 from "./islands/MoveTypeSelector.tsx";
+import * as $$7 from "./islands/PlayerGames.tsx";
+import * as $$8 from "./islands/SupportTheUnit.tsx";
+import * as $$9 from "./islands/UnitSelector.tsx";
+import * as $$10 from "./islands/WorldMap.tsx";
 
 const manifest = {
   routes: {
@@ -18,15 +22,19 @@ const manifest = {
     "./routes/index.tsx": $1,
   },
   islands: {
-    "./islands/Controls.tsx": $$0,
-    "./islands/CountrySelector.tsx": $$1,
-    "./islands/PlayerGames.tsx": $$2,
-    "./islands/PossibleMoves.tsx": $$3,
-    "./islands/UnitSelector.tsx": $$4,
-    "./islands/WorldMap.tsx": $$5,
+    "./islands/AdjacentProvinceSelector.tsx": $$0,
+    "./islands/CoastialProvinceSelector.tsx": $$1,
+    "./islands/Controls.tsx": $$2,
+    "./islands/ConvoyTheUnit.tsx": $$3,
+    "./islands/CountrySelector.tsx": $$4,
+    "./islands/MoveTheUnit.tsx": $$5,
+    "./islands/MoveTypeSelector.tsx": $$6,
+    "./islands/PlayerGames.tsx": $$7,
+    "./islands/SupportTheUnit.tsx": $$8,
+    "./islands/UnitSelector.tsx": $$9,
+    "./islands/WorldMap.tsx": $$10,
   },
   baseUrl: import.meta.url,
-  config,
 };
 
 export default manifest;

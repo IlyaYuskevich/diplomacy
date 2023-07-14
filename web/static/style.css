@@ -29,12 +29,12 @@ svg { font-size: 0.8rem }
 .neutral {fill:lightgray; stroke:#000000; stroke-width:1}
 
 .austria {fill:#c48f85; stroke:#000000; stroke-width:1}
-.england {fill:darkviolet; stroke:#000000; stroke-width:1}
+.england {fill:#E74C3C; stroke:#000000; stroke-width:1}
 .france {fill:royalblue; stroke:#000000; stroke-width:1}
-.germany {fill:#a08a75; stroke:#000000; stroke-width:1}
-.italy {fill:forestgreen; stroke:#000000; stroke-width:1}
-.russia {fill:#757d91; stroke:#000000; stroke-width:1}
-.turkey {fill:#b9a61c; stroke:#000000; stroke-width:1}
+.germany {fill:#757d91; stroke:#000000; stroke-width:1}
+.italy {fill:#5fd6b4; stroke:#000000; stroke-width:1}
+.russia {fill:#5F8C3E; stroke:#000000; stroke-width:1}
+.turkey {fill:#DCCA6D; stroke:#000000; stroke-width:1}
 
 /* unit colors, by power note that underscores are not supported */
 

@@ -1,25 +1,49 @@
-
 import { selectedCountry } from "../types/country.ts";
-import { IUnit, selectedUnit } from "../types/units.ts";
-import * as hooks from "preact/hooks";
+import { IUnit, UnitType, selectedUnit, unitLocationsMap } from "../types/units.ts";
+import { useEffect, useState } from "preact/hooks";
 import CountrySelector from "./CountrySelector.tsx";
-import PossibleMoves from "./PossibleMoves.tsx";
 import UnitSelector from "./UnitSelector.tsx";
 import { IGamePosition, gamePosition } from "../types/gamePosition.ts";
+import { MoveType, selectedMoveType } from "../types/moves.ts";
+import MoveTypeSelector from "./MoveTypeSelector.tsx";
+import MoveTheUnit from "./MoveTheUnit.tsx";
+import SupportTheUnit from "./SupportTheUnit.tsx";
+import ConvoyTheUnit from "./ConvoyTheUnit.tsx";
+import { FetchedProps } from "../routes/[gameId].tsx";
+import { currentGame } from "../types/games.ts";
+import { provincesMap } from "../types/provinces.ts";
+import CoastialProvinceSelector from "./CoastialProvinceSelector.tsx";
 
-type Props = { gamePosition: IGamePosition }
+export default function Controls(props: FetchedProps) {
 
-export default function Controls(props: Props) {
-
-  hooks.useEffect(() => {
+  useEffect(() => {
     gamePosition.value = props.gamePosition
-  }, [props.gamePosition])
+    currentGame.value = props.game
+    provincesMap.value = props.provinces
+    unitLocationsMap.value = props.unitLocationsMap
+  }, [props])
+
+  function renderMoveBuilder() {
+     switch(selectedMoveType.value) {
+      case MoveType.Move:
+        return <MoveTheUnit/>;
+      case MoveType.Support:
+        return <SupportTheUnit/>;
+      case MoveType.Convoy:
+        if (selectedUnit.value!.unitType == UnitType.Fleet) {
+          return <ConvoyTheUnit/>;
+        } else {
+          return <CoastialProvinceSelector/>;
+        }
+    }
+  }
 
   return (
-    <div>
+    <div class="w-full">
         <CountrySelector />
         {selectedCountry.value && <UnitSelector />}
-        {selectedUnit.value && <PossibleMoves />}
+        {selectedUnit.value && <MoveTypeSelector />}
+        {selectedMoveType.value && renderMoveBuilder()}
     </div>
   );
 }

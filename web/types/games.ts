@@ -1,16 +1,23 @@
-enum GameStatus {
+import { signal } from "@preact/signals";
+
+export enum GameStatus {
 	Finished = 'FINISHED',
 	Started = 'STARTED'
 }
 
-enum GameType {
+export enum GameType {
 	Multi = 'MULTI',
 	Hosted = 'HOSTED'
 }
 
-enum GamePhase {
+export enum GamePhase {
 	Spring = 'S',
 	Fall = 'F'
+}
+
+export const GamePhaseName = {
+	S: 'Spring',
+	F: 'Fall',
 }
 
 export interface IGame {
@@ -25,3 +32,5 @@ export interface IGame {
 	phase: GamePhase,
 	year: number,
 }
+
+export const currentGame = signal<IGame | null>(null);

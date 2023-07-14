@@ -16,3 +16,4 @@ export interface IUnit {
 }
 
 export const selectedUnit = signal<IUnit | null>(null)
+export const unitLocationsMap = signal<Record<string, IUnitLocation> | null>(null)

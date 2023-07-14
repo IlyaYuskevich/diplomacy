@@ -18,7 +18,7 @@ var Provinces = map[prv.ShortName]types.Province{
 	},
 	"Alb": {
 		Name: "Albania",
-		Type: types.Land,
+		Type: types.Coast,
 	},
 	"Ank": {
 		Name: "Ankara",
@@ -30,7 +30,7 @@ var Provinces = map[prv.ShortName]types.Province{
 	},
 	"Arm": {
 		Name: "Armenia",
-		Type: types.Land,
+		Type: types.Coast,
 	},
 	"Bar": {
 		Name: "Barents Sea",
@@ -46,7 +46,7 @@ var Provinces = map[prv.ShortName]types.Province{
 	},
 	"Ber": {
 		Name: "Berlin",
-		Type: types.Land,
+		Type: types.Coast,
 	},
 	"Bla": {
 		Name: "Black Sea",
@@ -114,11 +114,11 @@ var Provinces = map[prv.ShortName]types.Province{
 	},
 	"Gal": {
 		Name: "Galicia",
-		Type: types.Coast,
+		Type: types.Land,
 	},
 	"Gas": {
 		Name: "Gascony",
-		Type: types.Land,
+		Type: types.Coast,
 	},
 	"Gre": {
 		Name: "Greece",
@@ -210,7 +210,7 @@ var Provinces = map[prv.ShortName]types.Province{
 	},
 	"Pie": {
 		Name: "Piedmont",
-		Type: types.Land,
+		Type: types.Coast,
 	},
 	"Por": {
 		Name: "Portugal",
@@ -246,7 +246,7 @@ var Provinces = map[prv.ShortName]types.Province{
 	},
 	"Ska": {
 		Name: "Skagerrak",
-		Type: types.Land,
+		Type: types.Sea,
 	},
 	"Smy": {
 		Name: "Smyrna",
