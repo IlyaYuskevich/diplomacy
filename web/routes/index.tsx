@@ -7,7 +7,7 @@ import PlayerGames from "../islands/PlayerGames.tsx";
 
 export const handler: Handlers<IPlayerGame[] | null> = {
   async GET(_, ctx) {
-    const resp = await fetch(`http://localhost:8000/player-games`,
+    const resp = await fetch(`http://diplomacy:8000/player-games`,
       {
         method: 'GET',
         headers: {
