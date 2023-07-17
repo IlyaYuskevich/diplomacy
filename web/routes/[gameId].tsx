@@ -18,7 +18,7 @@ export type FetchedProps = {
 export const handler: Handlers<FetchedProps | null> = {
   async GET(_, ctx) {
     const { gameId } = ctx.params;
-    const gameResp = await fetch(`http://localhost:8000/games/${gameId}`, {
+    const gameResp = await fetch(`http://diplomacy:8000/games/${gameId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export const handler: Handlers<FetchedProps | null> = {
     const game = await gameResp.json();
 
     const respUnitLocations = await fetch(
-      `http://localhost:8000/units-loc-map/${gameId}`,
+      `http://diplomacy:8000/units-loc-map/${gameId}`,
     );
     if (respUnitLocations.status === 404) {
       return ctx.render(null);
@@ -41,7 +41,7 @@ export const handler: Handlers<FetchedProps | null> = {
       await respUnitLocations.json();
 
     const respCurrentPosition = await fetch(
-      `http://localhost:8000/current-position/${gameId}`,
+      `http://diplomacy:8000/current-position/${gameId}`,
       {
         method: "GET",
         headers: {
@@ -54,7 +54,7 @@ export const handler: Handlers<FetchedProps | null> = {
     }
     const gamePosition = await respCurrentPosition.json();
 
-    const respProvinces = await fetch(`http://localhost:8000/get-provinces`, {
+    const respProvinces = await fetch(`http://diplomacy:8000/get-provinces`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
