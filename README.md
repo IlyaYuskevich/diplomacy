@@ -8,7 +8,7 @@ Classic strategic board game.
 2. This project uses Supabase as a database-as-a-service:
    * Create a project in https://supabase.com/;
    * Create four tables: games, players, player_games, moves (see project folder api/types);
-   * Create and .env.local using provided template and fill values accordingly to connect to your supabase instance;
+   * Create .env.local using the provided template and fill values accordingly to connect to your supabase instance;
 
 
 Run docker images:
