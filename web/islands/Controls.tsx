@@ -39,7 +39,7 @@ export default function Controls(props: FetchedProps) {
   }
 
   return (
-    <div class="w-full">
+    <div class="container">
         <CountrySelector />
         {selectedCountry.value && <UnitSelector />}
         {selectedUnit.value && <MoveTypeSelector />}

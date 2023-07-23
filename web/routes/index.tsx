@@ -4,10 +4,11 @@ import { Handlers } from "$fresh/server.ts";
 import { IPlayerGame } from "../types/playerGames.ts";
 import PlayerGames from "../islands/PlayerGames.tsx";
 
+const BACKEND_URL = Deno.env.get("BACKEND_URL");
 
 export const handler: Handlers<IPlayerGame[] | null> = {
   async GET(_, ctx) {
-    const resp = await fetch(`http://diplomacy:8000/player-games`,
+    const resp = await fetch(`${BACKEND_URL}/player-games`,
       {
         method: 'GET',
         headers: {
