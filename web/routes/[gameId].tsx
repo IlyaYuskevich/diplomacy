@@ -78,11 +78,11 @@ export default function GamePage({ data }: PageProps<FetchedProps>) {
         <title>Diplomacy</title>
         <link rel="stylesheet" href={asset("style.css")} />
       </Head>
-      <div class="container columns-2 gap-8">
-        <div class="w-full">
+      <div class="grid lg:grid-cols-3 grid-cols-1">
+        <div class="col-span-2">
           <WorldMap />
         </div>
-        <div class="w-full">
+        <div>
           <Controls {...data} />
         </div>
       </div>

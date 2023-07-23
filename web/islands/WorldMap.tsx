@@ -41,7 +41,8 @@ export default function WorldMap() {
         ))
 
     return (
-        <svg class="container" id="world-map" color-rendering="optimizeQuality" preserveAspectRatio="xMinYMin" version="1.0" viewBox="0 0 1835 1360" width="918px">
+        <div class="overflow-auto">
+        <svg class="container min-w-[600px]" id="world-map" color-rendering="optimizeQuality" preserveAspectRatio="xMinYMin" version="1.0" viewBox="0 0 1835 1360" width="918px">
             <defs>
                 <symbol id="WaivedBuild" viewBox="0 0 100 100" overflow="visible">
                     <linearGradient x1="15" y1="100" x2="100" y2="10" id="symWBGradient" gradientUnits="userSpaceOnUse">
@@ -527,5 +528,6 @@ export default function WorldMap() {
             </g>
 
         </svg>
+        </div>
     )
 }

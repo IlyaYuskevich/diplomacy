@@ -32,7 +32,7 @@ export default function CoastialProvinceSelector() {
 
   return (
     <div>
-      <div class="flex flex-row space-x-4">
+      <div class="flex flex-row flex-wrap gap-2">
       {Object.keys(provincesMap.value!).map((key: string) =>
         filterCoastialProvinces(key) && <button class="bg-gray-500 px-4 py-2 hover:bg-gray-600 rounded-md text-white" onClick={() => setTo(key)}>
           {provincesMap.value![key].name}

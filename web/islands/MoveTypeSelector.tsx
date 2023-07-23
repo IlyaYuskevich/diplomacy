@@ -31,7 +31,7 @@ export default function MoveTypeSelector() {
   return (
     <div>
       <h4>Select type of the move:</h4>
-      <div class="flex flex-row space-x-4">
+      <div class="flex flex-row flex-wrap gap-2">
         {currentGame.value &&
           (currentGame.value!.phase == GamePhase.Spring
             ? getSpringMoves()
