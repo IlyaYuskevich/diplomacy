@@ -9,7 +9,6 @@ export default function MoveTypeSelector() {
     MoveType.Move,
     MoveType.Defend,
     MoveType.Support,
-    MoveType.Convoy,
   ];
   const FallMoves = [MoveType.Build, MoveType.Retreat, MoveType.Destroy];
   

@@ -25,6 +25,8 @@ export default function SupportTheUnit() {
   }
     moves.value = [...moves.value, newMove]
     selectedCountry.value = null
+    selectedUnit.value = null
+    selectedMoveType.value = null
   }, [to, from])
 
   return (

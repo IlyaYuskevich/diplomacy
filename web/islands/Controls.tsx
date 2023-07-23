@@ -58,7 +58,7 @@ export default function Controls(props: FetchedProps) {
   }
 
   return (
-    <div class="w-full">
+    <div class="w-full p-3">
         {moves.value.length !=0 && <MovesRenderer/>}
         <CountrySelector />
         {selectedCountry.value && <UnitSelector />}
