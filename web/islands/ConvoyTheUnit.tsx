@@ -1,4 +1,4 @@
-import { useEffect, useState } from "preact/hooks";
+import * as hooks from "preact/hooks";
 import AdjacentProvinceSelector from "./AdjacentProvinceSelector.tsx";
 import { IMove, moves, selectedMoveType } from "../types/moves.ts";
 import { selectedUnit } from "../types/units.ts";
@@ -6,10 +6,10 @@ import { selectedCountry } from "../types/country.ts";
 
 export default function ConvoyTheUnit() {
 
-  const [from, setFrom] = useState<string | null>(null)
-  const [to, setTo] = useState<string | null>(null)
+  const [from, setFrom] = hooks.useState<string | null>(null)
+  const [to, setTo] = hooks.useState<string | null>(null)
 
-  useEffect(() => {
+  hooks.useEffect(() => {
     if (!from || !to) {
       return
     }
@@ -25,6 +25,8 @@ export default function ConvoyTheUnit() {
   }
     moves.value = [...moves.value, newMove]
     selectedCountry.value = null
+    selectedUnit.value = null
+    selectedMoveType.value = null
   }, [to, from])
 
   return (

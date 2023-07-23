@@ -7,7 +7,6 @@ import { selectedCountry } from "../types/country.ts";
 export default function CoastialProvinceSelector() {
 
   function filterCoastialProvinces(key: string) {
-    console.log(provincesMap.value![key].type == ProvinceType.Coast && !provincesMap.value![key].name.endsWith('Coast'))
     return provincesMap.value![key].type == ProvinceType.Coast && !provincesMap.value![key].name.endsWith('Coast')
   }
 
@@ -28,6 +27,8 @@ export default function CoastialProvinceSelector() {
   }
     moves.value = [...moves.value, newMove]
     selectedCountry.value = null
+    selectedUnit.value = null
+    selectedMoveType.value = null
   }, [to])
 
   return (

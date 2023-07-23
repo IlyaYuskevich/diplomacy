@@ -23,6 +23,8 @@ export default function MoveTheUnit() {
   }
     moves.value = [...moves.value, newMove]
     selectedCountry.value = null
+    selectedUnit.value = null
+    selectedMoveType.value = null
   }, [destination])
 
   return (

@@ -9,11 +9,15 @@ export default function MoveTypeSelector() {
     MoveType.Move,
     MoveType.Defend,
     MoveType.Support,
+    MoveType.Convoy,
   ];
-  const FallMoves = [MoveType.Build, MoveType.Retreat];
+  const FallMoves = [MoveType.Build, MoveType.Retreat, MoveType.Destroy];
   
   function getSpringMoves() {
-    const unitType = selectedUnit.value!.unitType
+    if (!selectedUnit.value) {
+      return []
+    }
+    const unitType = selectedUnit.value.unitType
     const provinceType = provincesMap.value![selectedUnit.value!.province].type
     if (unitType == UnitType.Fleet && provinceType == ProvinceType.Sea) {
        return [...SpringMoves, MoveType.Convoy]
