@@ -3,6 +3,7 @@ package types
 import (
 	"diplomacy/api/types/prv"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -17,12 +18,12 @@ type MoveStatus string
 type ProvinceType string
 
 const (
-	BUILD   MoveType = "build"
-	DESTROY MoveType = "destroy"
-	MOVE    MoveType = "move"
-	SUPPORT MoveType = "support"
-	CONVOY  MoveType = "convoy"
-	DEFEND  MoveType = "defend"
+	BUILD   MoveType = "BUILD"
+	DESTROY MoveType = "DESTROY"
+	MOVE    MoveType = "MOVE"
+	SUPPORT MoveType = "SUPPORT"
+	CONVOY  MoveType = "CONVOY"
+	DEFEND  MoveType = "DEFEND"
 )
 
 const (
@@ -31,11 +32,11 @@ const (
 )
 
 const (
-	SUCCEED    MoveStatus = "succeed"
-	FAILED     MoveStatus = "failed"
-	UNDONE     MoveStatus = "undone"
-	EFFECTLESS MoveStatus = "effectless"
-	SUBMITTED  MoveStatus = "submitted"
+	SUCCEED    MoveStatus = "SUCCEED"
+	FAILED     MoveStatus = "FAILED"
+	UNDONE     MoveStatus = "UNDONE"
+	EFFECTLESS MoveStatus = "EFFECTLESS"
+	SUBMITTED  MoveStatus = "SUBMITTED"
 )
 
 const (
@@ -60,7 +61,7 @@ type Province struct {
 }
 
 type Move struct {
-	ID           string         `json:"id" gorm:"primaryKey"`
+	ID           uuid.UUID      `json:"id,omitempty" gorm:"type:uuid;default:uuid_generate_v4()"`
 	CreatedAt    string         `json:"createdAt"`
 	Type         MoveType       `json:"type"`
 	Origin       prv.ShortName  `json:"origin"` // also make Enum
@@ -70,9 +71,8 @@ type Move struct {
 	Year         uint16         `json:"year"`
 	UnitType     UnitType       `json:"unitType"`
 	Status       MoveStatus     `json:"status"`
-	GameID       string         `json:"gameId,omitempty"`
-	PlayerGameID string         `json:"playerGameId,omitempty"`
-	PlayerGame   PlayerGame     `json:"playerGame"`
+	PlayerGameID string         `json:"-"`
+	PlayerGame   PlayerGame     `json:"playerGame,omitempty"`
 	DeletedAt    gorm.DeletedAt `json:"-"`
 }
 

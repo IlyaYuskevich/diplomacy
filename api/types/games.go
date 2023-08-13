@@ -1,6 +1,9 @@
 package types
 
-import "gorm.io/gorm"
+import (
+	"github.com/google/uuid"
+	"gorm.io/gorm"
+)
 
 type GameStatus string
 type GameType string
@@ -23,7 +26,7 @@ const (
 )
 
 type Game struct {
-	ID                    string         `json:"id" gorm:"primaryKey"`
+	ID                    uuid.UUID      `json:"id,omitempty" gorm:"type:uuid;default:uuid_generate_v4()"`
 	StartedAt             string         `json:"startedAt"`
 	Status                GameStatus     `json:"status"`
 	DiplomaticPhaseSpring string         `json:"diplomaticPhaseSpring"`

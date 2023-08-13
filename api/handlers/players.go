@@ -10,6 +10,7 @@ import (
 
 	"diplomacy/api/types"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
@@ -66,7 +67,7 @@ func GetPlayer(db *gorm.DB) echo.HandlerFunc {
 // PatchPlayer function updates a player by ID.
 func PatchPlayer(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		player := types.Player{ID: c.Param("id")}
+		player := types.Player{ID: uuid.MustParse(c.Param("id"))}
 		resp1 := db.First(&player)
 		err := c.Bind(&player)
 		if err != nil {
@@ -85,7 +86,7 @@ func PatchPlayer(db *gorm.DB) echo.HandlerFunc {
 // DeletePlayer function deletes a player by ID.
 func DeletePlayer(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		player := types.Player{ID: c.Param("id")}
+		player := types.Player{ID: uuid.MustParse(c.Param("id"))}
 
 		resp := db.Delete(&player)
 		if errors.Is(resp.Error, gorm.ErrRecordNotFound) {

@@ -9,6 +9,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/labstack/echo/v4"
@@ -16,27 +17,27 @@ import (
 )
 
 var (
-	samplePlayerGame1Json        = fmt.Sprintf(`{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","startedAt":"2023-02-18T14:45:13.69505Z","country":"ENGLAND","color":"white","player":%s,"game":%s}`, samplePlayer1Json, sampleGame1PatchedJson)
-	samplePlayerGame2Json        = fmt.Sprintf(`{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd02","startedAt":"2023-02-18T14:45:13.69505Z","country":"FRANCE","color":"blue","player":%s,"game":%s}`, samplePlayer1Json, sampleGame1PatchedJson)
-	samplePlayerGameJsonPayload1 = `{"playerId":"d42830pp-a75c-40c5-ade3-56a38db0fd02","gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01","country":"FRANCE"}`
+	samplePlayerGame1Json        = fmt.Sprintf(`{"id":"542bdf30-586d-49aa-8ad2-c1d8de96e8d1","startedAt":"2023-02-18T14:45:13.69505Z","country":"ENGLAND","color":"white","player":%s,"game":%s}`, samplePlayer1Json, sampleGame1PatchedJson)
+	samplePlayerGame2Json        = fmt.Sprintf(`{"id":"bc60004f-5843-4ece-aa5f-8f94633e4832","startedAt":"2023-02-18T14:45:13.69505Z","country":"FRANCE","color":"blue","player":%s,"game":%s}`, samplePlayer1Json, sampleGame1PatchedJson)
+	samplePlayerGameJsonPayload1 = `{"player":{"id":"a00935cb-4e9d-409d-814a-e4d704e0e61d"},"game":{"id":"8203c226-749b-41fa-b348-ec3206110f80"},"country":"FRANCE"}}`
 	samplePlayerGameJsonPayload2 = `{"country":"turkey"}`
-	samplePlayerGame1Patched     = fmt.Sprintf(`{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","startedAt":"2023-02-18T14:45:13.69505Z","country":"turkey","color":"white","player":%s,"playerId":"d42830pp-a75c-40c5-ade3-56a38db0fd01","game":%s,"gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01"}`, samplePlayer1Json, sampleGame1PatchedJson)
+	samplePlayerGame1Patched     = fmt.Sprintf(`{"id":"542bdf30-586d-49aa-8ad2-c1d8de96e8d1","startedAt":"2023-02-18T14:45:13.69505Z","country":"turkey","color":"white","player":%s,"game":%s}`, samplePlayer1Json, sampleGame1PatchedJson)
 )
 
 var samplePlayerGames = []types.PlayerGame{
 	{
-		ID:        "d42830pg-a75c-40c5-ade3-56a38db0fd01",
+		ID:        uuid.MustParse("542bdf30-586d-49aa-8ad2-c1d8de96e8d1"),
 		StartedAt: "2023-02-18T14:45:13.69505Z",
-		PlayerID:  "d42830pp-a75c-40c5-ade3-56a38db0fd01",
-		GameID:    "d42830gg-a75c-40c5-ade3-56a38db0fd01",
+		PlayerID:  "d3ee3df0-56cf-43f8-85ff-bcb4efb3d4ad",
+		GameID:    "8203c226-749b-41fa-b348-ec3206110f80",
 		Color:     "white",
 		Country:   types.ENGLAND,
 	},
 	{
-		ID:        "d42830pg-a75c-40c5-ade3-56a38db0fd02",
+		ID:        uuid.MustParse("bc60004f-5843-4ece-aa5f-8f94633e4832"),
 		StartedAt: "2023-02-18T14:45:13.69505Z",
-		PlayerID:  "d42830pp-a75c-40c5-ade3-56a38db0fd01",
-		GameID:    "d42830gg-a75c-40c5-ade3-56a38db0fd01",
+		PlayerID:  "d3ee3df0-56cf-43f8-85ff-bcb4efb3d4ad",
+		GameID:    "8203c226-749b-41fa-b348-ec3206110f80",
 		Color:     "blue",
 		Country:   types.FRANCE,
 	},
@@ -66,7 +67,7 @@ func TestGetPlayerGame(t *testing.T) {
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	ctx.SetParamNames("id")
-	ctx.SetParamValues("d42830pg-a75c-40c5-ade3-56a38db0fd01")
+	ctx.SetParamValues("542bdf30-586d-49aa-8ad2-c1d8de96e8d1")
 	h := handlers.GetPlayerGame(db)
 	if assert.NoError(t, h(ctx)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
@@ -93,7 +94,7 @@ func TestPatchPlayerGame(t *testing.T) {
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	ctx.SetParamNames("id")
-	ctx.SetParamValues("d42830pg-a75c-40c5-ade3-56a38db0fd01")
+	ctx.SetParamValues("542bdf30-586d-49aa-8ad2-c1d8de96e8d1")
 	h := handlers.PatchPlayerGame(db)
 	if assert.NoError(t, h(ctx)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
@@ -108,10 +109,10 @@ func TestDeletePlayerGame(t *testing.T) {
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	ctx.SetParamNames("id")
-	ctx.SetParamValues("d42830pg-a75c-40c5-ade3-56a38db0fd02")
+	ctx.SetParamValues("bc60004f-5843-4ece-aa5f-8f94633e4832")
 	h := handlers.DeletePlayerGame(db)
 	if assert.NoError(t, h(ctx)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
-		assert.Equal(t, fmt.Sprintf("\"PlayerGame %s deleted\"\n", "d42830pg-a75c-40c5-ade3-56a38db0fd02"), rec.Body.String())
+		assert.Equal(t, fmt.Sprintf("\"PlayerGame %s deleted\"\n", "bc60004f-5843-4ece-aa5f-8f94633e4832"), rec.Body.String())
 	}
 }

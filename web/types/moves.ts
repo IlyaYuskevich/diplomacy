@@ -1,6 +1,7 @@
 import { signal } from "@preact/signals";
 import { UnitType } from "./units.ts";
-import { Country } from "./country.ts";
+import { IPlayerGame } from "./playerGames.ts";
+import { GamePhase, IGame } from "./games.ts";
 
 export enum MoveType {
 	Support = 'SUPPORT',
@@ -33,11 +34,11 @@ export interface IMove {
 	origin: string,
 	from?: string,
 	to?: string,
-	turn?: string,
+	year: number,
+	phase: GamePhase,
 	unitType: UnitType,
 	status?: MoveStatus,
-	game?: string,
-	playerGames: {country: Country}
+	playerGame: IPlayerGame
 }
 
 export const units = signal<IMove[]>([]);

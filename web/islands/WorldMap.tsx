@@ -6,7 +6,8 @@ import * as svg from "https://esm.sh/v127/@svgdotjs/svg.js@3.2.0";
 import { drawLink } from "../utils/worldMapUtils.ts";
 import { useEffect, useRef } from "preact/hooks";
 import { IMove, moves } from "../types/moves.ts";
-import { GamePhaseName, currentGame } from "../types/games.ts";
+import { GamePhaseName } from "../types/games.ts";
+import { selectedPlayerGame } from "../types/playerGames.ts";
 
 export default function WorldMap() {
 
@@ -32,7 +33,7 @@ export default function WorldMap() {
     } 
 
     useEffect(() => {
-        moves.value.forEach((val: IMove) => drawLink(unitLocationsMap.value, arrowDrawer.current, val.origin, val.to || null, val.from || null, val.type, val.playerGames.country))
+        moves.value.forEach((val: IMove) => drawLink(unitLocationsMap.value, arrowDrawer.current, val.origin, val.to || null, val.from || null, val.type, val.playerGame.country))
     }, [moves.value])
 
     const unitsWithLocation = computed(() => (
@@ -434,7 +435,7 @@ export default function WorldMap() {
             <rect x="25" y="25" height="70" width="750" className="currentnoterect" />
             <text x="35" y="50" className="currentnotetext" id="CurrentNote"></text>
             <text x="35" y="85" className="currentnotetext" id="CurrentNote2"></text>
-            {currentGame.value && <text x="1650" y="1325" className="currentphasetext" id="CurrentPhase">{`${GamePhaseName[currentGame.value.phase]} ${currentGame.value.year}`}</text>}
+            {selectedPlayerGame.value?.game && <text x="1650" y="1325" className="currentphasetext" id="CurrentPhase">{`${GamePhaseName[selectedPlayerGame.value.game.phase]} ${selectedPlayerGame.value.game.year}`}</text>}
 
             <g id="MouseLayer" className="invisibleContent" transform="translate(-195 -170)">
                 <g id="con">

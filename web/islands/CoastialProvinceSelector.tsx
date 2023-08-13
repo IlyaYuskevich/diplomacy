@@ -3,6 +3,7 @@ import { ProvinceType, provincesMap } from "../types/provinces.ts";
 import * as hooks from "preact/hooks";
 import { selectedUnit } from "../types/units.ts";
 import { selectedCountry } from "../types/country.ts";
+import { selectedPlayerGame } from "../types/playerGames.ts";
 
 export default function CoastialProvinceSelector() {
 
@@ -20,10 +21,10 @@ export default function CoastialProvinceSelector() {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       to: to,
+      phase: selectedPlayerGame.value!.game.phase,
+      year: selectedPlayerGame.value!.game.year,
       unitType: selectedUnit.value!.unitType,
-      playerGames: {
-              country: selectedCountry.value!
-      }
+      playerGame: selectedPlayerGame.value!,
   }
     moves.value = [...moves.value, newMove]
     selectedCountry.value = null

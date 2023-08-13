@@ -1,10 +1,10 @@
-import { StateUpdater, useEffect, useState } from "preact/hooks";
+import * as hooks from "preact/hooks";
 import { UnitType } from "../types/units.ts";
 
-export default function AdjacentProvinceSelector(props: {province: string, setter: StateUpdater<string | null>, unitType?: UnitType}) {
-  const [adjacentProvinces, setAdjacentProvinces] = useState<{ [key: string]: string }>({});
+export default function AdjacentProvinceSelector(props: {province: string, setter: hooks.StateUpdater<string | null>, unitType?: UnitType}) {
+  const [adjacentProvinces, setAdjacentProvinces] = hooks.useState<{ [key: string]: string }>({});
 
-  useEffect(() => {
+  hooks.useEffect(() => {
     if (!props.province) return
     void getMoves(props.province, props.unitType || null)
   }, [props.province])

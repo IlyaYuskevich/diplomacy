@@ -9,6 +9,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/labstack/echo/v4"
@@ -16,15 +17,15 @@ import (
 )
 
 var (
-	sampleMove1Json        = `{"id":"d42830mv-a75c-40c5-ade3-56a38db0fd01","createdAt":"2023-02-18T14:45:13.69505Z","type":"support","origin":"Par","from":"Par","to":"Bur","phase":"S","year":1903,"unitType":"A","status":"submitted","gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01","playerGameId":"d42830pg-a75c-40c5-ade3-56a38db0fd01","playerGame":{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","country":"ENGLAND","color":"white"}}`
-	sampleMoveJsonPayload1 = `{"type":"move","origin":"Ber","to":"Mun","phase":"S","year":1903,"unitType":"A","playerGameId":"d42830pg-a75c-40c5-ade3-56a38db0fd02","gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01"}`
-	sampleMoveJsonPayload2 = `{"status":"undone"}`
-	sampleMove1Patched     = `{"id":"d42830mv-a75c-40c5-ade3-56a38db0fd01","createdAt":"2023-02-18T14:45:13.69505Z","type":"support","origin":"Par","from":"Par","to":"Bur","phase":"S","year":1903,"unitType":"A","status":"undone","gameId":"d42830gg-a75c-40c5-ade3-56a38db0fd01","playerGameId":"d42830pg-a75c-40c5-ade3-56a38db0fd01","playerGame":{"id":"d42830pg-a75c-40c5-ade3-56a38db0fd01","country":"ENGLAND","color":"white"}}`
+	sampleMove1Json        = `{"id":"52187d0b-30b5-4cea-bc42-023fa6e1aba1","createdAt":"2023-02-18T14:45:13.69505Z","type":"SUPPORT","origin":"Par","from":"Par","to":"Bur","phase":"S","year":1903,"unitType":"A","status":"SUBMITTED","playerGame":{"id":"542bdf30-586d-49aa-8ad2-c1d8de96e8d1","country":"ENGLAND","color":"white"}}`
+	sampleMoveJsonPayload1 = fmt.Sprintf(`[{"type":"MOVE","origin":"Ber","to":"Mun","phase":"S","year":1903,"unitType":"A","playerGame":%s}]`, samplePlayerGame2Json)
+	sampleMoveJsonPayload2 = `{"status":"UNDONE"}`
+	sampleMove1Patched     = `{"id":"52187d0b-30b5-4cea-bc42-023fa6e1aba1","createdAt":"2023-02-18T14:45:13.69505Z","type":"SUPPORT","origin":"Par","from":"Par","to":"Bur","phase":"S","year":1903,"unitType":"A","status":"UNDONE","playerGame":{"id":"542bdf30-586d-49aa-8ad2-c1d8de96e8d1","country":"ENGLAND","color":"white"}}`
 )
 
 var sampleMoves = []types.Move{
 	{
-		ID:           "d42830mv-a75c-40c5-ade3-56a38db0fd01",
+		ID:           uuid.MustParse("52187d0b-30b5-4cea-bc42-023fa6e1aba1"),
 		CreatedAt:    "2023-02-18T14:45:13.69505Z",
 		Type:         types.SUPPORT,
 		Origin:       "Par",
@@ -34,8 +35,7 @@ var sampleMoves = []types.Move{
 		Year:         1903,
 		UnitType:     types.ARMY,
 		Status:       types.SUBMITTED,
-		PlayerGameID: "d42830pg-a75c-40c5-ade3-56a38db0fd01",
-		GameID:       "d42830gg-a75c-40c5-ade3-56a38db0fd01",
+		PlayerGameID: "542bdf30-586d-49aa-8ad2-c1d8de96e8d1",
 	},
 }
 
@@ -63,7 +63,7 @@ func TestGetMove(t *testing.T) {
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	ctx.SetParamNames("id")
-	ctx.SetParamValues("d42830mv-a75c-40c5-ade3-56a38db0fd01")
+	ctx.SetParamValues("52187d0b-30b5-4cea-bc42-023fa6e1aba1")
 	h := handlers.GetMove(db)
 	if assert.NoError(t, h(ctx)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
@@ -71,13 +71,13 @@ func TestGetMove(t *testing.T) {
 	}
 }
 
-func TestCreateMove(t *testing.T) {
+func TestCreateMoves(t *testing.T) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPost, "/moves", strings.NewReader(sampleMoveJsonPayload1))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
-	h := handlers.CreateMove(db)
+	h := handlers.CreateMoves(db)
 	if assert.NoError(t, h(ctx)) {
 		assert.Equal(t, http.StatusCreated, rec.Code)
 	}
@@ -90,7 +90,7 @@ func TestPatchMove(t *testing.T) {
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	ctx.SetParamNames("id")
-	ctx.SetParamValues("d42830mv-a75c-40c5-ade3-56a38db0fd01")
+	ctx.SetParamValues("52187d0b-30b5-4cea-bc42-023fa6e1aba1")
 	h := handlers.PatchMove(db)
 	if assert.NoError(t, h(ctx)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
@@ -105,10 +105,10 @@ func TestDeleteMove(t *testing.T) {
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	ctx.SetParamNames("id")
-	ctx.SetParamValues("d42830mv-a75c-40c5-ade3-56a38db0fd01")
+	ctx.SetParamValues("52187d0b-30b5-4cea-bc42-023fa6e1aba1")
 	h := handlers.DeleteMove(db)
 	if assert.NoError(t, h(ctx)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
-		assert.Equal(t, fmt.Sprintf("\"Move %s deleted\"\n", "d42830mv-a75c-40c5-ade3-56a38db0fd01"), rec.Body.String())
+		assert.Equal(t, fmt.Sprintf("\"Move %s deleted\"\n", "52187d0b-30b5-4cea-bc42-023fa6e1aba1"), rec.Body.String())
 	}
 }

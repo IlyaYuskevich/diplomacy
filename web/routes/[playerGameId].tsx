@@ -7,9 +7,10 @@ import { IGamePosition } from "../types/gamePosition.ts";
 import Controls from "../islands/Controls.tsx";
 import { IGame } from "../types/games.ts";
 import { IProvince } from "../types/provinces.ts";
+import { IPlayerGame } from "../types/playerGames.ts";
 
 export type FetchedProps = {
-  game: IGame;
+  playerGame: IPlayerGame;
   unitLocationsMap: Record<string, IUnitLocation>;
   gamePosition: IGamePosition;
   provinces: { [key: string]: IProvince };
@@ -19,22 +20,22 @@ const BACKEND_URL = Deno.env.get("BACKEND_URL");
 
 export const handler: Handlers<FetchedProps | null> = {
   async GET(_, ctx) {
-    const { gameId } = ctx.params;
-    const gameResp = await fetch(`${BACKEND_URL}/games/${gameId}`, {
+    const { playerGameId } = ctx.params;
+    const playerGameResp = await fetch(`${BACKEND_URL}/player-games/${playerGameId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    if (gameResp.status === 404) {
+    if (playerGameResp.status === 404) {
       return ctx.render(null);
     }
 
-    const game = await gameResp.json();
+    const playerGame = await playerGameResp.json();
 
     const respUnitLocations = await fetch(
-      `${BACKEND_URL}/units-loc-map/${gameId}`,
+      `${BACKEND_URL}/units-loc-map/${playerGame.game.id}`,
     );
     if (respUnitLocations.status === 404) {
       return ctx.render(null);
@@ -43,7 +44,7 @@ export const handler: Handlers<FetchedProps | null> = {
       await respUnitLocations.json();
 
     const respCurrentPosition = await fetch(
-      `${BACKEND_URL}/current-position/${gameId}`,
+      `${BACKEND_URL}/current-position/${playerGame.game.id}`,
       {
         method: "GET",
         headers: {
@@ -67,11 +68,12 @@ export const handler: Handlers<FetchedProps | null> = {
     }
     const provinces: Record<string, IProvince> = await respProvinces.json();
 
-    return ctx.render({ game, unitLocationsMap, gamePosition, provinces });
+    return ctx.render({ playerGame, unitLocationsMap, gamePosition, provinces });
   },
 };
 
 export default function GamePage({ data }: PageProps<FetchedProps>) {
+
   return (
     <>
       <Head>

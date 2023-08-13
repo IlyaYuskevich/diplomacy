@@ -10,6 +10,7 @@ import (
 
 	"diplomacy/api/types"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
@@ -84,7 +85,7 @@ func GetGame(db *gorm.DB) echo.HandlerFunc {
 // PatchGame function updates a game by ID.
 func PatchGame(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		game := types.Game{ID: c.Param("id")}
+		game := types.Game{ID: uuid.MustParse(c.Param("id"))}
 		resp1 := db.First(&game)
 		c.Bind(&game)
 		resp2 := db.Save(&game)

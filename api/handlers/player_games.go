@@ -10,6 +10,7 @@ import (
 
 	"diplomacy/api/types"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
@@ -51,7 +52,7 @@ func GetPlayerGames(db *gorm.DB) echo.HandlerFunc {
 func GetPlayerGame(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
-		playerGame := types.PlayerGame{ID: c.Param("id")}
+		playerGame := types.PlayerGame{ID: uuid.MustParse(c.Param("id"))}
 
 		resp := db.Joins("Game").Joins("Player").Omit("GameID", "PlayerID").First(&playerGame)
 		if errors.Is(resp.Error, gorm.ErrRecordNotFound) {
@@ -65,7 +66,7 @@ func GetPlayerGame(db *gorm.DB) echo.HandlerFunc {
 // PatchPlayerGame function updates a player game by ID.
 func PatchPlayerGame(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		playerGame := types.PlayerGame{ID: c.Param("id")}
+		playerGame := types.PlayerGame{ID: uuid.MustParse(c.Param("id"))}
 		resp1 := db.Joins("Game").Joins("Player").First(&playerGame)
 		err := c.Bind(&playerGame)
 		if err != nil {
@@ -83,7 +84,7 @@ func PatchPlayerGame(db *gorm.DB) echo.HandlerFunc {
 // DeletePlayerGame function deletes a player's game by ID.
 func DeletePlayerGame(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		playerGame := types.PlayerGame{ID: c.Param("id")}
+		playerGame := types.PlayerGame{ID: uuid.MustParse(c.Param("id"))}
 
 		resp := db.Delete(&playerGame)
 		if errors.Is(resp.Error, gorm.ErrRecordNotFound) {

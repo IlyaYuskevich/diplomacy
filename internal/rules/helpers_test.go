@@ -4,13 +4,15 @@ import (
 	"diplomacy/api/types"
 	"diplomacy/api/types/prv"
 	"testing"
+
+	"github.com/google/uuid"
 )
 
 func TestProcessMovesSimpleMove(t *testing.T) {
 	var moves []types.Move
 	moves = append(moves,
 		types.Move{
-			ID:         "1",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.MOVE,
 			Origin:     prv.BUR,
@@ -20,10 +22,9 @@ func TestProcessMovesSimpleMove(t *testing.T) {
 			Year:       1901,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.FRANCE},
 		}, types.Move{
-			ID:         "2",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.MOVE,
 			Origin:     prv.BUR,
@@ -33,7 +34,6 @@ func TestProcessMovesSimpleMove(t *testing.T) {
 			Year:       1901,
 			UnitType:   types.ARMY,
 			Status:     types.UNDONE,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.FRANCE},
 		})
 	moves = ProcessMoves(moves)
@@ -46,7 +46,7 @@ func TestProcessMovesFailed(t *testing.T) {
 	var moves []types.Move
 	moves = append(moves,
 		types.Move{
-			ID:         "1",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.MOVE,
 			Origin:     prv.HOL,
@@ -56,10 +56,9 @@ func TestProcessMovesFailed(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.FRANCE},
 		}, types.Move{
-			ID:         "2",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.DEFEND,
 			Origin:     prv.KIE,
@@ -69,7 +68,6 @@ func TestProcessMovesFailed(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.GERMANY},
 		})
 	moves = ProcessMoves(moves)
@@ -85,7 +83,7 @@ func TestProcessSuccessfulAttackSupport(t *testing.T) {
 	var moves []types.Move
 	moves = append(moves,
 		types.Move{
-			ID:         "1",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.MOVE,
 			Origin:     prv.HOL,
@@ -95,10 +93,9 @@ func TestProcessSuccessfulAttackSupport(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.FRANCE},
 		}, types.Move{
-			ID:         "2",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.DEFEND,
 			Origin:     prv.RUH,
@@ -108,11 +105,10 @@ func TestProcessSuccessfulAttackSupport(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.GERMANY},
 		},
 		types.Move{
-			ID:         "3",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.SUPPORT,
 			Origin:     prv.MUN,
@@ -122,7 +118,6 @@ func TestProcessSuccessfulAttackSupport(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.ITALY},
 		},
 	)
@@ -142,7 +137,7 @@ func TestProcessSuccessfulDefenceSupport(t *testing.T) {
 	var moves []types.Move
 	moves = append(moves,
 		types.Move{
-			ID:         "1",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.MOVE,
 			Origin:     prv.HOL,
@@ -152,10 +147,9 @@ func TestProcessSuccessfulDefenceSupport(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.FRANCE},
 		}, types.Move{
-			ID:         "2",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.DEFEND,
 			Origin:     prv.RUH,
@@ -165,11 +159,10 @@ func TestProcessSuccessfulDefenceSupport(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.GERMANY},
 		},
 		types.Move{
-			ID:         "3",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.SUPPORT,
 			Origin:     prv.MUN,
@@ -179,7 +172,6 @@ func TestProcessSuccessfulDefenceSupport(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.ITALY},
 		},
 	)
@@ -199,7 +191,7 @@ func TestProcessUsuccessfulSupport(t *testing.T) {
 	var moves []types.Move
 	moves = append(moves,
 		types.Move{
-			ID:         "1",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.MOVE,
 			Origin:     prv.HOL,
@@ -209,10 +201,9 @@ func TestProcessUsuccessfulSupport(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.FRANCE},
 		}, types.Move{
-			ID:         "2",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.DEFEND,
 			Origin:     prv.RUH,
@@ -222,11 +213,10 @@ func TestProcessUsuccessfulSupport(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.GERMANY},
 		},
 		types.Move{
-			ID:         "3",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.SUPPORT,
 			Origin:     prv.MUN,
@@ -236,11 +226,10 @@ func TestProcessUsuccessfulSupport(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.ITALY},
 		},
 		types.Move{
-			ID:         "4",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.SUPPORT,
 			Origin:     prv.BEL,
@@ -250,7 +239,6 @@ func TestProcessUsuccessfulSupport(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.FRANCE},
 		},
 	)
@@ -273,7 +261,7 @@ func TestProcessNoEffectSupport(t *testing.T) {
 	var moves []types.Move
 	moves = append(moves,
 		types.Move{
-			ID:         "1",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.MOVE,
 			Origin:     prv.HOL,
@@ -283,10 +271,9 @@ func TestProcessNoEffectSupport(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.UNDONE,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.FRANCE},
 		}, types.Move{
-			ID:         "2",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.DEFEND,
 			Origin:     prv.RUH,
@@ -296,11 +283,10 @@ func TestProcessNoEffectSupport(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.GERMANY},
 		},
 		types.Move{
-			ID:         "3",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.SUPPORT,
 			Origin:     prv.MUN,
@@ -310,11 +296,10 @@ func TestProcessNoEffectSupport(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.ITALY},
 		},
 		types.Move{
-			ID:         "4",
+			ID:         uuid.UUID{},
 			CreatedAt:  "01-01-01",
 			Type:       types.SUPPORT,
 			Origin:     prv.BEL,
@@ -324,7 +309,6 @@ func TestProcessNoEffectSupport(t *testing.T) {
 			Year:       1903,
 			UnitType:   types.ARMY,
 			Status:     types.SUBMITTED,
-			GameID:     "",
 			PlayerGame: types.PlayerGame{Country: types.ENGLAND},
 		},
 	)

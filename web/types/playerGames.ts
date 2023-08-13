@@ -12,4 +12,4 @@ export interface IPlayerGame {
 	player: IPlayer
 }
 
-export const playerGame = signal<IPlayerGame | null>(null);
+export const selectedPlayerGame = signal<IPlayerGame | null>(null);

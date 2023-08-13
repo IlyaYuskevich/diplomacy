@@ -1,25 +1,25 @@
 import { selectedCountry } from "../types/country.ts";
-import { IUnit, UnitType, selectedUnit, unitLocationsMap } from "../types/units.ts";
-import { useEffect, useState } from "preact/hooks";
+import { UnitType, selectedUnit, unitLocationsMap } from "../types/units.ts";
 import CountrySelector from "./CountrySelector.tsx";
 import UnitSelector from "./UnitSelector.tsx";
-import { IGamePosition, gamePosition } from "../types/gamePosition.ts";
+import { gamePosition } from "../types/gamePosition.ts";
 import { IMove, MoveType, moves, selectedMoveType } from "../types/moves.ts";
 import MoveTypeSelector from "./MoveTypeSelector.tsx";
 import MoveTheUnit from "./MoveTheUnit.tsx";
 import SupportTheUnit from "./SupportTheUnit.tsx";
 import ConvoyTheUnit from "./ConvoyTheUnit.tsx";
-import { FetchedProps } from "../routes/[gameId].tsx";
-import { currentGame } from "../types/games.ts";
+import { FetchedProps } from "../routes/[playerGameId].tsx";
 import { provincesMap } from "../types/provinces.ts";
 import CoastialProvinceSelector from "./CoastialProvinceSelector.tsx";
 import MovesRenderer from "./MovesRenderer.tsx";
+import { selectedPlayerGame } from "../types/playerGames.ts";
+import * as hooks from "preact/hooks";
 
 export default function Controls(props: FetchedProps) {
 
-  useEffect(() => {
+  hooks.useEffect(() => {
+    selectedPlayerGame.value = props.playerGame
     gamePosition.value = props.gamePosition
-    currentGame.value = props.game
     provincesMap.value = props.provinces
     unitLocationsMap.value = props.unitLocationsMap
   }, [props])
@@ -47,9 +47,9 @@ export default function Controls(props: FetchedProps) {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       unitType: selectedUnit.value!.unitType,
-      playerGames: {
-              country: selectedCountry.value!
-      }
+      phase: selectedPlayerGame.value!.game.phase,
+      year: selectedPlayerGame.value!.game.year,
+      playerGame: selectedPlayerGame.value!,
     }
     moves.value = [...moves.value, newMove]
     selectedCountry.value = null

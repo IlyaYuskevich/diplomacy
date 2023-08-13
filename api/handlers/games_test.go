@@ -9,6 +9,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/labstack/echo/v4"
@@ -16,16 +17,16 @@ import (
 )
 
 var (
-	sampleGame1Json        = `{"id":"d42830gg-a75c-40c5-ade3-56a38db0fd01","startedAt":"2023-02-18T14:45:13.69505Z","status":"FINISHED","diplomaticPhaseSpring":"23h","diplomaticPhaseFall":"22h","retreatPhase":"1h","gainingLoosingPhase":"1h","gameType":"MULTI","phase":"S","year":1901}`
-	sampleGame2Json        = `{"id":"d42830gg-a75c-40c5-ade3-56a38db0fd02","startedAt":"2023-02-18T14:45:13.69505Z","status":"ACTIVE","diplomaticPhaseSpring":"23h","diplomaticPhaseFall":"22h","retreatPhase":"1h","gainingLoosingPhase":"1h","gameType":"MULTI","phase":"S","year":1901}`
+	sampleGame1Json        = `{"id":"8203c226-749b-41fa-b348-ec3206110f80","startedAt":"2023-02-18T14:45:13.69505Z","status":"FINISHED","diplomaticPhaseSpring":"23h","diplomaticPhaseFall":"22h","retreatPhase":"1h","gainingLoosingPhase":"1h","gameType":"MULTI","phase":"S","year":1901}`
+	sampleGame2Json        = `{"id":"2964d6b5-4cd7-490d-a4bc-de09b7695455","startedAt":"2023-02-18T14:45:13.69505Z","status":"ACTIVE","diplomaticPhaseSpring":"23h","diplomaticPhaseFall":"22h","retreatPhase":"1h","gainingLoosingPhase":"1h","gameType":"MULTI","phase":"S","year":1901}`
 	sampleGameJsonPayload1 = `{"diplomaticPhaseSpring":"23h","diplomaticPhaseFall":"22h","retreatPhase":"1h","gainingLoosingPhase":"1h","gameType":"MULTI"}`
 	sampleGameJsonPayload2 = `{"phase":"F","year":1905}`
-	sampleGame1PatchedJson = `{"id":"d42830gg-a75c-40c5-ade3-56a38db0fd01","startedAt":"2023-02-18T14:45:13.69505Z","status":"FINISHED","diplomaticPhaseSpring":"23h","diplomaticPhaseFall":"22h","retreatPhase":"1h","gainingLoosingPhase":"1h","gameType":"MULTI","phase":"F","year":1905}`
+	sampleGame1PatchedJson = `{"id":"8203c226-749b-41fa-b348-ec3206110f80","startedAt":"2023-02-18T14:45:13.69505Z","status":"FINISHED","diplomaticPhaseSpring":"23h","diplomaticPhaseFall":"22h","retreatPhase":"1h","gainingLoosingPhase":"1h","gameType":"MULTI","phase":"F","year":1905}`
 )
 
 var sampleGames = []types.Game{
 	{
-		ID:                    "d42830gg-a75c-40c5-ade3-56a38db0fd01",
+		ID:                    uuid.MustParse("8203c226-749b-41fa-b348-ec3206110f80"),
 		StartedAt:             "2023-02-18T14:45:13.69505Z",
 		Status:                "FINISHED",
 		DiplomaticPhaseSpring: "23h",
@@ -37,7 +38,7 @@ var sampleGames = []types.Game{
 		Year:                  1901,
 	},
 	{
-		ID:                    "d42830gg-a75c-40c5-ade3-56a38db0fd02",
+		ID:                    uuid.MustParse("2964d6b5-4cd7-490d-a4bc-de09b7695455"),
 		StartedAt:             "2023-02-18T14:45:13.69505Z",
 		Status:                "ACTIVE",
 		DiplomaticPhaseSpring: "23h",
@@ -74,7 +75,7 @@ func TestGetGame(t *testing.T) {
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	ctx.SetParamNames("id")
-	ctx.SetParamValues("d42830gg-a75c-40c5-ade3-56a38db0fd02")
+	ctx.SetParamValues("2964d6b5-4cd7-490d-a4bc-de09b7695455")
 	h := handlers.GetGame(db)
 	if assert.NoError(t, h(ctx)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
@@ -101,7 +102,7 @@ func TestPatchGame(t *testing.T) {
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	ctx.SetParamNames("id")
-	ctx.SetParamValues("d42830gg-a75c-40c5-ade3-56a38db0fd01")
+	ctx.SetParamValues("8203c226-749b-41fa-b348-ec3206110f80")
 	h := handlers.PatchGame(db)
 	if assert.NoError(t, h(ctx)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
@@ -116,10 +117,10 @@ func TestDeleteGame(t *testing.T) {
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	ctx.SetParamNames("id")
-	ctx.SetParamValues("d42830gg-a75c-40c5-ade3-56a38db0fd02")
+	ctx.SetParamValues("2964d6b5-4cd7-490d-a4bc-de09b7695455")
 	h := handlers.DeleteGame(db)
 	if assert.NoError(t, h(ctx)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
-		assert.Equal(t, "\"Game d42830gg-a75c-40c5-ade3-56a38db0fd02 deleted\"\n", rec.Body.String())
+		assert.Equal(t, "\"Game 2964d6b5-4cd7-490d-a4bc-de09b7695455 deleted\"\n", rec.Body.String())
 	}
 }

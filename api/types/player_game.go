@@ -1,15 +1,18 @@
 package types
 
-import "gorm.io/gorm"
+import (
+	"github.com/google/uuid"
+	"gorm.io/gorm"
+)
 
 type PlayerGame struct {
-	ID        string         `json:"id" gorm:"primaryKey"`
+	ID        uuid.UUID      `json:"id,omitempty" gorm:"type:uuid;default:uuid_generate_v4()"`
 	StartedAt string         `json:"startedAt,omitempty"`
 	Country   Country        `json:"country"`
 	Color     string         `json:"color"`
 	Player    *Player        `json:"player,omitempty"`
-	PlayerID  string         `json:"playerId,omitempty"`
+	PlayerID  string         `json:"-"`
 	Game      *Game          `json:"game,omitempty"`
-	GameID    string         `json:"gameId,omitempty"`
+	GameID    string         `json:"-"`
 	DeletedAt gorm.DeletedAt `json:"-"`
 }

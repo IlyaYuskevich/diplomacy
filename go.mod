@@ -4,6 +4,8 @@ go 1.20
 
 require github.com/labstack/echo/v4 v4.10.0
 
+require github.com/google/uuid v1.3.0 // indirect
+
 require (
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect

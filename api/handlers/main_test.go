@@ -73,6 +73,8 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Could not connect to docker: %s", err)
 	}
 
+	dbSql.Query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`)
+
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database with gorm")

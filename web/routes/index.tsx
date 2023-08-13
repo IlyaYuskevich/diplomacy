@@ -19,6 +19,7 @@ export const handler: Handlers<IPlayerGame[] | null> = {
       return ctx.render(null);
     }
     const playerGames: IPlayerGame[] = await resp.json();
+    console.log(playerGames)
     return ctx.render(playerGames);
   },
 };

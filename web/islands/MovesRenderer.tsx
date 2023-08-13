@@ -1,4 +1,5 @@
 import { IMove, moves, MoveType } from "../types/moves.ts";
+import { IPlayerGame } from "../types/playerGames.ts";
 import { UnitType } from "../types/units.ts";
 
 export default function MovesRenderer() {
@@ -23,10 +24,25 @@ export default function MovesRenderer() {
     }
   }
 
+  async function submitMoves() {
+    const response = await fetch("http://localhost:8000/moves", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(moves.value),
+    });
+    const jsonData = await response.json();
+    console.log(moves.value, response, jsonData)
+    moves.value = jsonData
+  }
+
   return (
     <div class="bg-red-900 text-white rounded-lg p-3 text-center">
       {moves.value.map((move) => <p>{moveFormatter(move)}</p>)}
-      <button class="bg-white px-4 py-2 bg-[#FFFFFF00] hover:bg-[#FFFFFF55] rounded-md text-white border-2 border-white">Submit</button>
+      <button class="bg-white px-4 py-2 bg-[#FFFFFF00] hover:bg-[#FFFFFF55] rounded-md text-white border-2 border-white" onClick={() => void submitMoves()}>
+        Submit
+      </button>
     </div>
   );
 }

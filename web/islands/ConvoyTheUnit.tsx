@@ -3,6 +3,7 @@ import AdjacentProvinceSelector from "./AdjacentProvinceSelector.tsx";
 import { IMove, moves, selectedMoveType } from "../types/moves.ts";
 import { selectedUnit } from "../types/units.ts";
 import { selectedCountry } from "../types/country.ts";
+import { selectedPlayerGame } from "../types/playerGames.ts";
 
 export default function ConvoyTheUnit() {
 
@@ -19,9 +20,9 @@ export default function ConvoyTheUnit() {
       to: to,
       from: from,
       unitType: selectedUnit.value!.unitType,
-      playerGames: {
-              country: selectedCountry.value!
-      }
+      phase: selectedPlayerGame.value!.game.phase,
+      year: selectedPlayerGame.value!.game.year,
+      playerGame: selectedPlayerGame.value!
   }
     moves.value = [...moves.value, newMove]
     selectedCountry.value = null
