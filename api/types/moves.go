@@ -2,6 +2,7 @@ package types
 
 import (
 	"diplomacy/api/types/prv"
+	"time"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -62,7 +63,7 @@ type Province struct {
 
 type Move struct {
 	ID           uuid.UUID      `json:"id,omitempty" gorm:"type:uuid;default:uuid_generate_v4()"`
-	CreatedAt    string         `json:"createdAt"`
+	CreatedAt    time.Time      `json:"createdAt"`
 	Type         MoveType       `json:"type"`
 	Origin       prv.ShortName  `json:"origin"` // also make Enum
 	From         prv.ShortName  `json:"from"`

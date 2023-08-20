@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"time"
 
 	"gorm.io/gorm"
 
@@ -20,7 +19,6 @@ func CreatePlayerGame(db *gorm.DB) echo.HandlerFunc {
 		playerGame := types.PlayerGame{}
 
 		// Set default values for optional fields if not provided.
-		playerGame.StartedAt = time.Now().String()
 		err := c.Bind(&playerGame)
 		if err != nil {
 			return err

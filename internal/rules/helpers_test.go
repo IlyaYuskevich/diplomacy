@@ -4,6 +4,7 @@ import (
 	"diplomacy/api/types"
 	"diplomacy/api/types/prv"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -13,7 +14,7 @@ func TestProcessMovesSimpleMove(t *testing.T) {
 	moves = append(moves,
 		types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.MOVE,
 			Origin:     prv.BUR,
 			From:       "",
@@ -25,7 +26,7 @@ func TestProcessMovesSimpleMove(t *testing.T) {
 			PlayerGame: types.PlayerGame{Country: types.FRANCE},
 		}, types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.MOVE,
 			Origin:     prv.BUR,
 			From:       "",
@@ -47,7 +48,7 @@ func TestProcessMovesFailed(t *testing.T) {
 	moves = append(moves,
 		types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.MOVE,
 			Origin:     prv.HOL,
 			From:       "",
@@ -59,7 +60,7 @@ func TestProcessMovesFailed(t *testing.T) {
 			PlayerGame: types.PlayerGame{Country: types.FRANCE},
 		}, types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.DEFEND,
 			Origin:     prv.KIE,
 			From:       "",
@@ -84,7 +85,7 @@ func TestProcessSuccessfulAttackSupport(t *testing.T) {
 	moves = append(moves,
 		types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.MOVE,
 			Origin:     prv.HOL,
 			From:       "",
@@ -96,7 +97,7 @@ func TestProcessSuccessfulAttackSupport(t *testing.T) {
 			PlayerGame: types.PlayerGame{Country: types.FRANCE},
 		}, types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.DEFEND,
 			Origin:     prv.RUH,
 			From:       "",
@@ -109,7 +110,7 @@ func TestProcessSuccessfulAttackSupport(t *testing.T) {
 		},
 		types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.SUPPORT,
 			Origin:     prv.MUN,
 			From:       prv.HOL,
@@ -138,7 +139,7 @@ func TestProcessSuccessfulDefenceSupport(t *testing.T) {
 	moves = append(moves,
 		types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.MOVE,
 			Origin:     prv.HOL,
 			From:       "",
@@ -150,7 +151,7 @@ func TestProcessSuccessfulDefenceSupport(t *testing.T) {
 			PlayerGame: types.PlayerGame{Country: types.FRANCE},
 		}, types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.DEFEND,
 			Origin:     prv.RUH,
 			From:       "",
@@ -163,7 +164,7 @@ func TestProcessSuccessfulDefenceSupport(t *testing.T) {
 		},
 		types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.SUPPORT,
 			Origin:     prv.MUN,
 			From:       prv.RUH,
@@ -192,7 +193,7 @@ func TestProcessUsuccessfulSupport(t *testing.T) {
 	moves = append(moves,
 		types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.MOVE,
 			Origin:     prv.HOL,
 			From:       "",
@@ -204,7 +205,7 @@ func TestProcessUsuccessfulSupport(t *testing.T) {
 			PlayerGame: types.PlayerGame{Country: types.FRANCE},
 		}, types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.DEFEND,
 			Origin:     prv.RUH,
 			From:       "",
@@ -217,7 +218,7 @@ func TestProcessUsuccessfulSupport(t *testing.T) {
 		},
 		types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.SUPPORT,
 			Origin:     prv.MUN,
 			From:       prv.RUH,
@@ -230,7 +231,7 @@ func TestProcessUsuccessfulSupport(t *testing.T) {
 		},
 		types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.SUPPORT,
 			Origin:     prv.BEL,
 			From:       prv.HOL,
@@ -262,7 +263,7 @@ func TestProcessNoEffectSupport(t *testing.T) {
 	moves = append(moves,
 		types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.MOVE,
 			Origin:     prv.HOL,
 			From:       "",
@@ -274,7 +275,7 @@ func TestProcessNoEffectSupport(t *testing.T) {
 			PlayerGame: types.PlayerGame{Country: types.FRANCE},
 		}, types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.DEFEND,
 			Origin:     prv.RUH,
 			From:       "",
@@ -287,7 +288,7 @@ func TestProcessNoEffectSupport(t *testing.T) {
 		},
 		types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.SUPPORT,
 			Origin:     prv.MUN,
 			From:       prv.RUH,
@@ -300,7 +301,7 @@ func TestProcessNoEffectSupport(t *testing.T) {
 		},
 		types.Move{
 			ID:         uuid.UUID{},
-			CreatedAt:  "01-01-01",
+			CreatedAt:  time.Now(),
 			Type:       types.SUPPORT,
 			Origin:     prv.BEL,
 			From:       prv.HOL,

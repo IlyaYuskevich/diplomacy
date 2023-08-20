@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"time"
 
 	"gorm.io/gorm"
 
@@ -24,7 +23,6 @@ func CreateGame(db *gorm.DB) echo.HandlerFunc {
 		}
 
 		// Set default values for optional fields if not provided.
-		game.StartedAt = time.Now().String()
 		game.Status = types.CREATED
 		game.Phase = types.SPRING
 		game.Year = 1901

@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"time"
 
 	"gorm.io/gorm"
 
@@ -24,14 +23,16 @@ func CreateMoves(db *gorm.DB) echo.HandlerFunc {
 		}
 
 		for i := range moves {
-			// Set default values for optional fields if not provided.
-			moves[i].CreatedAt = time.Now().String()
 			moves[i].Status = types.SUBMITTED
 		}
 		resp := db.Create(&moves)
 
 		if errors.Is(resp.Error, gorm.ErrInvalidData) {
-			return echo.NewHTTPError(http.StatusBadRequest)
+			return echo.NewHTTPError(http.StatusBadRequest, resp.Error)
+		}
+
+		if resp.Error != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, resp.Error)
 		}
 
 		return c.JSON(http.StatusCreated, moves)

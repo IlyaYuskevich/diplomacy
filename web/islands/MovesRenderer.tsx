@@ -33,7 +33,6 @@ export default function MovesRenderer() {
       body: JSON.stringify(moves.value),
     });
     const jsonData = await response.json();
-    console.log(moves.value, response, jsonData)
     moves.value = jsonData
   }
 

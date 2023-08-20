@@ -5,7 +5,7 @@ import { Country } from "./country.ts";
 
 export interface IPlayerGame {
 	id: string,
-	startedAt: string,
+	createdAt: string,
 	country: Country,
 	color: string,
 	game: IGame,
