@@ -1,6 +1,6 @@
-import { Country, selectedCountry } from "../types/country.ts";
-import { selectedMoveType } from "../types/moves.ts";
-import { selectedUnit } from "../types/units.ts";
+import { Country, selectedCountry } from "types/country.ts";
+import { selectedMoveType } from "types/moves.ts";
+import { selectedUnit } from "types/units.ts";
 
 export default function CountrySelector() {
 

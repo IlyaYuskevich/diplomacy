@@ -1,7 +1,7 @@
 import { signal } from "@preact/signals";
-import { UnitType } from "./units.ts";
-import { IPlayerGame } from "./playerGames.ts";
-import { GamePhase, IGame } from "./games.ts";
+import { UnitType } from "types/units.ts";
+import { IPlayerGame } from "types/playerGames.ts";
+import { GamePhase, IGame } from "types/games.ts";
 
 export enum MoveType {
 	Support = 'SUPPORT',

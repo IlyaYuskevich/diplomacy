@@ -1,8 +1,8 @@
-import { selectedCountry } from "../types/country.ts";
-import { gamePosition } from "../types/gamePosition.ts";
-import { IMove, moves, selectedMoveType } from "../types/moves.ts";
-import { provincesMap } from "../types/provinces.ts";
-import { IUnit, selectedUnit } from "../types/units.ts";
+import { selectedCountry } from "types/country.ts";
+import { gamePosition } from "types/gamePosition.ts";
+import { IMove, moves, selectedMoveType } from "types/moves.ts";
+import { provincesMap } from "types/provinces.ts";
+import { IUnit, selectedUnit } from "types/units.ts";
 
 export default function UnitSelector() {
   

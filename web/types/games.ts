@@ -1,5 +1,3 @@
-import { signal } from "@preact/signals";
-
 export enum GameStatus {
 	Finished = 'FINISHED',
 	Started = 'STARTED'

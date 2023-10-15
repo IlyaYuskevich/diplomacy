@@ -1,9 +1,9 @@
 import { useEffect, useState } from "preact/hooks";
-import AdjacentProvinceSelector from "./AdjacentProvinceSelector.tsx";
-import { IMove, moves, selectedMoveType } from "../types/moves.ts";
-import { selectedUnit } from "../types/units.ts";
-import { selectedCountry } from "../types/country.ts";
-import { selectedPlayerGame } from "../types/playerGames.ts";
+import AdjacentProvinceSelector from "islands/AdjacentProvinceSelector.tsx";
+import { IMove, moves, selectedMoveType } from "types/moves.ts";
+import { selectedUnit } from "types/units.ts";
+import { selectedCountry } from "types/country.ts";
+import { selectedPlayerGame } from "types/playerGames.ts";
 
 export default function SupportTheUnit() {
 

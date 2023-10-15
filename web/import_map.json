@@ -7,10 +7,18 @@
     "color": "https://esm.sh/v127/*color@4.2.3",
     "preact-render-to-string": "https://esm.sh/v127/*preact-render-to-string@6.1.0",
     "preact-render-to-string/": "https://esm.sh/v127/*preact-render-to-string@6.1.0/",
-    "preact": "https://esm.sh/v127/preact@10.15.1",
-    "preact/": "https://esm.sh/v127/preact@10.15.1/",
-    "twind": "https://esm.sh/v127/*twind@0.16.19",
-    "twind/": "https://esm.sh/v127/*twind@0.16.19/"
+    "preact": "https://esm.sh/preact@10.15.1",
+    "preact/": "https://esm.sh/preact@10.15.1/",
+    "twind": "https://esm.sh/twind@0.16.19",
+    "twind/": "https://esm.sh/twind@0.16.19/",
+    "std": "https://deno.land/std@0.202.0",
+    "std/": "https://deno.land/std@0.202.0/",
+    "@supabase": "https://esm.sh/@supabase/supabase-js@2.37.0",
+    "routes/": "./routes/",
+    "components/": "./components/",
+    "islands/": "./islands/",
+    "types/": "./types/",
+    "utils/": "./utils/"
   },
   "scopes": {
     "https://esm.sh/v127/": {

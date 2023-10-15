@@ -1,5 +1,5 @@
 import * as hooks from "preact/hooks";
-import { UnitType } from "../types/units.ts";
+import { UnitType } from "types/units.ts";
 
 export default function AdjacentProvinceSelector(props: {province: string, setter: hooks.StateUpdater<string | null>, unitType?: UnitType}) {
   const [adjacentProvinces, setAdjacentProvinces] = hooks.useState<{ [key: string]: string }>({});

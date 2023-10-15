@@ -1,7 +1,7 @@
 import Color from "https://esm.sh/v127/*color@4.2.3";
-import { IUnitLocation } from "../types/units.ts";
-import { MoveType } from "../types/moves.ts";
-import {Country, CountryColors} from "../types/country.ts"
+import { IUnitLocation } from "types/units.ts";
+import { MoveType } from "types/moves.ts";
+import {Country, CountryColors} from "types/country.ts"
 
 export function drawLink(
   unitLocationsMap: Record<string, IUnitLocation> | null,

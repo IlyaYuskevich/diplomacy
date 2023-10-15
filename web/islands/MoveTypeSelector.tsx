@@ -1,8 +1,8 @@
-import { MoveType, MoveTypeNames, selectedMoveType } from "../types/moves.ts";
-import { GamePhase } from "../types/games.ts";
-import { selectedUnit, UnitType } from "../types/units.ts";
-import { ProvinceType, provincesMap } from "../types/provinces.ts";
-import { selectedPlayerGame } from "../types/playerGames.ts";
+import { MoveType, MoveTypeNames, selectedMoveType } from "types/moves.ts";
+import { GamePhase } from "types/games.ts";
+import { selectedUnit, UnitType } from "types/units.ts";
+import { ProvinceType, provincesMap } from "types/provinces.ts";
+import { selectedPlayerGame } from "types/playerGames.ts";
 
 export default function MoveTypeSelector() {
   const SpringMoves = [

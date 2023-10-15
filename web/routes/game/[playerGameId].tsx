@@ -1,13 +1,12 @@
 import { asset, Head } from "$fresh/runtime.ts";
 import { PageProps } from "$fresh/server.ts";
-import WorldMap from "../islands/WorldMap.tsx";
+import WorldMap from "islands/WorldMap.tsx";
 import { Handlers } from "$fresh/server.ts";
-import { IUnitLocation } from "../types/units.ts";
-import { IGamePosition } from "../types/gamePosition.ts";
-import Controls from "../islands/Controls.tsx";
-import { IGame } from "../types/games.ts";
-import { IProvince } from "../types/provinces.ts";
-import { IPlayerGame } from "../types/playerGames.ts";
+import { IUnitLocation } from "types/units.ts";
+import { IGamePosition } from "types/gamePosition.ts";
+import Controls from "islands/Controls.tsx";
+import { IProvince } from "types/provinces.ts";
+import { IPlayerGame } from "types/playerGames.ts";
 
 export type FetchedProps = {
   playerGame: IPlayerGame;

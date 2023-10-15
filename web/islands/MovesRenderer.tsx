@@ -1,6 +1,7 @@
-import { IMove, moves, MoveType } from "../types/moves.ts";
-import { IPlayerGame } from "../types/playerGames.ts";
-import { UnitType } from "../types/units.ts";
+import { IMove, moves, MoveType } from "types/moves.ts";
+import { UnitType } from "types/units.ts";
+
+const BACKEND_URL = Deno.env.get("BACKEND_URL");
 
 export default function MovesRenderer() {
   function moveFormatter(move: IMove) {
@@ -25,7 +26,7 @@ export default function MovesRenderer() {
   }
 
   async function submitMoves() {
-    const response = await fetch("http://localhost:8000/moves", {
+    const response = await fetch(`${BACKEND_URL}/moves`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,13 +34,16 @@ export default function MovesRenderer() {
       body: JSON.stringify(moves.value),
     });
     const jsonData = await response.json();
-    moves.value = jsonData
+    moves.value = jsonData;
   }
 
   return (
     <div class="bg-red-900 text-white rounded-lg p-3 text-center">
-      {moves.value.map((move) => <p>{moveFormatter(move)}</p>)}
-      <button class="bg-white px-4 py-2 bg-[#FFFFFF00] hover:bg-[#FFFFFF55] rounded-md text-white border-2 border-white" onClick={() => void submitMoves()}>
+      {moves.value.map((move: IMove) => <p>{moveFormatter(move)}</p>)}
+      <button
+        class="bg-white px-4 py-2 bg-[#FFFFFF00] hover:bg-[#FFFFFF55] rounded-md text-white border-2 border-white"
+        onClick={() => void submitMoves()}
+      >
         Submit
       </button>
     </div>

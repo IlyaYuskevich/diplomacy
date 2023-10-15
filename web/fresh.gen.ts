@@ -2,8 +2,11 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $0 from "./routes/[playerGameId].tsx";
-import * as $1 from "./routes/index.tsx";
+import * as $0 from "./routes/_middleware.ts";
+import * as $1 from "./routes/game/[playerGameId].tsx";
+import * as $2 from "./routes/index.tsx";
+import * as $3 from "./routes/login/index.tsx";
+import * as $4 from "./routes/player/[playerId].tsx";
 import * as $$0 from "./islands/AdjacentProvinceSelector.tsx";
 import * as $$1 from "./islands/CoastialProvinceSelector.tsx";
 import * as $$2 from "./islands/Controls.tsx";
@@ -13,14 +16,18 @@ import * as $$5 from "./islands/MoveTheUnit.tsx";
 import * as $$6 from "./islands/MoveTypeSelector.tsx";
 import * as $$7 from "./islands/MovesRenderer.tsx";
 import * as $$8 from "./islands/PlayerGames.tsx";
-import * as $$9 from "./islands/SupportTheUnit.tsx";
-import * as $$10 from "./islands/UnitSelector.tsx";
-import * as $$11 from "./islands/WorldMap.tsx";
+import * as $$9 from "./islands/SignInForm.tsx";
+import * as $$10 from "./islands/SupportTheUnit.tsx";
+import * as $$11 from "./islands/UnitSelector.tsx";
+import * as $$12 from "./islands/WorldMap.tsx";
 
 const manifest = {
   routes: {
-    "./routes/[playerGameId].tsx": $0,
-    "./routes/index.tsx": $1,
+    "./routes/_middleware.ts": $0,
+    "./routes/game/[playerGameId].tsx": $1,
+    "./routes/index.tsx": $2,
+    "./routes/login/index.tsx": $3,
+    "./routes/player/[playerId].tsx": $4,
   },
   islands: {
     "./islands/AdjacentProvinceSelector.tsx": $$0,
@@ -32,9 +39,10 @@ const manifest = {
     "./islands/MoveTypeSelector.tsx": $$6,
     "./islands/MovesRenderer.tsx": $$7,
     "./islands/PlayerGames.tsx": $$8,
-    "./islands/SupportTheUnit.tsx": $$9,
-    "./islands/UnitSelector.tsx": $$10,
-    "./islands/WorldMap.tsx": $$11,
+    "./islands/SignInForm.tsx": $$9,
+    "./islands/SupportTheUnit.tsx": $$10,
+    "./islands/UnitSelector.tsx": $$11,
+    "./islands/WorldMap.tsx": $$12,
   },
   baseUrl: import.meta.url,
 };

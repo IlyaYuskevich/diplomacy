@@ -1,13 +1,14 @@
-import { Country } from "../types/country.ts";
-import { gamePosition } from "../types/gamePosition.ts";
-import { IUnit, UnitType, unitLocationsMap } from "../types/units.ts";
+import { Country } from "types/country.ts";
+import { gamePosition } from "types/gamePosition.ts";
+import { IUnit, UnitType, unitLocationsMap } from "types/units.ts";
 import { computed } from "@preact/signals";
-import * as svg from "https://esm.sh/v127/@svgdotjs/svg.js@3.2.0";
-import { drawLink } from "../utils/worldMapUtils.ts";
+import * as svg from "@svgdotjs/svg.js";
+import { drawLink } from "utils/worldMapUtils.ts";
 import { useEffect, useRef } from "preact/hooks";
-import { IMove, moves } from "../types/moves.ts";
-import { GamePhaseName } from "../types/games.ts";
-import { selectedPlayerGame } from "../types/playerGames.ts";
+import { IMove, moves } from "types/moves.ts";
+import { GamePhaseName } from "types/games.ts";
+import { selectedPlayerGame } from "types/playerGames.ts";
+import { IPlayerGame } from "types/playerGames.ts"
 
 export default function WorldMap() {
 
@@ -19,11 +20,13 @@ export default function WorldMap() {
 
     function provinceColor(province: string) {
         return [Country.Austria, Country.England, Country.France, Country.Germany, Country.Italy, Country.Russia, Country.Turkey].filter(country => 
-            gamePosition.value.domains[country].map(x => x.toLowerCase()).includes(province.toLowerCase())
+            gamePosition.value.domains[country].map((x: string) => x.toLowerCase()).includes(province.toLowerCase())
         ).at(0)?.toLowerCase() || "nopower" 
     }
 
-    function mapUnitPositions(country: Country, unitPositions: { [K in Country]: IUnit[] }) {
+    type UnitPositionsType = { x: number; y: number; country: Country; province: string; unitType: UnitType; }
+
+    function mapUnitPositions(country: Country, unitPositions: { [K in Country]: IUnit[] }): UnitPositionsType[] {
         return unitPositions[country].map(unit => ({
                 ...unit,
                 x: unitLocationsMap.value![unit.province.toLowerCase()].X,
@@ -338,7 +341,7 @@ export default function WorldMap() {
 
             <g id="UnitLayer">
                 {
-                    unitsWithLocation.value.map(unit => (
+                    unitsWithLocation.value.map((unit: UnitPositionsType) => (
                         <use xlinkHref={unit.unitType === UnitType.Army ? "#Army" : "#Fleet"}
                             x={unit.x}
                             y={unit.y}
@@ -435,7 +438,7 @@ export default function WorldMap() {
             <rect x="25" y="25" height="70" width="750" className="currentnoterect" />
             <text x="35" y="50" className="currentnotetext" id="CurrentNote"></text>
             <text x="35" y="85" className="currentnotetext" id="CurrentNote2"></text>
-            {selectedPlayerGame.value?.game && <text x="1650" y="1325" className="currentphasetext" id="CurrentPhase">{`${GamePhaseName[selectedPlayerGame.value.game.phase]} ${selectedPlayerGame.value.game.year}`}</text>}
+            {selectedPlayerGame.value?.game && <text x="1650" y="1325" className="currentphasetext" id="CurrentPhase">{`${GamePhaseName[(selectedPlayerGame.value as IPlayerGame).game.phase]} ${selectedPlayerGame.value.game.year}`}</text>}
 
             <g id="MouseLayer" className="invisibleContent" transform="translate(-195 -170)">
                 <g id="con">

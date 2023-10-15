@@ -1,7 +1,7 @@
 import { signal } from "@preact/signals";
-import { IGame } from "./games.ts";
-import { IPlayer } from "./player.ts";
-import { Country } from "./country.ts";
+import { IGame } from "types/games.ts";
+import { IPlayer } from "types/player.ts";
+import { Country } from "types/country.ts";
 
 export interface IPlayerGame {
 	id: string,

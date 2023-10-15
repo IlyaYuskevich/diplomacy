@@ -1,19 +1,19 @@
-import { selectedCountry } from "../types/country.ts";
-import { UnitType, selectedUnit, unitLocationsMap } from "../types/units.ts";
-import CountrySelector from "./CountrySelector.tsx";
-import UnitSelector from "./UnitSelector.tsx";
-import { gamePosition } from "../types/gamePosition.ts";
-import { IMove, MoveType, moves, selectedMoveType } from "../types/moves.ts";
-import MoveTypeSelector from "./MoveTypeSelector.tsx";
-import MoveTheUnit from "./MoveTheUnit.tsx";
-import SupportTheUnit from "./SupportTheUnit.tsx";
-import ConvoyTheUnit from "./ConvoyTheUnit.tsx";
-import { FetchedProps } from "../routes/[playerGameId].tsx";
-import { provincesMap } from "../types/provinces.ts";
-import CoastialProvinceSelector from "./CoastialProvinceSelector.tsx";
-import MovesRenderer from "./MovesRenderer.tsx";
-import { selectedPlayerGame } from "../types/playerGames.ts";
+import { selectedCountry } from "types/country.ts";
+import { UnitType, selectedUnit, unitLocationsMap } from "types/units.ts";
+import CountrySelector from "islands/CountrySelector.tsx";
+import UnitSelector from "islands/UnitSelector.tsx";
+import { gamePosition } from "types/gamePosition.ts";
+import { IMove, MoveType, moves, selectedMoveType } from "types/moves.ts";
+import MoveTypeSelector from "islands/MoveTypeSelector.tsx";
+import MoveTheUnit from "islands/MoveTheUnit.tsx";
+import SupportTheUnit from "islands/SupportTheUnit.tsx";
+import ConvoyTheUnit from "islands/ConvoyTheUnit.tsx";
+import { provincesMap } from "types/provinces.ts";
+import CoastialProvinceSelector from "islands/CoastialProvinceSelector.tsx";
+import MovesRenderer from "islands/MovesRenderer.tsx";
+import { selectedPlayerGame } from "types/playerGames.ts";
 import * as hooks from "preact/hooks";
+import { FetchedProps } from "routes/game/[playerGameId].tsx";
 
 export default function Controls(props: FetchedProps) {
 
