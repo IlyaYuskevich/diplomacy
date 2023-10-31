@@ -2,48 +2,54 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $0 from "./routes/_middleware.ts";
-import * as $1 from "./routes/api/sign-in.ts";
-import * as $2 from "./routes/api/sign-out.ts";
+import * as $0 from "./routes/api/sign-in.ts";
+import * as $1 from "./routes/api/sign-out.ts";
+import * as $2 from "./routes/api/sign-up.tsx";
 import * as $3 from "./routes/game/[playerGameId].tsx";
-import * as $4 from "./routes/index.tsx";
-import * as $5 from "./routes/login/index.tsx";
+import * as $4 from "./routes/game/_middleware.ts";
+import * as $5 from "./routes/index.tsx";
 import * as $6 from "./routes/player/[playerId].tsx";
+import * as $7 from "./routes/player/_middleware.ts";
+import * as $8 from "./routes/sign-in.tsx";
+import * as $9 from "./routes/sign-up.tsx";
 import * as $$0 from "./islands/AdjacentProvinceSelector.tsx";
-import * as $$1 from "./islands/CoastialProvinceSelector.tsx";
-import * as $$2 from "./islands/Controls.tsx";
-import * as $$3 from "./islands/ConvoyTheUnit.tsx";
-import * as $$4 from "./islands/CountrySelector.tsx";
-import * as $$5 from "./islands/MoveTheUnit.tsx";
-import * as $$6 from "./islands/MoveTypeSelector.tsx";
-import * as $$7 from "./islands/MovesRenderer.tsx";
-import * as $$8 from "./islands/PlayerGames.tsx";
-import * as $$9 from "./islands/SignInForm.tsx";
+import * as $$1 from "./islands/AuthForm.tsx";
+import * as $$2 from "./islands/CoastialProvinceSelector.tsx";
+import * as $$3 from "./islands/Controls.tsx";
+import * as $$4 from "./islands/ConvoyTheUnit.tsx";
+import * as $$5 from "./islands/CountrySelector.tsx";
+import * as $$6 from "./islands/MoveTheUnit.tsx";
+import * as $$7 from "./islands/MoveTypeSelector.tsx";
+import * as $$8 from "./islands/MovesRenderer.tsx";
+import * as $$9 from "./islands/PlayerGames.tsx";
 import * as $$10 from "./islands/SupportTheUnit.tsx";
 import * as $$11 from "./islands/UnitSelector.tsx";
 import * as $$12 from "./islands/WorldMap.tsx";
 
 const manifest = {
   routes: {
-    "./routes/_middleware.ts": $0,
-    "./routes/api/sign-in.ts": $1,
-    "./routes/api/sign-out.ts": $2,
+    "./routes/api/sign-in.ts": $0,
+    "./routes/api/sign-out.ts": $1,
+    "./routes/api/sign-up.tsx": $2,
     "./routes/game/[playerGameId].tsx": $3,
-    "./routes/index.tsx": $4,
-    "./routes/login/index.tsx": $5,
+    "./routes/game/_middleware.ts": $4,
+    "./routes/index.tsx": $5,
     "./routes/player/[playerId].tsx": $6,
+    "./routes/player/_middleware.ts": $7,
+    "./routes/sign-in.tsx": $8,
+    "./routes/sign-up.tsx": $9,
   },
   islands: {
     "./islands/AdjacentProvinceSelector.tsx": $$0,
-    "./islands/CoastialProvinceSelector.tsx": $$1,
-    "./islands/Controls.tsx": $$2,
-    "./islands/ConvoyTheUnit.tsx": $$3,
-    "./islands/CountrySelector.tsx": $$4,
-    "./islands/MoveTheUnit.tsx": $$5,
-    "./islands/MoveTypeSelector.tsx": $$6,
-    "./islands/MovesRenderer.tsx": $$7,
-    "./islands/PlayerGames.tsx": $$8,
-    "./islands/SignInForm.tsx": $$9,
+    "./islands/AuthForm.tsx": $$1,
+    "./islands/CoastialProvinceSelector.tsx": $$2,
+    "./islands/Controls.tsx": $$3,
+    "./islands/ConvoyTheUnit.tsx": $$4,
+    "./islands/CountrySelector.tsx": $$5,
+    "./islands/MoveTheUnit.tsx": $$6,
+    "./islands/MoveTypeSelector.tsx": $$7,
+    "./islands/MovesRenderer.tsx": $$8,
+    "./islands/PlayerGames.tsx": $$9,
     "./islands/SupportTheUnit.tsx": $$10,
     "./islands/UnitSelector.tsx": $$11,
     "./islands/WorldMap.tsx": $$12,

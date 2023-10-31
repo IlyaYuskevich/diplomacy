@@ -1,8 +1,7 @@
 import { asset, Head } from "$fresh/runtime.ts";
-import { Layout } from "components/Layout.tsx";
+import { Layout, Link } from "components/index.ts";
 import { PageProps, Handlers } from "$fresh/server.ts";
 import { getCookies } from "std/http/cookie.ts";
-import SignInForm from "islands/SignInForm.tsx";
 
 export type Data = {
   isAllowed: boolean;
@@ -22,7 +21,7 @@ export default function Home({data: {isAllowed}}: PageProps<Data> ) {
         <title>Diplomacy</title>
         <link rel="stylesheet" href={asset("style.css")} />
       </Head>
-      {!isAllowed ? <SignInForm /> : <a method='post' href="/api/sign-out">Sign Out</a>}
+      {!isAllowed ? <Link href="/sign-in" >Sign In</Link> :  <Link href="/api/sign-out">Sign Out</Link>}
     </Layout>
   );
 }
