@@ -7,9 +7,9 @@ export const handler = [
     ctx: MiddlewareHandlerContext,
   ) {
     const resp = await ctx.next();
-    const url = new URL(req.url);
-    const cookies = getCookies(req.headers);
-    const auth = cookies.auth == "superzitrone";
+    // const url = new URL(req.url);
+    // const cookies = getCookies(req.headers);
+    // const auth = cookies.auth == "superzitrone";
     return resp
   },
 ];

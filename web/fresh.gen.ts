@@ -3,10 +3,12 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import * as $0 from "./routes/_middleware.ts";
-import * as $1 from "./routes/game/[playerGameId].tsx";
-import * as $2 from "./routes/index.tsx";
-import * as $3 from "./routes/login/index.tsx";
-import * as $4 from "./routes/player/[playerId].tsx";
+import * as $1 from "./routes/api/sign-in.ts";
+import * as $2 from "./routes/api/sign-out.ts";
+import * as $3 from "./routes/game/[playerGameId].tsx";
+import * as $4 from "./routes/index.tsx";
+import * as $5 from "./routes/login/index.tsx";
+import * as $6 from "./routes/player/[playerId].tsx";
 import * as $$0 from "./islands/AdjacentProvinceSelector.tsx";
 import * as $$1 from "./islands/CoastialProvinceSelector.tsx";
 import * as $$2 from "./islands/Controls.tsx";
@@ -24,10 +26,12 @@ import * as $$12 from "./islands/WorldMap.tsx";
 const manifest = {
   routes: {
     "./routes/_middleware.ts": $0,
-    "./routes/game/[playerGameId].tsx": $1,
-    "./routes/index.tsx": $2,
-    "./routes/login/index.tsx": $3,
-    "./routes/player/[playerId].tsx": $4,
+    "./routes/api/sign-in.ts": $1,
+    "./routes/api/sign-out.ts": $2,
+    "./routes/game/[playerGameId].tsx": $3,
+    "./routes/index.tsx": $4,
+    "./routes/login/index.tsx": $5,
+    "./routes/player/[playerId].tsx": $6,
   },
   islands: {
     "./islands/AdjacentProvinceSelector.tsx": $$0,

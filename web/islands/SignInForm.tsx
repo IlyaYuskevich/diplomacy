@@ -1,4 +1,5 @@
-import { Button } from "components/index.ts";
+import { FormButton } from "components/index.ts";
+import { Input } from "components/Input.tsx";
 
 
 export default function SignInForm() {
@@ -9,13 +10,12 @@ export default function SignInForm() {
         </div>
   
         <form method="post" class="flex flex-col space-y-4 min-w-0">
-          <Button autofocus type="email" name="email" />
-          <Button type="password" name="password" />
+          <Input autofocus type="email" name="email" />
+          <Input type="password" name="password" />
   
-          <Button type="submit" formAction="/api/sign-in" class="!mt-8">
+          <FormButton type="submit" formAction="/api/sign-in" class="!mt-8">
             Sign In
-          </Button>
-  
+          </FormButton>
         </form>
       </div>
     );
