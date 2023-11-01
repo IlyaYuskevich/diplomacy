@@ -1,27 +1,24 @@
 import { asset, Head } from "$fresh/runtime.ts";
-import { Layout, Link } from "components/index.ts";
+import { Layout } from "components/index.ts";
 import { PageProps, Handlers } from "$fresh/server.ts";
-import { getCookies } from "std/http/cookie.ts";
-
-export type Data = {
-  isAllowed: boolean;
-}
+import { ServerState } from "lib/auth-middleware.ts";
 
 export const handler: Handlers = {
-  GET(req, ctx) {
-    const cookies = getCookies(req.headers);
-    return ctx.render({ isAllowed: cookies.auth == "superzitrone" });
+  GET(_req, ctx) {
+    return ctx.render(ctx.state);
   }
 }
 
-export default function Home({data: {isAllowed}}: PageProps<Data> ) {
+export default function Home(props: PageProps<ServerState> ) {
+  console.log(props)
+  console.log('!!!', Deno.env.get("SUPABASE_URL"))
+
   return (
-    <Layout isAllowed={isAllowed}>
+    <Layout state={props.data}>
       <Head>
         <title>Diplomacy</title>
         <link rel="stylesheet" href={asset("style.css")} />
       </Head>
-      {!isAllowed ? <Link href="/sign-in" >Sign In</Link> :  <Link href="/api/sign-out">Sign Out</Link>}
     </Layout>
   );
 }

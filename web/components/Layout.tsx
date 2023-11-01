@@ -2,17 +2,18 @@ import { Head } from "$fresh/runtime.ts";
 import { ComponentChildren } from "preact";
 import { NavLink } from "./NavLink.tsx";
 import { NavButton } from "./NavButton.tsx";
+import { ServerState } from "lib/auth-middleware.ts";
 
 
 type Props = {
   children: ComponentChildren;
-  isAllowed: boolean;
+  state?: ServerState;
 };
 
 export function Layout(props: Props) {
-  const buttProps = props.isAllowed
+  const buttProps = props.state?.user
     ? { href: "/api/sign-out", text: "Sign Out" }
-    : { href: "/sign-in", text: "Sign In" };
+    : { href: "/auth/sign-in", text: "Sign In" };
 
   return (
     <>
@@ -35,10 +36,10 @@ export function Layout(props: Props) {
 
           <div class="flex flex-grow border-gray pt-1">
             <div class="flex flex-grow">
-              <NavLink href="/secret">Secret</NavLink>
+            <NavLink href="">Games</NavLink>
             </div>
             <div class="flex sm:flex-shrink-0">
-              <NavLink href="/sign-up">Create account</NavLink>
+              <NavLink href="/auth/sign-up">Create account</NavLink>
               <NavButton href={buttProps.href}>{buttProps.text}</NavButton>
             </div>
           </div>

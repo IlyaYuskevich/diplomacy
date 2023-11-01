@@ -3,21 +3,17 @@ import { getCookies } from "std/http/cookie.ts";
 
 import { Layout } from "components/index.ts";
 import AuthForm from "islands/AuthForm.tsx";
-
-export type Data = {
-  isAllowed: boolean;
-};
+import { ServerState } from "lib/auth-middleware.ts";
 
 export const handler: Handlers = {
-  GET(req, ctx) {
-    const cookies = getCookies(req.headers);
-    return ctx.render({ isAllowed: cookies.auth == "superzitrone" });
-  }
+  GET(_req, ctx) {
+    return ctx.render(ctx.state);
+  },
 }
 
-export default function Page({ data: { isAllowed }}: PageProps<Data>) {
+export default function Page(props: PageProps<ServerState>) {
   return (
-    <Layout isAllowed={isAllowed}>
+    <Layout state={props.data}>
       <div class="flex justify-center">
         <div class="flex flex-col items-stretch w-[500px] md:w-2/3">
           <div class="flex justify-center">

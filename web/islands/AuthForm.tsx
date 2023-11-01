@@ -33,7 +33,7 @@ export default function AuthForm({ mode }: Props) {
           {buttProps.title}
         </FormButton>
 
-        <p>{footProps.text} <Link href={footProps.href}>{footProps.title}</Link></p>
+        <p>{footProps.text} <Link href={'/auth' + footProps.href}>{footProps.title}</Link></p>
       </form>
     </div>
   );

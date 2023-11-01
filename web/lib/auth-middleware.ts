@@ -1,45 +1,46 @@
 import { MiddlewareHandlerContext } from "$fresh/server.ts";
 import { Status } from "$fresh/server.ts";
 import { getCookies } from "std/http/cookie.ts";
+import { supabase } from "lib/supabase.ts";
 
 type User = {
-    id: number,
-    name: string,
-    access_token: string,
-  }
-  
-  export type ServerState = {
-    user: User | null;
-    error: { code: number, msg: string } | null;
-  };
+  id: number;
+  email: string;
+  access_token: string;
+};
+
+export type ServerState = {
+  user: User | null;
+  error: { code: number; msg: string } | null;
+};
 
 export async function authMiddleware(
-    req: Request,
-    ctx: MiddlewareHandlerContext,
-  ) {
-    const cookies = getCookies(req.headers);
-    const access_token = cookies.auth;
-  
-    const headers = new Headers();
-    headers.set("location", "/");
+  req: Request,
+  ctx: MiddlewareHandlerContext,
+) {
+  const cookies = getCookies(req.headers);
+  const access_token = cookies.auth;
 
-    console.log('Middleware!')
-  
-    if (!access_token)  {
-      // Can't use 403 if we want to redirect to home page.
+  const headers = new Headers();
+  headers.set("location", "/");
+
+  if (!access_token) {
+    // Can't use 403 if we want to redirect to home page.
+    return new Response(null, { headers, status: Status.SeeOther });
+  }
+
+  if (access_token) {
+    // TODO: introduce redis caching here at some point
+    const user_data = await supabase.auth.getUser(access_token);
+    console.log('User data', user_data)
+
+    if (!user_data) {
+      headers.set("location", "/auth/sign-in");
       return new Response(null, { headers, status: Status.SeeOther });
     }
-  
-    if (access_token) {
-      // Here, we will have an actual lookup of user data in the future.
-      const user_data = { id: 42, name: "Spongebob", access_token };
-  
-      if (!user_data)  {
-        return new Response(null, { headers, status: Status.SeeOther });
-      }
-  
-      ctx.state.user = user_data;
-    }
-  
-    return await ctx.next();
+
+    ctx.state.user = user_data;
+  }
+
+  return await ctx.next();
 }

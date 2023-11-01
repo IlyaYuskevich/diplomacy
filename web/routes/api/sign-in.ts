@@ -4,39 +4,44 @@ import { supabase } from "lib/supabase.ts";
 import { isAuthApiError } from "@supabase";
 
 export const handler: Handlers = {
-    async POST(req) {
-        const url = new URL(req.url);
-        const form = await req.formData();
-    
-        const email = String(form.get("email"));
-        const password = String(form.get("password"));
-        const { data: { user, session }, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-          });
+  async POST(req) {
+    const url = new URL(req.url);
+    const form = await req.formData();
 
-        if (error != null || user == null || session == null) {
-        // TODO: Add some actual error handling. Differentiate between 500 & 403.
-        if (isAuthApiError(error)) {
-            return new Response(error.message, { status: error.status });
+    const email = String(form.get("email"));
+    const password = String(form.get("password"));
+    const headers = new Headers();
+
+    const { data: { user, session }, error } = await supabase.auth
+      .signInWithPassword({
+        email,
+        password,
+      });
+
+    if (error != null || user == null || session == null) {
+      // TODO: Add some actual error handling. Differentiate between 500 & 403.
+      if (isAuthApiError(error)) {
+        if (error.message == "Email not confirmed") {
+          headers.set("location", `/auth/confirm-email?email=${email}`);
+          return new Response(null, { status: Status.SeeOther, headers });
         }
-        return new Response(null, { status: Status.InternalServerError });
-        }
-
-        const headers = new Headers();
-        headers.set("location", "/");
-
-        setCookie(headers, {
-        name: "auth",
-        value: "superzitrone",
-        maxAge: 3600,
-        sameSite: "Lax",
-        domain: url.hostname,
-        path: "/",
-        secure: true,
-        });
-
-        return new Response(null, { status: Status.SeeOther, headers });
-
+        return new Response(error.message, { status: error.status });
+      }
+      return new Response(null, { status: Status.InternalServerError });
     }
-}
+
+    headers.set("location", "/");
+
+    setCookie(headers, {
+      name: "auth",
+      value: session.access_token,
+      maxAge: session.expires_in,
+      sameSite: "Lax",
+      domain: url.hostname,
+      path: "/",
+      secure: true,
+    });
+
+    return new Response(null, { status: Status.SeeOther, headers });
+  },
+};

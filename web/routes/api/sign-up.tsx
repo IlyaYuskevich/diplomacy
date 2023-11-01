@@ -1,4 +1,4 @@
-import { Handlers } from "$fresh/server.ts";
+import { Handlers, Status } from "$fresh/server.ts";
 import { supabase } from "lib/supabase.ts";
 
 export const handler: Handlers = {
@@ -13,24 +13,19 @@ export const handler: Handlers = {
     });
 
     if (error != null) {
-      // TODO: Add some actual error handling.
       console.error(error);
-      return new Response(null, { status: 500 });
-    }
-
-    if (user && !session) {
-      // TODO: A user has been created but not yet confirmed their e-mail address.
-      // We could add a flag for the frontend to remind the user.
+      return new Response(error.message, { status: error.status});
     }
 
     const exists = await supabase.auth.getUser(String(user));
     if (exists?.data.user) {
-      // TODO: Handle user already existing.
+      return new Response('This email is already registred', { status: Status.BadRequest });
     }
 
     const headers = new Headers();
-    headers.set("location", "/");
 
-    return new Response(null, { status: 303, headers });
+    headers.set("location", `/auth/confirm-email?email=${email}`);
+    
+    return new Response(null, { status: Status.SeeOther, headers });
   },
 };

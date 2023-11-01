@@ -3,12 +3,12 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { IPlayerGame } from "types/playerGames.ts";
 import PlayerGames from "islands/PlayerGames.tsx";
 import { Layout } from "components/Layout.tsx";
+import { ServerState } from "lib/auth-middleware.ts";
 
 const BACKEND_URL = Deno.env.get("BACKEND_URL");
-const IDP_URL = Deno.env.get("IDP_URL");
-const SUPABASE_KEY = Deno.env.get("SUPABASE_KEY");
+type Props = { playerGames: IPlayerGame[], state: ServerState }
 
-export const handler: Handlers<IPlayerGame[]> = {
+export const handler: Handlers<Props> = {
   async GET(req, ctx) {
     const resp = await fetch(`${BACKEND_URL}/player-games`, {
       method: "GET",
@@ -17,16 +17,15 @@ export const handler: Handlers<IPlayerGame[]> = {
       },
     });
     const playerGames: IPlayerGame[] = await resp.json();
-    return ctx.render(playerGames);
+    return ctx.render({playerGames: playerGames, state: ctx.state as ServerState});
   },
 };
 
 export default function Home(
-  { data }: PageProps<{ playerGames: IPlayerGame[] }>,
+  { data }: PageProps<Props>,
 ) {
-  const isAllowed = false;
   return (
-    <Layout isAllowed>
+    <Layout state={data.state}>
       <Head>
         <title>Diplomacy</title>
         <link rel="stylesheet" href={asset("style.css")} />

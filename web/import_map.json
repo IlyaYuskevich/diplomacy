@@ -13,8 +13,6 @@
     "twind/": "https://esm.sh/twind@0.16.19/",
     "std": "https://deno.land/std@0.202.0",
     "std/": "https://deno.land/std@0.202.0/",
-    "dotenv": "https://deno.land/std@0.204.0/dotenv",
-    "dotenv/": "https://deno.land/std@0.204.0/dotenv/",
     "@supabase": "https://esm.sh/@supabase/supabase-js@2.37.0",
     "routes/": "./routes/",
     "components/": "./components/",
