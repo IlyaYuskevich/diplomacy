@@ -11,7 +11,6 @@ export const handler: Handlers = {
 
 export default function Home(props: PageProps<ServerState> ) {
   console.log(props)
-  console.log('!!!', Deno.env.get("SUPABASE_URL"))
 
   return (
     <Layout state={props.data}>
