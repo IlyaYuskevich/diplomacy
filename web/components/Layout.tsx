@@ -1,8 +1,8 @@
-import { Head } from "$fresh/runtime.ts";
+import { Head, asset, assetSrcSet } from "$fresh/runtime.ts";
 import { ComponentChildren } from "preact";
 import { NavLink } from "./NavLink.tsx";
 import { NavButton } from "./NavButton.tsx";
-import { ServerState } from "lib/auth-middleware.ts";
+import { ServerState } from "../middlewares/auth-middleware.ts";
 
 
 type Props = {
@@ -18,7 +18,8 @@ export function Layout(props: Props) {
   return (
     <>
       <Head>
-        <title>Supa Fresh Auth</title>
+        <title>Diplomacy</title>
+        <link rel="icon" type="image/x-icon" href={asset("/logo.svg")}/>
       </Head>
 
       <div class="bg-primary">
@@ -26,11 +27,11 @@ export function Layout(props: Props) {
           <a href="/">
             <div class="flex flex-shrink-0 border-white">
               <img
-                src="/logo.svg"
+                src={asset("/logo.svg")}
                 class="w-8 h-8"
                 alt="the fresh logo: a sliced lemon dripping with juice"
               />
-              <h1 class="ml-2 text-white">Supa Fresh Auth</h1>
+              <h1 class="ml-2 text-white">Diplomacy</h1>
             </div>
           </a>
 

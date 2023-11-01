@@ -1,4 +1,4 @@
-import Color from "https://esm.sh/v127/*color@4.2.3";
+import Color from "color";
 import { IUnitLocation } from "types/units.ts";
 import { MoveType } from "types/moves.ts";
 import {Country, CountryColors} from "types/country.ts"

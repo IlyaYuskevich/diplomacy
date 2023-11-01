@@ -1,4 +1,4 @@
-import { authMiddleware } from "lib/auth-middleware.ts";
+import { authMiddleware } from "../middlewares/auth-middleware.ts";
 
 export const handler = [
   authMiddleware

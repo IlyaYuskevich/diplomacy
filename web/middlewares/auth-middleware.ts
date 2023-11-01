@@ -26,11 +26,6 @@ export async function authMiddleware(
   const headers = new Headers();
   headers.set("location", "/auth/sign-in");
 
-  // if (!access_token) {
-  //   // Can't use 403 if we want to redirect to home page.
-  //   return new Response(null, { headers, status: Status.SeeOther });
-  // }
-
   if (access_token) {
     // TODO: introduce redis caching here at some point
     const user_data = await supabase.auth.getUser(access_token);

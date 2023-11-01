@@ -3,7 +3,7 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { IPlayerGame } from "types/playerGames.ts";
 import PlayerGames from "islands/PlayerGames.tsx";
 import { Layout } from "components/Layout.tsx";
-import { ServerState } from "lib/auth-middleware.ts";
+import { ServerState } from "../../middlewares/auth-middleware.ts";
 
 const BACKEND_URL = Deno.env.get("BACKEND_URL");
 type Props = { playerGames: IPlayerGame[], state: ServerState }

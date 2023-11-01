@@ -1,35 +1,35 @@
 {
   "imports": {
+    "components/": "./components/",
+    "islands/": "./islands/",
+    "lib/": "./lib/",
+    "routes/": "./routes/",
+    "types/": "./types/",
+    "utils/": "./utils/",
+    "std": "https://deno.land/std@0.202.0",
+    "std/": "https://deno.land/std@0.202.0/",
+    "dotenv/": "https://deno.land/std@0.204.0/dotenv/",
     "$fresh/": "https://deno.land/x/fresh@1.2.0/",
+    "@supabase": "https://esm.sh/@supabase/supabase-js@2.37.0",
+    "preact": "https://esm.sh/preact@10.15.1",
+    "preact/": "https://esm.sh/preact@10.15.1/",
+    "twind": "https://esm.sh/twind@0.16.19",
+    "twind/": "https://esm.sh/twind@0.16.19/",
     "@preact/signals-core": "https://esm.sh/v127/@preact/signals-core@1.2.3",
     "@preact/signals": "https://esm.sh/v127/*@preact/signals@1.1.5",
     "@svgdotjs/svg.js": "https://esm.sh/v127/@svgdotjs/svg.js@3.2.0",
     "color": "https://esm.sh/v127/*color@4.2.3",
     "preact-render-to-string": "https://esm.sh/v127/*preact-render-to-string@6.1.0",
-    "preact-render-to-string/": "https://esm.sh/v127/*preact-render-to-string@6.1.0/",
-    "preact": "https://esm.sh/preact@10.15.1",
-    "preact/": "https://esm.sh/preact@10.15.1/",
-    "twind": "https://esm.sh/twind@0.16.19",
-    "twind/": "https://esm.sh/twind@0.16.19/",
-    "std": "https://deno.land/std@0.202.0",
-    "std/": "https://deno.land/std@0.202.0/",
-    "dotenv/": "https://deno.land/std@0.204.0/dotenv/",
-    "@supabase": "https://esm.sh/@supabase/supabase-js@2.37.0",
-    "routes/": "./routes/",
-    "components/": "./components/",
-    "islands/": "./islands/",
-    "types/": "./types/",
-    "utils/": "./utils/",
-    "lib/": "./lib/"
+    "preact-render-to-string/": "https://esm.sh/v127/*preact-render-to-string@6.1.0/"
   },
   "scopes": {
     "https://esm.sh/v127/": {
+      "color-convert": "https://esm.sh/v127/color-convert@2.0.1",
+      "color-string": "https://esm.sh/v127/color-string@1.9.1",
       "csstype": "https://esm.sh/v127/csstype@3.1.2",
       "htmlparser2": "https://esm.sh/v127/htmlparser2@6.1.0",
       "pretty-format": "https://esm.sh/v127/pretty-format@3.8.0",
-      "style-vendorizer": "https://esm.sh/v127/style-vendorizer@2.2.3",
-      "color-convert": "https://esm.sh/v127/color-convert@2.0.1",
-      "color-string": "https://esm.sh/v127/color-string@1.9.1"
+      "style-vendorizer": "https://esm.sh/v127/style-vendorizer@2.2.3"
     }
   }
 }

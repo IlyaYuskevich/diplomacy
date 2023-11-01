@@ -1,0 +1,15 @@
+<svg width="800" height="800" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <title>Layer 1</title>
+  <path fill="none" stroke-linejoin="undefined" stroke-linecap="undefined" opacity="undefined" d="m700,100l0,488.99999c-300,-177.81818 -300,-177.81818 -600,0l0,-488.99999" id="svg_2" stroke-width="70" stroke="#000080"/>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_9" y2="308" x2="400" y1="477" x1="400" stroke-width="70" fill="none" stroke="#000080"/>
+  <ellipse stroke="null" stroke-linejoin="undefined" stroke-linecap="undefined" opacity="undefined" stroke-width="50" ry="70" rx="70" id="svg_11" cy="100" cx="100" fill="#000080"/>
+  <ellipse stroke="null" stroke-linejoin="undefined" stroke-linecap="undefined" opacity="undefined" stroke-width="50" ry="70" rx="70" id="svg_12" cy="300" cx="400" fill="#000080"/>
+  <ellipse stroke="null" stroke-linejoin="undefined" stroke-linecap="undefined" opacity="undefined" stroke-width="50" ry="70" rx="70" id="svg_13" cy="100" cx="700" fill="#000080"/>
+  <ellipse stroke="null" stroke-linejoin="undefined" stroke-linecap="undefined" opacity="undefined" stroke-width="50" ry="70" rx="70" id="svg_14" cy="370" cx="150" fill="#000080"/>
+  <ellipse stroke="null" stroke-linejoin="undefined" stroke-linecap="undefined" opacity="undefined" stroke-width="50" ry="70" rx="70" id="svg_15" cy="370" cx="650" fill="#000080"/>
+  <path id="svg_1" d="m125,705c100,0 257,-103 300,-150" opacity="undefined" stroke-linecap="undefined" stroke-linejoin="undefined" stroke-width="70" stroke="#000080" fill="none"/>
+  <path id="svg_3" d="m675,705c-100,0 -260,-105 -300,-150" opacity="undefined" stroke-linecap="undefined" stroke-linejoin="undefined" stroke-width="70" stroke="#000080" fill="none"/>
+ </g>
+
+</svg>

@@ -8,7 +8,7 @@ import Controls from "islands/Controls.tsx";
 import { IProvince } from "types/provinces.ts";
 import { IPlayerGame } from "types/playerGames.ts";
 import { Layout } from "components/Layout.tsx";
-import { ServerState } from "lib/auth-middleware.ts";
+import { ServerState } from "../../middlewares/auth-middleware.ts";
 
 export type FetchedProps = {
   playerGame: IPlayerGame;
