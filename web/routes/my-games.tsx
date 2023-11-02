@@ -13,9 +13,9 @@ export const handler: Handlers<Props> = {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "X-User-Id": (ctx.state as ServerState).user!.id
       },
     });
-    console.log(resp)
     const playerGames: IPlayerGame[] = await resp.json();
     return ctx.render({playerGames: playerGames, state: ctx.state as ServerState});
   },
@@ -28,7 +28,7 @@ export default function MyGames(
     <Layout state={data.state}>
       {data && (
         <div class="container">
-          <PlayerGames playerGames={data.playerGames} />
+          <PlayerGames playerGames={data.playerGames} userId={data.state.user!.id} />
         </div>
       )}
     </Layout>

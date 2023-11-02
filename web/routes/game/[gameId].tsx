@@ -22,11 +22,12 @@ const BACKEND_URL = Deno.env.get("BACKEND_URL");
 
 export const handler: Handlers<FetchedProps | null> = {
   async GET(_, ctx) {
-    const { playerGameId } = ctx.params;
-    const playerGameResp = await fetch(`${BACKEND_URL}/player-games/${playerGameId}`, {
+    const { gameId } = ctx.params;
+    const playerGameResp = await fetch(`${BACKEND_URL}/player-games/${gameId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "X-User-Id": (ctx.state as ServerState).user!.id
       },
     });
 

@@ -13,7 +13,7 @@ import CoastialProvinceSelector from "islands/CoastialProvinceSelector.tsx";
 import MovesRenderer from "islands/MovesRenderer.tsx";
 import { selectedPlayerGame } from "types/playerGames.ts";
 import * as hooks from "preact/hooks";
-import { FetchedProps } from "routes/game/[playerGameId].tsx";
+import { FetchedProps } from "../routes/game/[gameId].tsx";
 
 export default function Controls(props: FetchedProps) {
 

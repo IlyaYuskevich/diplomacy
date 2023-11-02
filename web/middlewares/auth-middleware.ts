@@ -3,7 +3,7 @@ import { getCookies } from "std/http/cookie.ts";
 import { supabase } from "lib/supabase.ts";
 
 type User = {
-  id: number;
+  id: string;
   email: string;
   access_token: string;
 };
@@ -35,7 +35,11 @@ export async function authMiddleware(
       return new Response(null, { headers, status: Status.SeeOther });
     }
 
-    ctx.state.user = user_data;
+    if (user_data.error) {
+      return new Response(user_data.error.message, { headers, status: Status.InternalServerError });
+    }
+
+    ctx.state.user = user_data.data.user;
   }
 
   return await ctx.next();

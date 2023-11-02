@@ -8,7 +8,6 @@ import (
 
 func ConfigurePlayerGamesEndpoints(e *echo.Echo) *echo.Echo {
 	db := handlers.ConnectSupabase()
-	e.POST("/player-games", handlers.CreatePlayerGame(db))
 	e.GET("/player-games/:id", handlers.GetPlayerGame(db))
 	e.GET("/player-games", handlers.GetPlayerGames(db))
 	e.PATCH("/player-games/:id", handlers.PatchPlayerGame(db))

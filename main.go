@@ -32,7 +32,6 @@ func main() {
 	})
 
 	e = endpoints.ConfigureGamesEndpoints(e)
-	e = endpoints.ConfigurePlayersEndpoints(e)
 	e = endpoints.ConfigurePlayerGamesEndpoints(e)
 	e = endpoints.ConfigureMovesEndpoints(e)
 	e = endpoints.ConfigureHelperEndpoints(e)

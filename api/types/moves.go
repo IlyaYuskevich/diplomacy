@@ -72,6 +72,7 @@ type Move struct {
 	Year         uint16         `json:"year"`
 	UnitType     UnitType       `json:"unitType"`
 	Status       MoveStatus     `json:"status"`
+	PlayerID     string         `json:"-"`
 	PlayerGameID string         `json:"-"`
 	PlayerGame   PlayerGame     `json:"playerGame,omitempty"`
 	DeletedAt    gorm.DeletedAt `json:"-"`

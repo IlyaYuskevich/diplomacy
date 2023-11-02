@@ -22,8 +22,11 @@ func CreateMoves(db *gorm.DB) echo.HandlerFunc {
 			return err
 		}
 
+		userId := c.Request().Header.Get("X-User-Id")
+
 		for i := range moves {
 			moves[i].Status = types.SUBMITTED
+			moves[i].PlayerID = userId
 		}
 		resp := db.Create(&moves)
 
@@ -44,7 +47,6 @@ func GetMoves(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
 		gameId := c.QueryParam("gameId")
-		fmt.Println(gameId)
 
 		var moves []types.Move
 		query := db.Preload("PlayerGame",
@@ -54,7 +56,8 @@ func GetMoves(db *gorm.DB) echo.HandlerFunc {
 		if gameId != "" {
 			query = query.Where("game_id = ?", gameId)
 		}
-		resp := query.Find(&moves)
+		userId := c.Request().Header.Get("X-User-Id")
+		resp := query.Where("player_id = ?", userId).Find(&moves)
 		if resp.Error != nil {
 			return resp.Error
 		}
@@ -65,15 +68,20 @@ func GetMoves(db *gorm.DB) echo.HandlerFunc {
 // GetMove function returns a move by ID.
 func GetMove(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		id := c.Param("id")
+		id := uuid.MustParse(c.Param("id"))
 
-		var move types.Move
+		userId := c.Request().Header.Get("X-User-Id")
+
+		move := types.Move{ID: id}
 
 		resp := db.Preload("PlayerGame",
 			func(db *gorm.DB) *gorm.DB {
 				return db.Select("id, color, country")
-			}).First(&move, "id = ?", id)
+			}).First(&move)
 		if errors.Is(resp.Error, gorm.ErrRecordNotFound) {
+			return echo.NewHTTPError(http.StatusNotFound)
+		}
+		if move.PlayerID != userId {
 			return echo.NewHTTPError(http.StatusNotFound)
 		}
 
@@ -84,11 +92,16 @@ func GetMove(db *gorm.DB) echo.HandlerFunc {
 // PatchMove function updates a move by ID.
 func PatchMove(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		move := types.Move{ID: uuid.MustParse(c.Param("id"))}
+		id := uuid.MustParse(c.Param("id"))
+		userId := c.Request().Header.Get("X-User-Id")
+		move := types.Move{ID: id}
 		resp1 := db.Preload("PlayerGame",
 			func(db *gorm.DB) *gorm.DB {
 				return db.Select("id, color, country, player_id, game_id")
 			}).First(&move)
+		if move.PlayerID != userId {
+			return echo.NewHTTPError(http.StatusNotFound)
+		}
 		c.Bind(&move)
 		resp2 := db.Save(&move)
 		if errors.Is(errors.Join(resp1.Error, resp2.Error), gorm.ErrInvalidData) {
@@ -102,10 +115,19 @@ func PatchMove(db *gorm.DB) echo.HandlerFunc {
 // DeleteMove function deletes a move by ID.
 func DeleteMove(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		id := c.Param("id")
+		id := uuid.MustParse(c.Param("id"))
+		userId := c.Request().Header.Get("X-User-Id")
 
 		var move types.Move
-		err := db.Where("id = ?", id).Delete(&move).Error
+		resp := db.Where("id = ?", id).First(&move)
+		if errors.Is(resp.Error, gorm.ErrRecordNotFound) {
+			return echo.NewHTTPError(http.StatusNotFound)
+		}
+		if move.PlayerID != userId {
+			return echo.NewHTTPError(http.StatusNotFound)
+		}
+	
+		err := db.Delete(&move).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return echo.NewHTTPError(http.StatusNotFound)
 		}

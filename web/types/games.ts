@@ -1,3 +1,5 @@
+import { signal } from "@preact/signals";
+
 export enum GameStatus {
 	Finished = 'FINISHED',
 	Started = 'STARTED'
@@ -31,4 +33,4 @@ export interface IGame {
 	year: number,
 }
 
-// export const currentGame = signal<IGame | null>(null);
+export const currentGame = signal<IGame | null>(null);

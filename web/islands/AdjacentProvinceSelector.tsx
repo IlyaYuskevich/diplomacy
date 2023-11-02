@@ -1,6 +1,8 @@
 import * as hooks from "preact/hooks";
 import { UnitType } from "types/units.ts";
 
+const BACKEND_URL = Deno.env.get("BACKEND_URL");
+
 export default function AdjacentProvinceSelector(props: {province: string, setter: hooks.StateUpdater<string | null>, unitType?: UnitType}) {
   const [adjacentProvinces, setAdjacentProvinces] = hooks.useState<{ [key: string]: string }>({});
 
@@ -11,7 +13,7 @@ export default function AdjacentProvinceSelector(props: {province: string, sette
 
 
   async function getMoves(province: string, unitType: UnitType | null) {
-    const response = await fetch("http://localhost:8000/get-possible-moves", {
+    const response = await fetch(`${BACKEND_URL}/get-possible-moves`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -23,7 +23,7 @@ func CreateGame(db *gorm.DB) echo.HandlerFunc {
 		}
 
 		// Set default values for optional fields if not provided.
-		game.Status = types.CREATED
+		game.Status = types.FORMING
 		game.Phase = types.SPRING
 		game.Year = 1901
 		if game.GameType == "" {

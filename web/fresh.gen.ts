@@ -10,7 +10,7 @@ import * as $4 from "./routes/auth/_middleware.ts";
 import * as $5 from "./routes/auth/confirm-email.tsx";
 import * as $6 from "./routes/auth/sign-in.tsx";
 import * as $7 from "./routes/auth/sign-up.tsx";
-import * as $8 from "./routes/game/[playerGameId].tsx";
+import * as $8 from "./routes/game/[gameId].tsx";
 import * as $9 from "./routes/index.tsx";
 import * as $10 from "./routes/my-games.tsx";
 import * as $$0 from "./islands/AdjacentProvinceSelector.tsx";
@@ -39,7 +39,7 @@ const manifest = {
     "./routes/auth/sign-up.tsx": $7,
     "./routes/game/[playerGameId].tsx": $8,
     "./routes/index.tsx": $9,
-    "./routes/player/[playerId].tsx": $10,
+    "./routes/my-games.tsx": $10,
   },
   islands: {
     "./islands/AdjacentProvinceSelector.tsx": $$0,

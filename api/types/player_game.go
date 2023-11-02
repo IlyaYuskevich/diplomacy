@@ -12,7 +12,6 @@ type PlayerGame struct {
 	CreatedAt time.Time      `json:"createdAt"`
 	Country   Country        `json:"country"`
 	Color     string         `json:"color"`
-	Player    *Player        `json:"player,omitempty"`
 	PlayerID  string         `json:"-"`
 	Game      *Game          `json:"game,omitempty"`
 	GameID    string         `json:"-"`

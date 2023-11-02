@@ -27,9 +27,9 @@ export function Layout(props: Props) {
           <a href="/">
             <div class="flex flex-shrink-0 border-white">
               <img
-                src={asset("/logo.svg")}
+                src={asset("/logo-inverted.svg")}
                 class="w-8 h-8"
-                alt="the fresh logo: a sliced lemon dripping with juice"
+                alt=""
               />
               <h1 class="ml-2 text-white">Diplomacy</h1>
             </div>

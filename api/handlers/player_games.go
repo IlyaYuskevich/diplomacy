@@ -9,36 +9,38 @@ import (
 
 	"diplomacy/api/types"
 
-	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
-// CreatePlayerGame function creates a new game session.
-func CreatePlayerGame(db *gorm.DB) echo.HandlerFunc {
-	return func(c echo.Context) error {
-		playerGame := types.PlayerGame{}
+// // CreatePlayerGame function creates a new game session.
+// func CreatePlayerGame(db *gorm.DB) echo.HandlerFunc {
+// 	return func(c echo.Context) error {
+// 		userId := c.Request().Header.Get("X-User-Id")
+// 		playerGame := types.PlayerGame{PlayerID: userId}
 
-		// Set default values for optional fields if not provided.
-		err := c.Bind(&playerGame)
-		if err != nil {
-			return err
-		}
+// 		// Set default values for optional fields if not provided.
+// 		err := c.Bind(&playerGame)
+// 		if err != nil {
+// 			return err
+// 		}
 
-		resp := db.Create(&playerGame)
-		if errors.Is(resp.Error, gorm.ErrInvalidData) {
-			return echo.NewHTTPError(http.StatusBadRequest)
-		}
+// 		resp := db.Create(&playerGame)
+// 		if errors.Is(resp.Error, gorm.ErrInvalidData) {
+// 			return echo.NewHTTPError(http.StatusBadRequest)
+// 		}
 
-		return c.JSON(http.StatusCreated, playerGame)
-	}
-}
+// 		return c.JSON(http.StatusCreated, playerGame)
+// 	}
+// }
 
 // GetPlayerGames function returns game sessions.
 func GetPlayerGames(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
+		userId := c.Request().Header.Get("X-User-Id")
+
 		var playerGames []types.PlayerGame
-		err := db.Joins("Game").Joins("Player").Omit("GameID", "PlayerID").Find(&playerGames).Error
+		err := db.Where("player_id = ?", userId).Joins("Game").Omit("GameID", "PlayerID").Find(&playerGames).Error
 		if err != nil {
 			return err
 		}
@@ -46,17 +48,39 @@ func GetPlayerGames(db *gorm.DB) echo.HandlerFunc {
 	}
 }
 
-// GetPlayerGame function returns a player's game by ID.
+// GetPlayerGame function returns a player's game by gameId.
 func GetPlayerGame(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
-		playerGame := types.PlayerGame{ID: uuid.MustParse(c.Param("id"))}
+		userId := c.Request().Header.Get("X-User-Id")
+		gameId := c.Param("id")
 
-		resp := db.Joins("Game").Joins("Player").Omit("GameID", "PlayerID").First(&playerGame)
-		if errors.Is(resp.Error, gorm.ErrRecordNotFound) {
-			return echo.NewHTTPError(http.StatusNotFound)
+		var playerGame types.PlayerGame
+		var pgCount int64
+		var game types.Game
+
+		resp1 := db.First(&game, "id = ?", gameId)
+		resp2 := db.Model(&types.PlayerGame{}).Where(&types.PlayerGame{GameID: gameId}).Count(&pgCount)
+
+		if resp1.Error != nil && resp2 != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, resp1.Error)
 		}
 
+		query := db.Joins("Game").Omit("GameID", "PlayerID").Where(&types.PlayerGame{GameID: gameId, PlayerID: userId})
+		isAccepting := game.Status == types.FORMING && pgCount < 7
+		var resp *gorm.DB
+		if isAccepting {
+			resp = query.FirstOrCreate(&playerGame)
+		} else {
+			resp = query.First(&playerGame)
+			if errors.Is(resp.Error, gorm.ErrRecordNotFound) {
+				return echo.NewHTTPError(http.StatusNotFound)
+			}
+		}
+
+		if int(resp.RowsAffected) == 1 {
+			return c.JSON(http.StatusCreated, playerGame)
+		}
 		return c.JSON(http.StatusOK, playerGame)
 	}
 }
@@ -64,8 +88,15 @@ func GetPlayerGame(db *gorm.DB) echo.HandlerFunc {
 // PatchPlayerGame function updates a player game by ID.
 func PatchPlayerGame(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		playerGame := types.PlayerGame{ID: uuid.MustParse(c.Param("id"))}
-		resp1 := db.Joins("Game").Joins("Player").First(&playerGame)
+		userId := c.Request().Header.Get("X-User-Id")
+		gameId := c.Param("id")
+		var playerGame types.PlayerGame
+
+		resp1 := db.Joins("Game").Where(&types.PlayerGame{GameID: gameId, PlayerID: userId}).First(&playerGame)
+		if errors.Is(resp1.Error, gorm.ErrRecordNotFound) {
+			return echo.NewHTTPError(http.StatusNotFound)
+		}
+
 		err := c.Bind(&playerGame)
 		if err != nil {
 			return err
@@ -82,13 +113,16 @@ func PatchPlayerGame(db *gorm.DB) echo.HandlerFunc {
 // DeletePlayerGame function deletes a player's game by ID.
 func DeletePlayerGame(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		playerGame := types.PlayerGame{ID: uuid.MustParse(c.Param("id"))}
+		userId := c.Request().Header.Get("X-User-Id")
+		gameId := c.Param("id")
+		var playerGame types.PlayerGame
 
-		resp := db.Delete(&playerGame)
-		if errors.Is(resp.Error, gorm.ErrRecordNotFound) {
+		resp1 := db.Where(&types.PlayerGame{GameID: gameId, PlayerID: userId}).First(&playerGame)
+		if errors.Is(resp1.Error, gorm.ErrRecordNotFound) {
 			return echo.NewHTTPError(http.StatusNotFound)
 		}
 
-		return c.JSON(http.StatusOK, fmt.Sprintf("PlayerGame %s deleted", c.Param("id")))
+		db.Delete(&playerGame)
+		return c.JSON(http.StatusOK, fmt.Sprintf("PlayerGame %s deleted", playerGame.ID))
 	}
 }

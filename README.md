@@ -20,8 +20,8 @@ backend: http://localhost:8000
 frontend: http://localhost:4000
 ```
 
-To run unit tests:
+To run unit tests on your local machine:
 
-```bash
-go test -v ./...
-```
+1) install go and run `go mod tidy`.
+
+2) run `go test -v ./...`

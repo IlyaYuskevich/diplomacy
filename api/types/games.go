@@ -12,9 +12,9 @@ type GameType string
 type Phase string
 
 const (
-	CREATED  GameStatus = "CREATED"
-	ACTIVE   MoveType   = "ACTIVE"
-	FINISHED MoveType   = "FINISHED"
+	FORMING  GameStatus = "FORMING"
+	ACTIVE   GameStatus = "ACTIVE"
+	FINISHED GameStatus = "FINISHED"
 )
 
 const (

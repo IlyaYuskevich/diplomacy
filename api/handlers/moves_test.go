@@ -27,6 +27,7 @@ var sampleMoves = []types.Move{
 	{
 		ID:           uuid.MustParse("52187d0b-30b5-4cea-bc42-023fa6e1aba1"),
 		Type:         types.SUPPORT,
+		PlayerID:     "d3ee3df0-56cf-43f8-85ff-bcb4efb3d4ad",
 		Origin:       "Par",
 		From:         "Par",
 		To:           "Bur",
@@ -46,6 +47,7 @@ func TestGetMoves(t *testing.T) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodGet, "/moves", nil)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	req.Header.Set("X-User-Id", "d3ee3df0-56cf-43f8-85ff-bcb4efb3d4ad")
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	h := handlers.GetMoves(db)
@@ -59,6 +61,7 @@ func TestGetMove(t *testing.T) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodGet, "/moves/:id", nil)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	req.Header.Set("X-User-Id", "d3ee3df0-56cf-43f8-85ff-bcb4efb3d4ad")
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	ctx.SetParamNames("id")
@@ -74,6 +77,7 @@ func TestCreateMoves(t *testing.T) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPost, "/moves", strings.NewReader(sampleMoveJsonPayload1))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	req.Header.Set("X-User-Id", "d3ee3df0-56cf-43f8-85ff-bcb4efb3d4ad")
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	h := handlers.CreateMoves(db)
@@ -86,6 +90,7 @@ func TestPatchMove(t *testing.T) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPatch, "/moves/:id", strings.NewReader(sampleMoveJsonPayload2))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	req.Header.Set("X-User-Id", "d3ee3df0-56cf-43f8-85ff-bcb4efb3d4ad")
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	ctx.SetParamNames("id")
@@ -101,6 +106,7 @@ func TestDeleteMove(t *testing.T) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodDelete, "/moves/:id", nil)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	req.Header.Set("X-User-Id", "d3ee3df0-56cf-43f8-85ff-bcb4efb3d4ad")
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 	ctx.SetParamNames("id")
