@@ -12,7 +12,7 @@ import * as $6 from "./routes/auth/sign-in.tsx";
 import * as $7 from "./routes/auth/sign-up.tsx";
 import * as $8 from "./routes/game/[playerGameId].tsx";
 import * as $9 from "./routes/index.tsx";
-import * as $10 from "./routes/player/[playerId].tsx";
+import * as $10 from "./routes/my-games.tsx";
 import * as $$0 from "./islands/AdjacentProvinceSelector.tsx";
 import * as $$1 from "./islands/AuthForm.tsx";
 import * as $$2 from "./islands/CoastialProvinceSelector.tsx";

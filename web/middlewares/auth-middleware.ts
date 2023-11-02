@@ -29,7 +29,6 @@ export async function authMiddleware(
   if (access_token) {
     // TODO: introduce redis caching here at some point
     const user_data = await supabase.auth.getUser(access_token);
-    console.log('User data', user_data)
 
     if (!user_data) {
       headers.set("location", "/auth/sign-in");
