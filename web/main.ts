@@ -10,4 +10,8 @@ import manifest from "./fresh.gen.ts";
 import twindPlugin from "$fresh/plugins/twind.ts";
 import twindConfig from "./twind.config.ts";
 
+import { load } from "dotenv/mod.ts";
+
+await load({ export: true });
+
 await start(manifest, { port: 4000, plugins: [twindPlugin(twindConfig)] });

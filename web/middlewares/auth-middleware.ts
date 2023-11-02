@@ -1,4 +1,4 @@
-import { Status, MiddlewareHandlerContext } from "$fresh/server.ts";
+import { MiddlewareHandlerContext, Status } from "$fresh/server.ts";
 import { getCookies } from "std/http/cookie.ts";
 import { supabase } from "lib/supabase.ts";
 
@@ -18,7 +18,7 @@ export async function authMiddleware(
   ctx: MiddlewareHandlerContext,
 ) {
   if (ctx.destination !== "route") {
-    return ctx.next()
+    return ctx.next();
   }
   const cookies = getCookies(req.headers);
   const access_token = cookies.auth;
@@ -36,10 +36,33 @@ export async function authMiddleware(
     }
 
     if (user_data.error) {
-      return new Response(user_data.error.message, { headers, status: Status.InternalServerError });
+      return new Response(user_data.error.message, {
+        headers,
+        status: Status.InternalServerError,
+      });
     }
 
     ctx.state.user = user_data.data.user;
+  }
+
+  return await ctx.next();
+}
+
+export async function protectedRouteMiddleware(
+  req: Request,
+  ctx: MiddlewareHandlerContext,
+) {
+  if (ctx.destination !== "route") {
+    return ctx.next();
+  }
+  const cookies = getCookies(req.headers);
+  const access_token = cookies.auth;
+  const url = new URL(req.url);
+
+  if (!access_token) {
+    const headers = new Headers();
+    headers.set("location", `/auth/sign-in?redirectUrl=${url.pathname}`);
+    return new Response(null, { headers, status: Status.SeeOther });
   }
 
   return await ctx.next();

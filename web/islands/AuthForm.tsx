@@ -2,9 +2,10 @@ import { FormButton, Input, Link } from "components/index.ts";
 
 type Props = {
   mode: "In" | "Up";
+  redirectUrl: string | null;
 };
 
-export default function AuthForm({ mode }: Props) {
+export default function AuthForm({ mode, redirectUrl }: Props) {
   const signIn = {
     title: "Sign In",
     href: "/sign-in",
@@ -29,11 +30,19 @@ export default function AuthForm({ mode }: Props) {
       <form method="post" class="flex flex-col space-y-4 min-w-0">
         <Input autofocus type="email" name="email" />
         <Input type="password" name="password" />
-        <FormButton type="submit" formAction={"/api" + buttProps.href} class="!mt-8" >
+        <input type="hidden" name="redirectUrl" value={redirectUrl || '/'} />
+        <FormButton
+          type="submit"
+          formAction={"/api" + buttProps.href}
+          class="!mt-8"
+        >
           {buttProps.title}
         </FormButton>
 
-        <p>{footProps.text} <Link href={'/auth' + footProps.href}>{footProps.title}</Link></p>
+        <p>
+          {footProps.text}{" "}
+          <Link href={"/auth" + footProps.href}>{footProps.title}</Link>
+        </p>
       </form>
     </div>
   );

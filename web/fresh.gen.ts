@@ -3,16 +3,18 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import * as $0 from "./routes/_middleware.ts";
-import * as $1 from "./routes/api/sign-in.ts";
-import * as $2 from "./routes/api/sign-out.ts";
-import * as $3 from "./routes/api/sign-up.tsx";
-import * as $4 from "./routes/auth/_middleware.ts";
+import * as $1 from "./routes/api/create-game.ts";
+import * as $2 from "./routes/api/sign-in.ts";
+import * as $3 from "./routes/api/sign-out.ts";
+import * as $4 from "./routes/api/sign-up.tsx";
 import * as $5 from "./routes/auth/confirm-email.tsx";
 import * as $6 from "./routes/auth/sign-in.tsx";
 import * as $7 from "./routes/auth/sign-up.tsx";
 import * as $8 from "./routes/game/[gameId].tsx";
-import * as $9 from "./routes/index.tsx";
-import * as $10 from "./routes/my-games.tsx";
+import * as $9 from "./routes/game/_middleware.ts";
+import * as $10 from "./routes/index.tsx";
+import * as $11 from "./routes/my-games/_middleware.ts";
+import * as $12 from "./routes/my-games/index.tsx";
 import * as $$0 from "./islands/AdjacentProvinceSelector.tsx";
 import * as $$1 from "./islands/AuthForm.tsx";
 import * as $$2 from "./islands/CoastialProvinceSelector.tsx";
@@ -30,16 +32,18 @@ import * as $$12 from "./islands/WorldMap.tsx";
 const manifest = {
   routes: {
     "./routes/_middleware.ts": $0,
-    "./routes/api/sign-in.ts": $1,
-    "./routes/api/sign-out.ts": $2,
-    "./routes/api/sign-up.tsx": $3,
-    "./routes/auth/_middleware.ts": $4,
+    "./routes/api/create-game.ts": $1,
+    "./routes/api/sign-in.ts": $2,
+    "./routes/api/sign-out.ts": $3,
+    "./routes/api/sign-up.tsx": $4,
     "./routes/auth/confirm-email.tsx": $5,
     "./routes/auth/sign-in.tsx": $6,
     "./routes/auth/sign-up.tsx": $7,
-    "./routes/game/[playerGameId].tsx": $8,
-    "./routes/index.tsx": $9,
-    "./routes/my-games.tsx": $10,
+    "./routes/game/[gameId].tsx": $8,
+    "./routes/game/_middleware.ts": $9,
+    "./routes/index.tsx": $10,
+    "./routes/my-games/_middleware.ts": $11,
+    "./routes/my-games/index.tsx": $12,
   },
   islands: {
     "./islands/AdjacentProvinceSelector.tsx": $$0,

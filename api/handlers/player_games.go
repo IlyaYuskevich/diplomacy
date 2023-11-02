@@ -59,24 +59,26 @@ func GetPlayerGame(db *gorm.DB) echo.HandlerFunc {
 		var pgCount int64
 		var game types.Game
 
-		resp1 := db.First(&game, "id = ?", gameId)
+		resp1 := db.Model(&types.Game{}).First(&game, "id = ?", gameId)
 		resp2 := db.Model(&types.PlayerGame{}).Where(&types.PlayerGame{GameID: gameId}).Count(&pgCount)
 
 		if resp1.Error != nil && resp2 != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, resp1.Error)
 		}
 
-		query := db.Joins("Game").Omit("GameID", "PlayerID").Where(&types.PlayerGame{GameID: gameId, PlayerID: userId})
+		query := db.Model(&types.PlayerGame{}).Session(&gorm.Session{})
 		isAccepting := game.Status == types.FORMING && pgCount < 7
 		var resp *gorm.DB
 		if isAccepting {
-			resp = query.FirstOrCreate(&playerGame)
+			resp = query.FirstOrCreate(&playerGame, &types.PlayerGame{GameID: gameId, PlayerID: userId})
 		} else {
-			resp = query.First(&playerGame)
+			resp = query.Where(&types.PlayerGame{GameID: gameId, PlayerID: userId}).First(&playerGame)
 			if errors.Is(resp.Error, gorm.ErrRecordNotFound) {
 				return echo.NewHTTPError(http.StatusNotFound)
 			}
 		}
+
+		playerGame.Game = &game
 
 		if int(resp.RowsAffected) == 1 {
 			return c.JSON(http.StatusCreated, playerGame)

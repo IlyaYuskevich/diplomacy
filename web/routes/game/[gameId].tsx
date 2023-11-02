@@ -81,7 +81,7 @@ export default function GamePage({ data }: PageProps<FetchedProps>) {
     <Layout state={data.state}>
       <Head>
         <title>Diplomacy</title>
-        <link rel="stylesheet" href={asset("style.css")} />
+        <link rel="stylesheet" href={asset("/style.css")} />
       </Head>
       <div class="grid lg:grid-cols-3 grid-cols-1">
         <div class="col-span-2">

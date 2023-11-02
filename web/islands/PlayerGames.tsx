@@ -1,29 +1,13 @@
 import PlayerGameItem from "components/PlayerGameItem.tsx";
 import { IPlayerGame } from "types/playerGames.ts";
 import { Button } from "components/index.ts";
-import { currentGame } from "types/games.ts";
 
-
-const BACKEND_URL = Deno.env.get("BACKEND_URL");
 type Props = {
   playerGames: IPlayerGame[];
   userId: string;
 };
 
 export default function PlayerGames(props: Props) {
-  async function createGame() {
-    const response = await fetch(`${BACKEND_URL}/games`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-User-Id": props.userId,
-        },
-        body: JSON.stringify({}),
-      });
-      const jsonData = await response.json();
-      currentGame.value = jsonData;
-
-  }
 
   return (
     <div>
@@ -39,7 +23,7 @@ export default function PlayerGames(props: Props) {
       </div>
 
       <div>
-        <Button onClick={() => void createGame()} class="inline-block mr-2">
+        <Button href="/api/create-game" class="inline-block mr-2">
           Create game
           <svg
             xmlns="http://www.w3.org/2000/svg"

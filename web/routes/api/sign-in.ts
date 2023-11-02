@@ -10,6 +10,7 @@ export const handler: Handlers = {
 
     const email = String(form.get("email"));
     const password = String(form.get("password"));
+    const redirectUrl = String(form.get("redirectUrl"));
     const headers = new Headers();
 
     const { data: { user, session }, error } = await supabase.auth
@@ -30,8 +31,6 @@ export const handler: Handlers = {
       return new Response(null, { status: Status.InternalServerError });
     }
 
-    headers.set("location", "/");
-
     setCookie(headers, {
       name: "auth",
       value: session.access_token,
@@ -41,6 +40,8 @@ export const handler: Handlers = {
       path: "/",
       secure: true,
     });
+
+    headers.set("location", redirectUrl);
 
     return new Response(null, { status: Status.SeeOther, headers });
   },

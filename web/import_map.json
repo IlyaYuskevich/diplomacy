@@ -6,6 +6,7 @@
     "routes/": "./routes/",
     "types/": "./types/",
     "utils/": "./utils/",
+    "middlewares/": "./middlewares/",
     "std": "https://deno.land/std@0.202.0",
     "std/": "https://deno.land/std@0.202.0/",
     "dotenv/": "https://deno.land/std@0.204.0/dotenv/",
