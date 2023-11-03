@@ -1,10 +1,9 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { IPlayerGame } from "types/playerGames.ts";
 import PlayerGames from "islands/PlayerGames.tsx";
-import { Layout } from "components/Layout.tsx";
 import { ServerState } from "middlewares/auth-middleware.ts";
+import { BACKEND_URL } from "lib/environment.ts";
 
-const BACKEND_URL = Deno.env.get("BACKEND_URL");
 type Props = { playerGames: IPlayerGame[], state: ServerState }
 
 export const handler: Handlers<Props> = {
@@ -25,12 +24,12 @@ export default function MyGames(
   { data }: PageProps<Props>,
 ) {
   return (
-    <Layout state={data.state}>
+    <>
       {data && (
         <div class="container">
           <PlayerGames playerGames={data.playerGames} userId={data.state.user!.id} supaMetadata={data.state.supaMetadata!} />
         </div>
       )}
-    </Layout>
+    </>
   );
 }

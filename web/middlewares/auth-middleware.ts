@@ -1,9 +1,9 @@
 import { MiddlewareHandlerContext, Status } from "$fresh/server.ts";
 import { getCookies, setCookie } from "std/http/cookie.ts";
-import { SUPABASE_KEY, SUPABASE_URL, supabase } from "lib/supabase.ts";
+import { supabase } from "lib/supabase.ts";
 import { User } from "@supabase";
 import { ISupaSettings } from "types/supaSettings.ts";
-
+import { SUPABASE_KEY, SUPABASE_URL } from "lib/environment.ts";
 
 export type ServerState = {
   user: User | null;

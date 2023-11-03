@@ -1,6 +1,5 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 
-import { Layout } from "components/index.ts";
 import { asset } from "$fresh/runtime.ts";
 import AuthForm from "islands/AuthForm.tsx";
 import { ServerState } from "middlewares/auth-middleware.ts";
@@ -17,7 +16,7 @@ export default function Page(
   props: PageProps<{ state: ServerState; redirectUrl: string | null }>,
 ) {
   return (
-    <Layout state={props.data.state}>
+    <>
       <div class="flex justify-center">
         <div class="flex flex-col items-stretch w-[500px] md:w-2/3">
           <div class="flex justify-center">
@@ -30,6 +29,6 @@ export default function Page(
           <AuthForm mode="In" redirectUrl={props.data.redirectUrl} />
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

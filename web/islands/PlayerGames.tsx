@@ -2,7 +2,7 @@ import PlayerGameItem from "components/PlayerGameItem.tsx";
 import { IPlayerGame } from "types/playerGames.ts";
 import { Button } from "components/index.ts";
 import { useEffect } from "preact/hooks";
-import { createClient, RealtimeChannel } from "@supabase";
+import { createClient } from "@supabase";
 import { ISupaSettings } from "types/supaSettings.ts";
 
 type Props = {

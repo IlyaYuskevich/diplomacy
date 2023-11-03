@@ -1,7 +1,6 @@
 import { IMove, moves, MoveType } from "types/moves.ts";
 import { UnitType } from "types/units.ts";
-
-const BACKEND_URL = Deno.env.get("BACKEND_URL");
+import { BACKEND_URL } from "lib/environment.ts";
 
 export default function MovesRenderer() {
   function moveFormatter(move: IMove) {

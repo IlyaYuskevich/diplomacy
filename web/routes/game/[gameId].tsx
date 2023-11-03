@@ -7,8 +7,8 @@ import { IGamePosition } from "types/gamePosition.ts";
 import Controls from "islands/Controls.tsx";
 import { IProvince } from "types/provinces.ts";
 import { IPlayerGame } from "types/playerGames.ts";
-import { Layout } from "components/Layout.tsx";
 import { ServerState } from "../../middlewares/auth-middleware.ts";
+import { BACKEND_URL } from "lib/environment.ts";
 
 export type FetchedProps = {
   playerGame: IPlayerGame;
@@ -17,8 +17,6 @@ export type FetchedProps = {
   provinces: { [key: string]: IProvince };
   state: ServerState;
 };
-
-const BACKEND_URL = Deno.env.get("BACKEND_URL");
 
 export const handler: Handlers<FetchedProps | null> = {
   async GET(_, ctx) {
@@ -78,7 +76,7 @@ export const handler: Handlers<FetchedProps | null> = {
 export default function GamePage({ data }: PageProps<FetchedProps>) {
 
   return (
-    <Layout state={data.state}>
+    <>
       <Head>
         <title>Diplomacy</title>
         <link rel="stylesheet" href={asset("/style.css")} />
@@ -91,6 +89,6 @@ export default function GamePage({ data }: PageProps<FetchedProps>) {
           <Controls {...data} />
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

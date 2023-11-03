@@ -1,7 +1,6 @@
 import * as hooks from "preact/hooks";
 import { UnitType } from "types/units.ts";
-
-const BACKEND_URL = Deno.env.get("BACKEND_URL");
+import { BACKEND_URL } from "lib/environment.ts";
 
 export default function AdjacentProvinceSelector(props: {province: string, setter: hooks.StateUpdater<string | null>, unitType?: UnitType}) {
   const [adjacentProvinces, setAdjacentProvinces] = hooks.useState<{ [key: string]: string }>({});
