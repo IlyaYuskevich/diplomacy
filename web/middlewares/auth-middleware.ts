@@ -1,21 +1,19 @@
 import { MiddlewareHandlerContext, Status } from "$fresh/server.ts";
-import { getCookies } from "std/http/cookie.ts";
-import { supabase } from "lib/supabase.ts";
+import { getCookies, setCookie } from "std/http/cookie.ts";
+import { SUPABASE_KEY, SUPABASE_URL, supabase } from "lib/supabase.ts";
+import { User } from "@supabase";
+import { ISupaSettings } from "types/supaSettings.ts";
 
-type User = {
-  id: string;
-  email: string;
-  access_token: string;
-};
 
 export type ServerState = {
   user: User | null;
+  supaMetadata?: ISupaSettings;
   error: { code: number; msg: string } | null;
 };
 
 export async function authMiddleware(
   req: Request,
-  ctx: MiddlewareHandlerContext,
+  ctx: MiddlewareHandlerContext<ServerState>,
 ) {
   if (ctx.destination !== "route") {
     return ctx.next();
@@ -50,19 +48,60 @@ export async function authMiddleware(
 
 export async function protectedRouteMiddleware(
   req: Request,
-  ctx: MiddlewareHandlerContext,
+  ctx: MiddlewareHandlerContext<ServerState>,
 ) {
   if (ctx.destination !== "route") {
     return ctx.next();
   }
   const cookies = getCookies(req.headers);
-  const access_token = cookies.auth;
+  let access_token = cookies.auth;
+  let refresh_token = cookies.refresh;
   const url = new URL(req.url);
+  const headers = new Headers();
+
+  if (!access_token && refresh_token) {
+    const resp = await supabase.auth.refreshSession({refresh_token})
+    if (resp.error) {
+      return new Response(resp.error.message, {
+        headers,
+        status: Status.Unauthorized,
+      });
+    }
+    access_token = resp.data.session!.access_token
+    refresh_token = resp.data.session!.refresh_token
+    
+    setCookie(headers, {
+      name: "auth",
+      value: access_token,
+      maxAge: resp.data.session!.expires_in,
+      sameSite: "Lax",
+      domain: url.hostname,
+      path: "/",
+      secure: true,
+    });
+
+    setCookie(headers, {
+      name: "refresh",
+      value: refresh_token,
+      sameSite: "Lax",
+      domain: url.hostname,
+      path: "/",
+      secure: true,
+    });
+    headers.set("location", url.pathname);
+    return new Response(null, { headers, status: Status.SeeOther });
+  }
 
   if (!access_token) {
-    const headers = new Headers();
     headers.set("location", `/auth/sign-in?redirectUrl=${url.pathname}`);
     return new Response(null, { headers, status: Status.SeeOther });
+  }
+
+  ctx.state.supaMetadata = {
+    accessToken: access_token,
+    refreshToken: refresh_token,
+    url: SUPABASE_URL,
+    apiKey: SUPABASE_KEY,
   }
 
   return await ctx.next();

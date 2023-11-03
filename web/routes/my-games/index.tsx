@@ -28,7 +28,7 @@ export default function MyGames(
     <Layout state={data.state}>
       {data && (
         <div class="container">
-          <PlayerGames playerGames={data.playerGames} userId={data.state.user!.id} />
+          <PlayerGames playerGames={data.playerGames} userId={data.state.user!.id} supaMetadata={data.state.supaMetadata!} />
         </div>
       )}
     </Layout>

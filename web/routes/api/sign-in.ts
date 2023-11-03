@@ -41,8 +41,20 @@ export const handler: Handlers = {
       secure: true,
     });
 
+    setCookie(headers, {
+      name: "refresh",
+      value: session.refresh_token,
+      sameSite: "Lax",
+      domain: url.hostname,
+      path: "/",
+      secure: true,
+    });
+
     headers.set("location", redirectUrl);
 
-    return new Response(null, { status: Status.SeeOther, headers });
+    return new Response(
+      null,
+      { status: Status.SeeOther, headers },
+    );
   },
 };
