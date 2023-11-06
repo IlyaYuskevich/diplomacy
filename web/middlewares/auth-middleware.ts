@@ -1,5 +1,5 @@
 import { MiddlewareHandlerContext, Status } from "$fresh/server.ts";
-import { getCookies, setCookie } from "std/http/cookie.ts";
+import { deleteCookie, getCookies, setCookie } from "std/http/cookie.ts";
 import { supabase } from "lib/supabase.ts";
 import { User } from "@supabase";
 import { ISupaSettings } from "types/supaSettings.ts";
@@ -62,10 +62,10 @@ export async function protectedRouteMiddleware(
   if (!access_token && refresh_token) {
     const resp = await supabase.auth.refreshSession({refresh_token})
     if (resp.error) {
-      return new Response(resp.error.message, {
-        headers,
-        status: Status.Unauthorized,
-      });
+      console.error(resp.error.message)
+      deleteCookie(headers, "refresh", { path: "/", domain: url.hostname });
+      headers.set("location", '/');
+      return new Response(null, { headers, status: Status.SeeOther });
     }
     access_token = resp.data.session!.access_token
     refresh_token = resp.data.session!.refresh_token

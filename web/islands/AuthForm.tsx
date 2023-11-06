@@ -33,7 +33,7 @@ export default function AuthForm({ mode, redirectUrl }: Props) {
         <input type="hidden" name="redirectUrl" value={redirectUrl || '/'} />
         <FormButton
           type="submit"
-          formAction={"/api" + buttProps.href}
+          formAction={"/api-auth" + buttProps.href}
           class="!mt-8"
         >
           {buttProps.title}

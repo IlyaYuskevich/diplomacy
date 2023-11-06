@@ -17,24 +17,24 @@ export interface Database {
           gaining_loosing_phase: string
           game_type: string
           id: string
-          phase: string | null
+          phase: Database["public"]["Enums"]["Phase"]
           retreat_phase: string
           started_at: string
-          status: Database["public"]["Enums"]["GameStatus"] | null
-          year: number | null
+          status: Database["public"]["Enums"]["GameStatus"]
+          year: number
         }
         Insert: {
           deleted_at?: string | null
-          diplomatic_phase_fall: string
-          diplomatic_phase_spring: string
-          gaining_loosing_phase: string
-          game_type: string
+          diplomatic_phase_fall?: string
+          diplomatic_phase_spring?: string
+          gaining_loosing_phase?: string
+          game_type?: string
           id?: string
-          phase?: string | null
-          retreat_phase: string
+          phase?: Database["public"]["Enums"]["Phase"]
+          retreat_phase?: string
           started_at?: string
-          status?: Database["public"]["Enums"]["GameStatus"] | null
-          year?: number | null
+          status?: Database["public"]["Enums"]["GameStatus"]
+          year?: number
         }
         Update: {
           deleted_at?: string | null
@@ -43,11 +43,11 @@ export interface Database {
           gaining_loosing_phase?: string
           game_type?: string
           id?: string
-          phase?: string | null
+          phase?: Database["public"]["Enums"]["Phase"]
           retreat_phase?: string
           started_at?: string
-          status?: Database["public"]["Enums"]["GameStatus"] | null
-          year?: number | null
+          status?: Database["public"]["Enums"]["GameStatus"]
+          year?: number
         }
         Relationships: []
       }
@@ -115,17 +115,17 @@ export interface Database {
       player_games: {
         Row: {
           color: string
-          country: Database["public"]["Enums"]["Country"]
-          created_at: string | null
+          country: Database["public"]["Enums"]["Country"] | null
+          created_at: string
           deleted_at: string | null
           game_id: string
           id: string
           player_id: string
         }
         Insert: {
-          color: string
-          country: Database["public"]["Enums"]["Country"]
-          created_at?: string | null
+          color?: string
+          country?: Database["public"]["Enums"]["Country"] | null
+          created_at?: string
           deleted_at?: string | null
           game_id: string
           id?: string
@@ -133,8 +133,8 @@ export interface Database {
         }
         Update: {
           color?: string
-          country?: Database["public"]["Enums"]["Country"]
-          created_at?: string | null
+          country?: Database["public"]["Enums"]["Country"] | null
+          created_at?: string
           deleted_at?: string | null
           game_id?: string
           id?: string
@@ -160,6 +160,21 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      insert_player_game: {
+        Args: {
+          pid: string
+          gid: string
+        }
+        Returns: {
+          color: string
+          country: Database["public"]["Enums"]["Country"] | null
+          created_at: string
+          deleted_at: string | null
+          game_id: string
+          id: string
+          player_id: string
+        }
+      }
       is_player_in: {
         Args: {
           _player_id: string

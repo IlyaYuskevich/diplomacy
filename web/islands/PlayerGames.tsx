@@ -13,7 +13,6 @@ type Props = {
 
 export default function PlayerGames(props: Props) {
   useEffect(() => {
-    console.log(props.supaMetadata);
     const supa = createClient(
       props.supaMetadata.url,
       props.supaMetadata.apiKey,

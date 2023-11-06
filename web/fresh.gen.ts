@@ -2,23 +2,24 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $0 from "./routes/_500.tsx";
-import * as $1 from "./routes/_404.tsx";
+import * as $0 from "./routes/_404.tsx";
+import * as $1 from "./routes/_500.tsx";
 import * as $2 from "./routes/_app.tsx";
 import * as $3 from "./routes/_layout.tsx";
 import * as $4 from "./routes/_middleware.ts";
-import * as $5 from "./routes/api/create-game.ts";
-import * as $6 from "./routes/api/sign-in.ts";
-import * as $7 from "./routes/api/sign-out.ts";
-import * as $8 from "./routes/api/sign-up.tsx";
-import * as $9 from "./routes/auth/confirm-email.tsx";
-import * as $10 from "./routes/auth/sign-in.tsx";
-import * as $11 from "./routes/auth/sign-up.tsx";
-import * as $12 from "./routes/game/[gameId].tsx";
-import * as $13 from "./routes/game/_middleware.ts";
-import * as $14 from "./routes/index.tsx";
-import * as $15 from "./routes/my-games/_middleware.ts";
-import * as $16 from "./routes/my-games/index.tsx";
+import * as $5 from "./routes/api-auth/sign-in.ts";
+import * as $6 from "./routes/api-auth/sign-out.ts";
+import * as $7 from "./routes/api-auth/sign-up.tsx";
+import * as $8 from "./routes/api/_middleware.ts";
+import * as $9 from "./routes/api/create-game.ts";
+import * as $10 from "./routes/auth/confirm-email.tsx";
+import * as $11 from "./routes/auth/sign-in.tsx";
+import * as $12 from "./routes/auth/sign-up.tsx";
+import * as $13 from "./routes/game/[gameId].tsx";
+import * as $14 from "./routes/game/_middleware.ts";
+import * as $15 from "./routes/index.tsx";
+import * as $16 from "./routes/my-games/_middleware.ts";
+import * as $17 from "./routes/my-games/index.tsx";
 import * as $$0 from "./islands/AdjacentProvinceSelector.tsx";
 import * as $$1 from "./islands/AuthForm.tsx";
 import * as $$2 from "./islands/CoastialProvinceSelector.tsx";
@@ -35,23 +36,24 @@ import * as $$12 from "./islands/WorldMap.tsx";
 
 const manifest = {
   routes: {
-    "./routes/_404 copy.tsx": $0,
-    "./routes/_404.tsx": $1,
+    "./routes/_404.tsx": $0,
+    "./routes/_500.tsx": $1,
     "./routes/_app.tsx": $2,
     "./routes/_layout.tsx": $3,
     "./routes/_middleware.ts": $4,
-    "./routes/api/create-game.ts": $5,
-    "./routes/api/sign-in.ts": $6,
-    "./routes/api/sign-out.ts": $7,
-    "./routes/api/sign-up.tsx": $8,
-    "./routes/auth/confirm-email.tsx": $9,
-    "./routes/auth/sign-in.tsx": $10,
-    "./routes/auth/sign-up.tsx": $11,
-    "./routes/game/[gameId].tsx": $12,
-    "./routes/game/_middleware.ts": $13,
-    "./routes/index.tsx": $14,
-    "./routes/my-games/_middleware.ts": $15,
-    "./routes/my-games/index.tsx": $16,
+    "./routes/api-auth/sign-in.ts": $5,
+    "./routes/api-auth/sign-out.ts": $6,
+    "./routes/api-auth/sign-up.tsx": $7,
+    "./routes/api/_middleware.ts": $8,
+    "./routes/api/create-game.ts": $9,
+    "./routes/auth/confirm-email.tsx": $10,
+    "./routes/auth/sign-in.tsx": $11,
+    "./routes/auth/sign-up.tsx": $12,
+    "./routes/game/[gameId].tsx": $13,
+    "./routes/game/_middleware.ts": $14,
+    "./routes/index.tsx": $15,
+    "./routes/my-games/_middleware.ts": $16,
+    "./routes/my-games/index.tsx": $17,
   },
   islands: {
     "./islands/AdjacentProvinceSelector.tsx": $$0,

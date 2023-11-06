@@ -1,27 +1,25 @@
 
 import { Handlers, Status } from "$fresh/server.ts";
-import { currentGame } from "types/games.ts";
 import { ServerState } from "middlewares/auth-middleware.ts";
+import { authSupabaseClient } from "lib/supabase.ts";
+import { DbResult } from "lib/database.types.ts";
 
-const BACKEND_URL = Deno.env.get("BACKEND_URL");
-
-export const handler: Handlers = {
+export const handler: Handlers<unknown, ServerState> = {
   async GET(req, ctx) {
-    const response = await fetch(`${BACKEND_URL}/games`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-User-Id": (ctx.state as ServerState).user!.id,
-        },
-        body: JSON.stringify({}),
-      });
+    if (!ctx.state.supaMetadata) {
+      return ctx.render();
+    }
 
-    const jsonData = await response.json();
-    currentGame.value = jsonData;
+    const supa = await authSupabaseClient(ctx.state.supaMetadata);
 
+    const query = supa.from("games").insert({}).select().single();
+    const resp: DbResult<typeof query> = await query;
+    if (resp.error) {
+      return new Response(null, { status: Status.BadRequest });
+    }
     const headers = new Headers(req.headers);
 
-    headers.set("location", `/game/${currentGame.value!.id}`);
+    headers.set("location", `/game/${resp.data!.id}`);
 
     return new Response(null, { status: Status.Found, headers });
   },

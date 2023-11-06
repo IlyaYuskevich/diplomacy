@@ -5,7 +5,7 @@ import { NavButton } from "components/NavButton.tsx";
 
 export default function Layout({ Component, state }: LayoutProps) {
     const buttProps = state?.user
-    ? { href: "/api/sign-out", text: "Sign Out" }
+    ? { href: "/api-auth/sign-out", text: "Sign Out" }
     : { href: "/auth/sign-in", text: "Sign In" };
     return (
         <>
