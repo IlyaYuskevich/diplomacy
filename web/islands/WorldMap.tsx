@@ -395,12 +395,12 @@ export default function WorldMap() {
                 <text x="1030.3" y="640.8">LVN</text>
                 <text className="labeltext18" x="449.2" y="564.1">LVP</text>
                 <text className="labeltext18" x="572.6" y="962.2">MAR</text>
-                <text x="153.3" y="815.3">MAO</text>
+                <text x="153.3" y="815.3">MID</text>
                 <text x="1568.9" y="572.6">MOS</text>
                 <text className="labeltext18" x="681.2" y="872.8">MUN</text>
                 <text x="240.6" y="1317.7">NAF</text>
                 <text className="labeltext18" x="832.3" y="1211.3">NAP</text>
-                <text x="191.6" y="268.2">NAO</text>
+                <text x="191.6" y="268.2">NAT</text>
                 <text x="595.5" y="512">NTH</text>
                 <text x="760" y="391.7">NWY</text>
                 <text x="664.2" y="161.8">NWG</text>
