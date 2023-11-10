@@ -1,36 +1,13 @@
 import PlayerGameItem from "components/PlayerGameItem.tsx";
 import { PlayerGame } from "types/playerGames.ts";
 import { Button } from "components/index.ts";
-import { useEffect } from "preact/hooks";
-import { createClient } from "@supabase";
-import { ISupaSettings } from "types/supaSettings.ts";
 
 type Props = {
   playerGames: PlayerGame[];
   userId: string;
-  supaMetadata: ISupaSettings;
 };
 
 export default function PlayerGames(props: Props) {
-  useEffect(() => {
-    const supa = createClient(
-      props.supaMetadata.url,
-      props.supaMetadata.apiKey,
-    );
-    void supa.auth.setSession({
-      access_token: props.supaMetadata.accessToken,
-      refresh_token: props.supaMetadata.refreshToken,
-    });
-    const pgInsertChannel = supa
-      .channel("player_games_insert")
-      .on("postgres_changes", {
-        event: "INSERT",
-        schema: "public",
-        table: "player_games",
-      }, (v: any) => console.log("inserted!!", v))
-      .subscribe();
-    return () => supa.removeChannel(pgInsertChannel);
-  }, []);
 
   return (
     <div>

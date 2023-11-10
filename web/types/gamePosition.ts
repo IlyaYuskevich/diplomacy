@@ -3,8 +3,8 @@ import { IUnit } from "types/units.ts";
 import { Country } from "types/country.ts";
 
 export type GamePosition = {
-  domains: { [K in Country]: string[] };
-  unitPositions: { [K in Country]: IUnit[] };
+  domains: { [K in NonNullable<Country>]: string[] };
+  unitPositions: { [K in NonNullable<Country>]: IUnit[] };
 }
 
 export const gamePosition = signal<GamePosition>({

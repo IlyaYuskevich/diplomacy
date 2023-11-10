@@ -13,4 +13,4 @@ export const CountryColors: { [key in NonNullable<Country>]: string } = {
 	"TURKEY": "#DCCA6D"
 }
 
-export const selectedCountry = signal<Country | null>(null)
+export const selectedCountry = signal<Country>(null)

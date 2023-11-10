@@ -1,6 +1,5 @@
 import { Move, moves, MoveType } from "types/moves.ts";
 import { UnitType } from "types/units.ts";
-import { BACKEND_URL } from "lib/environment.ts";
 
 export default function MovesRenderer() {
   function moveFormatter(move: Move) {
@@ -25,15 +24,15 @@ export default function MovesRenderer() {
   }
 
   async function submitMoves() {
-    const response = await fetch(`${BACKEND_URL}/moves`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(moves.value),
-    });
-    const jsonData = await response.json();
-    moves.value = jsonData;
+    // const response = await fetch(`${BACKEND_URL}/moves`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(moves.value),
+    // });
+    // const jsonData = await response.json();
+    // moves.value = jsonData;
   }
 
   return (

@@ -1,6 +1,5 @@
 import * as hooks from "preact/hooks";
 import { UnitType } from "types/units.ts";
-import { BACKEND_URL } from "lib/environment.ts";
 
 export default function AdjacentProvinceSelector(props: {province: string, setter: hooks.StateUpdater<string | null>, unitType?: UnitType}) {
   const [adjacentProvinces, setAdjacentProvinces] = hooks.useState<{ [key: string]: string }>({});
@@ -12,15 +11,15 @@ export default function AdjacentProvinceSelector(props: {province: string, sette
 
 
   async function getMoves(province: string, unitType: UnitType | null) {
-    const response = await fetch(`${BACKEND_URL}/get-possible-moves`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ province, unitType }),
-    });
-    const jsonData = await response.json();
-    setAdjacentProvinces(jsonData)
+    // const response = await fetch(`${BACKEND_URL}/get-possible-moves`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ province, unitType }),
+    // });
+    // const jsonData = await response.json();
+    // setAdjacentProvinces(jsonData)
   }
 
   return (

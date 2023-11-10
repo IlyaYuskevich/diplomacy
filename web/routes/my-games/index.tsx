@@ -41,7 +41,6 @@ export default function MyGames(
           <PlayerGames
             playerGames={data.playerGames}
             userId={data.state.user!.id}
-            supaMetadata={data.state.supaMetadata!}
           />
         </div>
       )}

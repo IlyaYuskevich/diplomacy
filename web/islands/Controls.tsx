@@ -57,7 +57,7 @@ export default function Controls() {
   return (
     <div class="w-full p-3">
         {moves.value.length !=0 && <MovesRenderer/>}
-        <CountrySelector />
+        {/* <CountrySelector /> */}
         {selectedCountry.value && <UnitSelector />}
         {selectedUnit.value && <MoveTypeSelector />}
         {selectedMoveType.value && renderMoveBuilder()}
