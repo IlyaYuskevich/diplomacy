@@ -2,12 +2,12 @@ import { signal } from "@preact/signals";
 import { IUnit } from "types/units.ts";
 import { Country } from "types/country.ts";
 
-export interface IGamePosition {
+export type GamePosition = {
   domains: { [K in Country]: string[] };
   unitPositions: { [K in Country]: IUnit[] };
 }
 
-export const gamePosition = signal<IGamePosition>({
+export const gamePosition = signal<GamePosition>({
   domains: {
     AUSTRIA: [],
     ENGLAND: [],

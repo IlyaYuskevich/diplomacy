@@ -833,4 +833,3 @@ export const UnitLocMap: Record<
     "Y": 616,
   },
 };
-export const provincesMap = signal<Record<string, ProvinceCode> | null>(null);

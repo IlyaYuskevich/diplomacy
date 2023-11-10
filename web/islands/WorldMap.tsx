@@ -5,10 +5,9 @@ import { computed } from "@preact/signals";
 import * as svg from "@svgdotjs/svg.js";
 import { drawLink } from "utils/worldMapUtils.ts";
 import { useEffect, useRef } from "preact/hooks";
-import { IMove, moves } from "types/moves.ts";
-import { GamePhaseName } from "types/games.ts";
+import { Move, moves } from "types/moves.ts";
+import { selectedGame } from "types/game.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
-import { IPlayerGame } from "types/playerGames.ts"
 
 export default function WorldMap() {
 
@@ -19,14 +18,14 @@ export default function WorldMap() {
     }, [])
 
     function provinceColor(province: string) {
-        return [Country.Austria, Country.England, Country.France, Country.Germany, Country.Italy, Country.Russia, Country.Turkey].filter(country => 
-            gamePosition.value.domains[country].map((x: string) => x.toLowerCase()).includes(province.toLowerCase())
+        return ["AUSTRIA", "ENGLAND", "FRANCE", "GERMANY", "ITALY", "RUSSIA", "TURKEY"].filter(country => 
+            gamePosition.value.domains[country as NonNullable<Country>].map((x: string) => x.toLowerCase()).includes(province.toLowerCase())
         ).at(0)?.toLowerCase() || "nopower" 
     }
 
-    type UnitPositionsType = { x: number; y: number; country: Country; province: string; unitType: UnitType; }
+    type UnitPositionsType = { x: number; y: number; country: NonNullable<Country>; province: string; unitType: UnitType; }
 
-    function mapUnitPositions(country: Country, unitPositions: { [K in Country]: IUnit[] }): UnitPositionsType[] {
+    function mapUnitPositions(country: NonNullable<Country>, unitPositions: { [K in NonNullable<Country>]: IUnit[] }): UnitPositionsType[] {
         return unitPositions[country].map(unit => ({
                 ...unit,
                 x: unitLocationsMap.value![unit.province.toLowerCase()].X,
@@ -36,12 +35,12 @@ export default function WorldMap() {
     } 
 
     useEffect(() => {
-        moves.value.forEach((val: IMove) => drawLink(unitLocationsMap.value, arrowDrawer.current, val.origin, val.to || null, val.from || null, val.type, val.playerGame.country))
+        moves.value.forEach((val: Move) => selectedPlayerGame.value?.country && drawLink(unitLocationsMap.value, arrowDrawer.current, val.origin, val.to || null, val.from || null, val.type, selectedPlayerGame.value.country))
     }, [moves.value])
 
     const unitsWithLocation = computed(() => (
-        [Country.Austria, Country.England, Country.France, Country.Germany, Country.Italy, Country.Russia, Country.Turkey]
-            .flatMap((country) => mapUnitPositions(country, gamePosition.value.unitPositions))
+        ["AUSTRIA", "ENGLAND", "FRANCE", "GERMANY", "ITALY", "RUSSIA", "TURKEY"]
+            .flatMap((country) => mapUnitPositions(country as NonNullable<Country>, gamePosition.value.unitPositions))
         ))
 
     return (
@@ -342,7 +341,7 @@ export default function WorldMap() {
             <g id="UnitLayer">
                 {
                     unitsWithLocation.value.map((unit: UnitPositionsType) => (
-                        <use xlinkHref={unit.unitType === UnitType.Army ? "#Army" : "#Fleet"}
+                        <use xlinkHref={unit.unitType === "Army" ? "#Army" : "#Fleet"}
                             x={unit.x}
                             y={unit.y}
                             width="40" height="40"
@@ -438,7 +437,7 @@ export default function WorldMap() {
             <rect x="25" y="25" height="70" width="750" className="currentnoterect" />
             <text x="35" y="50" className="currentnotetext" id="CurrentNote"></text>
             <text x="35" y="85" className="currentnotetext" id="CurrentNote2"></text>
-            {selectedPlayerGame.value?.game && <text x="1650" y="1325" className="currentphasetext" id="CurrentPhase">{`${GamePhaseName[(selectedPlayerGame.value as IPlayerGame).game.phase]} ${selectedPlayerGame.value.game.year}`}</text>}
+            {selectedGame.value && <text x="1650" y="1325" className="currentphasetext" id="CurrentPhase">{`${selectedGame.value!.phase} ${selectedGame.value!.year}`}</text>}
 
             <g id="MouseLayer" className="invisibleContent" transform="translate(-195 -170)">
                 <g id="con">

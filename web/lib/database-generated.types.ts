@@ -194,10 +194,17 @@ export interface Database {
         | "TURKEY"
       GameStatus: "FORMING" | "ACTIVE" | "FINISHED"
       MoveStatus: "SUCCEED" | "FAILED" | "UNDONE" | "EFFECTLESS" | "SUBMITTED"
-      MoveType: "BUILD" | "DESTROY" | "MOVE" | "SUPPORT" | "CONVOY" | "DEFEND"
-      Phase: "S" | "F"
+      MoveType:
+        | "BUILD"
+        | "DESTROY"
+        | "MOVE"
+        | "SUPPORT"
+        | "CONVOY"
+        | "DEFEND"
+        | "RETREAT"
+      Phase: "SPRING" | "FALL"
       ProvinceType: "LAND" | "COAST" | "SEA"
-      UnitType: "A" | "F"
+      UnitType: "Army" | "Fleet"
     }
     CompositeTypes: {
       [_ in never]: never

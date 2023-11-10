@@ -1,55 +1,52 @@
 import { selectedCountry } from "types/country.ts";
-import { UnitType, selectedUnit, unitLocationsMap } from "types/units.ts";
+import { UnitType, selectedUnit } from "types/units.ts";
 import CountrySelector from "islands/CountrySelector.tsx";
 import UnitSelector from "islands/UnitSelector.tsx";
-import { gamePosition } from "types/gamePosition.ts";
-import { IMove, MoveType, moves, selectedMoveType } from "types/moves.ts";
+import { Move, MoveType, moves, selectedMoveType } from "types/moves.ts";
 import MoveTypeSelector from "islands/MoveTypeSelector.tsx";
 import MoveTheUnit from "islands/MoveTheUnit.tsx";
 import SupportTheUnit from "islands/SupportTheUnit.tsx";
 import ConvoyTheUnit from "islands/ConvoyTheUnit.tsx";
-import { provincesMap } from "types/provinces.ts";
 import CoastialProvinceSelector from "islands/CoastialProvinceSelector.tsx";
 import MovesRenderer from "islands/MovesRenderer.tsx";
 import { selectedPlayerGame } from "types/playerGames.ts";
-import * as hooks from "preact/hooks";
-import { FetchedProps } from "../routes/game/[gameId].tsx";
+import { selectedGame } from "types/game.ts";
 
-export default function Controls(props: FetchedProps) {
-
-  hooks.useEffect(() => {
-    selectedPlayerGame.value = props.playerGame
-    gamePosition.value = props.gamePosition
-    provincesMap.value = props.provinces
-    unitLocationsMap.value = props.unitLocationsMap
-  }, [props])
+export default function Controls() {
 
   function renderMoveBuilder() {
      switch(selectedMoveType.value) {
-      case MoveType.Move:
+      case "MOVE":
         return <MoveTheUnit/>;
-      case MoveType.Support:
+      case "SUPPORT":
         return <SupportTheUnit/>;
-      case MoveType.Convoy:
-        if (selectedUnit.value!.unitType == UnitType.Fleet) {
+      case "CONVOY":
+        if (selectedUnit.value!.unitType == "Fleet") {
           return <ConvoyTheUnit/>;
         } else {
           return <CoastialProvinceSelector/>;
         }
-      case MoveType.Defend:
+      case "DEFEND":
         makeDefendMove()
         return
     }
   }
 
   function makeDefendMove() {
-    const newMove: IMove = {
+    const newMove: Move = {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
-      unitType: selectedUnit.value!.unitType,
-      phase: selectedPlayerGame.value!.game.phase,
-      year: selectedPlayerGame.value!.game.year,
-      playerGame: selectedPlayerGame.value!,
+      unit_type: selectedUnit.value!.unitType,
+      phase: selectedGame.value!.phase,
+      year: selectedGame.value!.year,
+      player_game_id: selectedPlayerGame.value!.id,
+      created_at: null,
+      deleted_at: null,
+      from: null,
+      id: "",
+      player_id: "",
+      status: "SUCCEED",
+      to: null
     }
     moves.value = [...moves.value, newMove]
     selectedCountry.value = null

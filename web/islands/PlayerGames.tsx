@@ -1,12 +1,12 @@
 import PlayerGameItem from "components/PlayerGameItem.tsx";
-import { IPlayerGame } from "types/playerGames.ts";
+import { PlayerGame } from "types/playerGames.ts";
 import { Button } from "components/index.ts";
 import { useEffect } from "preact/hooks";
 import { createClient } from "@supabase";
 import { ISupaSettings } from "types/supaSettings.ts";
 
 type Props = {
-  playerGames: IPlayerGame[];
+  playerGames: PlayerGame[];
   userId: string;
   supaMetadata: ISupaSettings;
 };

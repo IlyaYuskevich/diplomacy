@@ -3,24 +3,23 @@ import { PageProps } from "$fresh/server.ts";
 import WorldMap from "islands/WorldMap.tsx";
 import { Handlers } from "$fresh/server.ts";
 import { IUnitLocation } from "types/units.ts";
-import { IGamePosition } from "types/gamePosition.ts";
+import { GamePosition } from "types/gamePosition.ts";
 import Controls from "islands/Controls.tsx";
-import { IProvince } from "types/provinces.ts";
-import { IPlayerGame } from "types/playerGames.ts";
-import { ServerState } from "../../middlewares/auth-middleware.ts";
+import { PlayerGame } from "types/playerGames.ts";
+import { ServerState } from "middlewares/auth-middleware.ts";
 import { authSupabaseClient } from "lib/supabase.ts";
 import { DbResult, Enums } from "lib/database.types.ts";
-import PlayerGames from "islands/PlayerGames.tsx";
+import { Game } from "../../types/game.ts";
+import GameView from "islands/GameView.tsx";
+import { Move } from "types/moves.ts";
 
-export type FetchedProps = {
-  playerGame: IPlayerGame;
-  // unitLocationsMap: Record<string, IUnitLocation>;
-  // gamePosition: IGamePosition;
-  // provinces: { [key: string]: IProvince };
-  // state: ServerState;
+export type GameProps = {
+  playerGame: PlayerGame;
+  game: Game
+  moves?: Move[];
 };
 
-export const handler: Handlers<FetchedProps, ServerState> = {
+export const handler: Handlers<GameProps, ServerState> = {
   async GET(_, ctx) {
     if (!ctx.state.supaMetadata) {
       return ctx.render();
@@ -29,15 +28,20 @@ export const handler: Handlers<FetchedProps, ServerState> = {
     const player_id = ctx.state.user!.id;
     const supa = await authSupabaseClient(ctx.state.supaMetadata);
 
-    const query = supa.rpc('insert_player_game', {pid: player_id, gid: game_id});
-    const resp: DbResult<typeof query> = await query;
-    if (resp.error) {
+    const query1 = supa.rpc('insert_player_game', {pid: player_id, gid: game_id});
+    const resp1: DbResult<typeof query1> = await query1;
+    if (resp1.error) {
       return ctx.render();
     }
-    const playerGame = resp.data;
-  
+    const playerGame = resp1.data;
 
-    // const playerGame = await playerGameResp.json();
+    const query2 = supa.from("games").select().eq("id", game_id).single()
+    const resp2: DbResult<typeof query2> = await query2;
+    if (resp2.error) {
+      return ctx.render();
+    }
+    const game = resp2.data;
+  
 
     // const respUnitLocations = await fetch(
     //   `${BACKEND_URL}/units-loc-map/${playerGame.game.id}`,
@@ -74,26 +78,15 @@ export const handler: Handlers<FetchedProps, ServerState> = {
     // const provinces: Record<string, IProvince> = await respProvinces.json();
 
     // return ctx.render({ playerGame, unitLocationsMap, gamePosition, provinces, state: ctx.state as ServerState });
-    return ctx.render({playerGame})
+    return ctx.render({playerGame, game})
   },
 };
 
-export default function GamePage({ data }: PageProps<FetchedProps>) {
+export default function GamePage({ data }: PageProps<GameProps>) {
 
   return (
     <>
-      <Head>
-        <title>Diplomacy</title>
-        <link rel="stylesheet" href={asset("/style.css")} />
-      </Head>
-      <div class="grid lg:grid-cols-3 grid-cols-1">
-        <div class="col-span-2">
-          <WorldMap />
-        </div>
-        <div>
-          <Controls {...data} />
-        </div>
-      </div>
+      <GameView {...data} />
     </>
   );
 }

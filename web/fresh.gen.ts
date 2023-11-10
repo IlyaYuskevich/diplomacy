@@ -26,13 +26,14 @@ import * as $$2 from "./islands/CoastialProvinceSelector.tsx";
 import * as $$3 from "./islands/Controls.tsx";
 import * as $$4 from "./islands/ConvoyTheUnit.tsx";
 import * as $$5 from "./islands/CountrySelector.tsx";
-import * as $$6 from "./islands/MoveTheUnit.tsx";
-import * as $$7 from "./islands/MoveTypeSelector.tsx";
-import * as $$8 from "./islands/MovesRenderer.tsx";
-import * as $$9 from "./islands/PlayerGames.tsx";
-import * as $$10 from "./islands/SupportTheUnit.tsx";
-import * as $$11 from "./islands/UnitSelector.tsx";
-import * as $$12 from "./islands/WorldMap.tsx";
+import * as $$6 from "./islands/GameView.tsx";
+import * as $$7 from "./islands/MoveTheUnit.tsx";
+import * as $$8 from "./islands/MoveTypeSelector.tsx";
+import * as $$9 from "./islands/MovesRenderer.tsx";
+import * as $$10 from "./islands/PlayerGames.tsx";
+import * as $$11 from "./islands/SupportTheUnit.tsx";
+import * as $$12 from "./islands/UnitSelector.tsx";
+import * as $$13 from "./islands/WorldMap.tsx";
 
 const manifest = {
   routes: {
@@ -62,13 +63,14 @@ const manifest = {
     "./islands/Controls.tsx": $$3,
     "./islands/ConvoyTheUnit.tsx": $$4,
     "./islands/CountrySelector.tsx": $$5,
-    "./islands/MoveTheUnit.tsx": $$6,
-    "./islands/MoveTypeSelector.tsx": $$7,
-    "./islands/MovesRenderer.tsx": $$8,
-    "./islands/PlayerGames.tsx": $$9,
-    "./islands/SupportTheUnit.tsx": $$10,
-    "./islands/UnitSelector.tsx": $$11,
-    "./islands/WorldMap.tsx": $$12,
+    "./islands/GameView.tsx": $$6,
+    "./islands/MoveTheUnit.tsx": $$7,
+    "./islands/MoveTypeSelector.tsx": $$8,
+    "./islands/MovesRenderer.tsx": $$9,
+    "./islands/PlayerGames.tsx": $$10,
+    "./islands/SupportTheUnit.tsx": $$11,
+    "./islands/UnitSelector.tsx": $$12,
+    "./islands/WorldMap.tsx": $$13,
   },
   baseUrl: import.meta.url,
 };

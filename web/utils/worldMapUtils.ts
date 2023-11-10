@@ -1,7 +1,7 @@
 import Color from "color";
 import { IUnitLocation } from "types/units.ts";
 import { MoveType } from "types/moves.ts";
-import {Country, CountryColors} from "types/country.ts"
+import { Country, CountryColors } from "types/country.ts";
 
 export function drawLink(
   unitLocationsMap: Record<string, IUnitLocation> | null,
@@ -10,10 +10,11 @@ export function drawLink(
   to: string | null,
   from: string | null,
   type: MoveType,
-  country: Country,
+  country: NonNullable<Country>,
 ) {
-  if (!drawer || !to || !unitLocationsMap) return
-  const arrowColor = Color(CountryColors[country]).darken(.5).alpha(0.8).toString();
+  if (!drawer || !to || !unitLocationsMap) return;
+  const arrowColor = Color(CountryColors[country]).darken(.5).alpha(0.8)
+    .toString();
   // deno-lint-ignore no-explicit-any
   const arrowHead = drawer.marker(2, 2, function (add: any) {
     add.path("M 0 0 L 2 1 L 0 2 z");
@@ -33,7 +34,7 @@ export function drawLink(
     });
   path.marker("end", arrowHead.fill(arrowColor));
   path.css({ "filter": "drop-shadow(0px 0px 2px white" });
-  if (type == MoveType.Support) {
+  if (type == "MOVE") {
     path.attr({ "stroke-dasharray": "3,13" });
   }
 }

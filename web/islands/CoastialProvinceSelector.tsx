@@ -1,14 +1,15 @@
-import { IMove, moves, selectedMoveType } from "types/moves.ts";
-import { ProvinceType, provincesMap } from "types/provinces.ts";
+import { Move, moves, selectedMoveType } from "types/moves.ts";
+import { ProvinceCode, ProvinceType, provinces } from "types/provinces.ts";
 import * as hooks from "preact/hooks";
 import { selectedUnit } from "types/units.ts";
 import { selectedCountry } from "types/country.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
+import { selectedGame } from "types/game.ts";
 
 export default function CoastialProvinceSelector() {
 
-  function filterCoastialProvinces(key: string) {
-    return provincesMap.value![key].type == ProvinceType.Coast && !provincesMap.value![key].name.endsWith('Coast')
+  function filterCoastialProvinces(key: ProvinceCode) {
+    return provinces[key].type == ProvinceType.Coast && !provinces[key].name.endsWith('Coast')
   }
 
   const [to, setTo] = hooks.useState<string | null>(null)
@@ -17,15 +18,21 @@ export default function CoastialProvinceSelector() {
     if (!to) {
       return
     }
-    const newMove: IMove = {
+    const newMove: Move = {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       to: to,
-      phase: selectedPlayerGame.value!.game.phase,
-      year: selectedPlayerGame.value!.game.year,
-      unitType: selectedUnit.value!.unitType,
-      playerGame: selectedPlayerGame.value!,
-  }
+      phase: selectedGame.value!.phase,
+      year: selectedGame.value!.year,
+      unit_type: selectedUnit.value!.unitType,
+      player_game_id: selectedPlayerGame.value!.id,
+      created_at: null,
+      deleted_at: null,
+      from: null,
+      id: "",
+      player_id: "",
+      status: "SUBMITTED"
+    }
     moves.value = [...moves.value, newMove]
     selectedCountry.value = null
     selectedUnit.value = null
@@ -35,9 +42,9 @@ export default function CoastialProvinceSelector() {
   return (
     <div>
       <div class="flex flex-row flex-wrap gap-2">
-      {Object.keys(provincesMap.value!).map((key: string) =>
-        filterCoastialProvinces(key) && <button class="bg-gray-500 px-4 py-2 hover:bg-gray-600 rounded-md text-white" onClick={() => setTo(key)}>
-          {provincesMap.value![key].name}
+      {Object.keys(provinces).map(key =>
+        filterCoastialProvinces(key as ProvinceCode) && <button class="bg-gray-500 px-4 py-2 hover:bg-gray-600 rounded-md text-white" onClick={() => setTo(key)}>
+          {provinces[key as ProvinceCode].name}
         </button>
       )}
       </div>

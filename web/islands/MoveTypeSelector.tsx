@@ -1,28 +1,29 @@
-import { MoveType, MoveTypeNames, selectedMoveType } from "types/moves.ts";
-import { GamePhase } from "types/games.ts";
+import { MoveType, selectedMoveType } from "types/moves.ts";
 import { selectedUnit, UnitType } from "types/units.ts";
-import { ProvinceType, provincesMap } from "types/provinces.ts";
+import { ProvinceType, provinces } from "types/provinces.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
+import { selectedGame } from "types/game.ts";
 
 export default function MoveTypeSelector() {
-  const SpringMoves = [
-    MoveType.Move,
-    MoveType.Defend,
-    MoveType.Support,
+  const SpringMoves: MoveType[] = [
+    "MOVE",
+    "DEFEND",
+    "SUPPORT",
   ];
-  const FallMoves = [MoveType.Build, MoveType.Retreat, MoveType.Destroy];
+  const FallMoves: MoveType[] = ["BUILD", "RETREAT", "DESTROY"];
   
-  function getSpringMoves() {
+  function getSpringMoves(): MoveType[] {
     if (!selectedUnit.value) {
       return []
     }
     const unitType = selectedUnit.value.unitType
-    const provinceType = provincesMap.value![selectedUnit.value!.province].type
-    if (unitType == UnitType.Fleet && provinceType == ProvinceType.Sea) {
-       return [...SpringMoves, MoveType.Convoy]
+    const provinceCode = selectedUnit.value.province
+    const provinceType = provinces[provinceCode].type
+    if (unitType == "Fleet" && provinceType == ProvinceType.Sea) {
+       return [...SpringMoves, "CONVOY"]
     }
-    if (unitType == UnitType.Army && provinceType == ProvinceType.Coast) {
-      return [...SpringMoves, MoveType.Convoy]
+    if (unitType =="Army" && provinceType == ProvinceType.Coast) {
+      return [...SpringMoves, "CONVOY"]
    }
    return SpringMoves
   }
@@ -35,15 +36,15 @@ export default function MoveTypeSelector() {
     <div>
       <h4>Select type of the move:</h4>
       <div class="flex flex-row flex-wrap gap-2">
-        {selectedPlayerGame.value?.game &&
-          (selectedPlayerGame.value?.game.phase == GamePhase.Spring
+        {selectedGame.value &&
+          (selectedGame.value.phase == "SPRING"
             ? getSpringMoves()
             : FallMoves).map((val) => (
               <button
                 class="bg-gray-500 px-4 py-2 hover:bg-gray-600 rounded-md text-white"
                 onClick={() => selectMoveType(val)}
               >
-                {MoveTypeNames[val]}
+                {val}
               </button>
             ))}
       </div>

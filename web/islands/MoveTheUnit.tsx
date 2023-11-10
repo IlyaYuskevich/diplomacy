@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 import AdjacentProvinceSelector from "islands/AdjacentProvinceSelector.tsx";
-import { IMove, moves, selectedMoveType } from "types/moves.ts";
+import { Move, moves, selectedMoveType } from "types/moves.ts";
 import { selectedUnit } from "types/units.ts";
 import { selectedCountry } from "types/country.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
@@ -13,7 +13,7 @@ export default function MoveTheUnit() {
     if (!destination) {
       return
     }
-    const newMove: IMove = {
+    const newMove: Move = {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       to: destination,

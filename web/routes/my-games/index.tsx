@@ -1,11 +1,11 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { IPlayerGame } from "types/playerGames.ts";
+import { PlayerGame } from "types/playerGames.ts";
 import PlayerGames from "islands/PlayerGames.tsx";
 import { ServerState } from "middlewares/auth-middleware.ts";
 import { authSupabaseClient } from "lib/supabase.ts";
 import { DbResult } from "lib/database.types.ts";
 
-type Props = { playerGames: IPlayerGame[]; state: ServerState };
+type Props = { playerGames: PlayerGame[]; state: ServerState };
 
 export const handler: Handlers<Props, ServerState> = {
   async GET(req, ctx) {
