@@ -1,26 +1,25 @@
 import Color from "color";
-import { IUnitLocation } from "types/units.ts";
 import { MoveType } from "types/moves.ts";
 import { Country, CountryColors } from "types/country.ts";
+import { ProvinceCode, UNIT_LOC_MAP } from "types/provinces.ts";
 
 export function drawLink(
-  unitLocationsMap: Record<string, IUnitLocation> | null,
   drawer: any,
-  origin: string,
-  to: string | null,
-  from: string | null,
+  origin: ProvinceCode,
+  to: ProvinceCode | null,
+  from: ProvinceCode | null,
   type: MoveType,
   country: NonNullable<Country>,
 ) {
-  if (!drawer || !to || !unitLocationsMap) return;
+  if (!drawer || !to) return;
   const arrowColor = Color(CountryColors[country]).darken(.5).alpha(0.8)
     .toString();
   // deno-lint-ignore no-explicit-any
   const arrowHead = drawer.marker(2, 2, function (add: any) {
     add.path("M 0 0 L 2 1 L 0 2 z");
   });
-  const start = unitLocationsMap[origin.toLowerCase()];
-  const end = unitLocationsMap[to.toLowerCase()];
+  const start = UNIT_LOC_MAP[origin];
+  const end = UNIT_LOC_MAP[to];
 
   const bezier = calcBezierShape(start, end);
 
@@ -34,7 +33,7 @@ export function drawLink(
     });
   path.marker("end", arrowHead.fill(arrowColor));
   path.css({ "filter": "drop-shadow(0px 0px 2px white" });
-  if (type == "MOVE") {
+  if (type == "SUPPORT") {
     path.attr({ "stroke-dasharray": "3,13" });
   }
 }

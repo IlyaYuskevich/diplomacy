@@ -2,16 +2,31 @@ import { MergeDeep } from "type-fest";
 import { Database as DatabaseGenerated } from "lib/database-generated.types.ts";
 export type { Json } from "lib/database-generated.types.ts";
 import { PostgrestError } from "@supabase";
+import { ProvinceCode } from "types/provinces.ts";
 
 export type Database = MergeDeep<
   DatabaseGenerated,
   {
     public: {
-      Views: {
-        movies_view: {
-          Row: {};
-        };
-      };
+      Tables: {
+        moves: {
+          Row: {
+            from: ProvinceCode | null
+            origin: ProvinceCode
+            to: ProvinceCode | null
+          }
+          Insert: {
+            from: ProvinceCode | null
+            origin: ProvinceCode
+            to: ProvinceCode | null
+          }
+          Update: {
+            from: ProvinceCode | null
+            origin: ProvinceCode
+            to: ProvinceCode | null
+          }
+        }
+      }
       Enums: {
         Country: DatabaseGenerated["public"]["Enums"]["Country"] | null
       }

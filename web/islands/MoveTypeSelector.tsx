@@ -42,7 +42,7 @@ export default function MoveTypeSelector() {
             ? getSpringMoves()
             : FallMoves).map((val) => (
               <button
-                class="bg-gray-500 px-4 py-2 hover:bg-gray-600 rounded-md text-white"
+                class="bg-primary hover:bg-primaryLight px-4 py-2 rounded-md text-white"
                 onClick={() => selectMoveType(val)}
               >
                 {sentenceCase(val)}

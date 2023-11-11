@@ -1,4 +1,4 @@
-import { Move, moves, MoveType } from "types/moves.ts";
+import { Move, moves } from "types/moves.ts";
 
 export default function MovesRenderer() {
   function moveFormatter(move: Move) {
@@ -35,10 +35,10 @@ export default function MovesRenderer() {
   }
 
   return (
-    <div class="bg-red-900 text-white rounded-lg p-3 text-center">
+    <div class="bg-primary text-white rounded-lg p-3 text-center">
       {moves.value.map((move: Move) => <p>{moveFormatter(move)}</p>)}
       <button
-        class="bg-white px-4 py-2 bg-[#FFFFFF00] hover:bg-[#FFFFFF55] rounded-md text-white border-2 border-white"
+        class="px-4 py-2 bg-primary hover:bg-primaryLight rounded-md text-white border-2 border-white"
         onClick={() => void submitMoves()}
       >
         Submit

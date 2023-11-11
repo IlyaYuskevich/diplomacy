@@ -482,7 +482,7 @@ export const armyBorders: Partial<Record<ProvinceCode, ProvinceCode[]>> = {
   "Yor": ["Edi", "Lon", "Lvp", "Wal"],
 };
 
-export const UnitLocMap: Record<
+export const UNIT_LOC_MAP: Record<
   Partial<ProvinceCode>,
   { X: number; Y: number }
 > = {

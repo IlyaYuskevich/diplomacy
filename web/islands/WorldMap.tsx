@@ -8,7 +8,7 @@ import { useEffect, useRef } from "preact/hooks";
 import { Move, moves } from "types/moves.ts";
 import { selectedGame } from "types/game.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
-import { ProvinceCode, UnitLocMap } from "types/provinces.ts";
+import { ProvinceCode, UNIT_LOC_MAP } from "types/provinces.ts";
 import { sentenceCase } from "case";
 
 export default function WorldMap() {
@@ -29,14 +29,14 @@ export default function WorldMap() {
     function mapUnitPositions(country: NonNullable<Country>, unitPositions: { [K in NonNullable<Country>]: Unit[] }): UnitPositionsType[] {
         return unitPositions[country].map(unit => ({
                 ...unit,
-                x: UnitLocMap[unit.province].X,
-                y: UnitLocMap[unit.province].Y,
+                x: UNIT_LOC_MAP[unit.province].X,
+                y: UNIT_LOC_MAP[unit.province].Y,
                 country: country
             }))
     } 
 
     useEffect(() => {
-        moves.value.forEach((val: Move) => selectedPlayerGame.value?.country && drawLink(UnitLocMap, arrowDrawer.current, val.origin, val.to || null, val.from || null, val.type, selectedPlayerGame.value.country))
+        moves.value.forEach((val: Move) => selectedPlayerGame.value?.country && drawLink(arrowDrawer.current, val.origin, val.to, val.from, val.type, selectedPlayerGame.value.country))
     }, [moves.value])
 
     const unitsWithLocation = computed(() => (

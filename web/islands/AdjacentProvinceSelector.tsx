@@ -14,6 +14,7 @@ export default function AdjacentProvinceSelector(
     unitType?: UnitType;
   },
 ) {
+  console.log(props)
   function getMoves(
     province: ProvinceCode,
     unitType?: UnitType,
@@ -23,19 +24,17 @@ export default function AdjacentProvinceSelector(
       return fleetBorders[province] || [];
     } else if (unitType == "Army") {
       return armyBorders[province] || [];
-    } else {
-      console.log([...armyBorders[province] || [], ...fleetBorders[province] || []])
-      return [...armyBorders[province] || [], ...fleetBorders[province] || []]
-    }
+    } 
+    return [...armyBorders[province] || [], ...fleetBorders[province] || []]
   }
 
   return (
     <div>
       <div class="flex flex-row flex-wrap gap-2">
-        {props.province && props.unitType &&
+        {props.province &&
           getMoves(props.province, props.unitType).map((key: ProvinceCode) => (
             <button
-              class="bg-gray-500 px-4 py-2 hover:bg-gray-600 rounded-md text-white"
+              class="bg-primary hover:bg-primaryLight px-4 py-2 rounded-md text-white"
               onClick={() => props.setter(key)}
             >
               {provinces[key].name}
