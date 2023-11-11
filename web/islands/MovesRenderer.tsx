@@ -1,4 +1,5 @@
 import { Move, moves } from "types/moves.ts";
+import { supabase } from "lib/supabase.ts";
 
 export default function MovesRenderer() {
   function moveFormatter(move: Move) {
@@ -23,15 +24,7 @@ export default function MovesRenderer() {
   }
 
   async function submitMoves() {
-    // const response = await fetch(`${BACKEND_URL}/moves`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(moves.value),
-    // });
-    // const jsonData = await response.json();
-    // moves.value = jsonData;
+    await supabase.from("moves").insert(moves.value)
   }
 
   return (
