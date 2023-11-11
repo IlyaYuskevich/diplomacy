@@ -1,5 +1,3 @@
-import { signal } from "@preact/signals";
-
 export enum ProvinceType {
   Coast = "COAST",
   Land = "LAND",

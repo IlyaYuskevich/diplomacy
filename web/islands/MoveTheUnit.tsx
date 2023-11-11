@@ -4,10 +4,12 @@ import { Move, moves, selectedMoveType } from "types/moves.ts";
 import { selectedUnit } from "types/units.ts";
 import { selectedCountry } from "types/country.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
+import { selectedGame } from "types/game.ts";
+import { ProvinceCode } from "types/provinces.ts";
 
 export default function MoveTheUnit() {
 
-  const [destination, setDestination] = useState<string | null>(null)
+  const [destination, setDestination] = useState<ProvinceCode | null>(null)
 
   useEffect(() => {
     if (!destination) {
@@ -17,14 +19,18 @@ export default function MoveTheUnit() {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       to: destination,
-      unitType: selectedUnit.value!.unitType,
-      phase: selectedPlayerGame.value!.game.phase,
-      year: selectedPlayerGame.value!.game.year,
-      playerGame: selectedPlayerGame.value!,
-  }
+      unit_type: selectedUnit.value!.unitType,
+      phase: selectedGame.value!.phase,
+      year: selectedGame.value!.year,
+      player_game_id: selectedPlayerGame.value!.id,
+      created_at: null,
+      deleted_at: null,
+      from: null,
+      id: "",
+      player_id: "",
+      status: "SUBMITTED"
+    }
     moves.value = [...moves.value, newMove]
-    console.log(moves.value)
-    selectedCountry.value = null
     selectedUnit.value = null
     selectedMoveType.value = null
   }, [destination])

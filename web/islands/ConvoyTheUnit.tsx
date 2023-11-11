@@ -4,11 +4,13 @@ import { Move, moves, selectedMoveType } from "types/moves.ts";
 import { selectedUnit } from "types/units.ts";
 import { selectedCountry } from "types/country.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
+import { selectedGame } from "types/game.ts";
+import { ProvinceCode } from "types/provinces.ts";
 
 export default function ConvoyTheUnit() {
 
-  const [from, setFrom] = hooks.useState<string | null>(null)
-  const [to, setTo] = hooks.useState<string | null>(null)
+  const [from, setFrom] = hooks.useState<ProvinceCode | null>(null)
+  const [to, setTo] = hooks.useState<ProvinceCode | null>(null)
 
   hooks.useEffect(() => {
     if (!from || !to) {
@@ -19,11 +21,16 @@ export default function ConvoyTheUnit() {
       origin: selectedUnit.value!.province,
       to: to,
       from: from,
-      unitType: selectedUnit.value!.unitType,
-      phase: selectedPlayerGame.value!.game.phase,
-      year: selectedPlayerGame.value!.game.year,
-      playerGame: selectedPlayerGame.value!
-  }
+      unit_type: selectedUnit.value!.unitType,
+      phase: selectedGame.value!.phase,
+      year: selectedGame.value!.year,
+      player_game_id: selectedPlayerGame.value!.id,
+      created_at: null,
+      deleted_at: null,
+      id: "",
+      player_id: "",
+      status: "SUBMITTED"
+    }
     moves.value = [...moves.value, newMove]
     selectedCountry.value = null
     selectedUnit.value = null

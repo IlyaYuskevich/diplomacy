@@ -49,7 +49,6 @@ export default function Controls() {
       to: null
     }
     moves.value = [...moves.value, newMove]
-    selectedCountry.value = null
     selectedUnit.value = null
     selectedMoveType.value = null
   }
