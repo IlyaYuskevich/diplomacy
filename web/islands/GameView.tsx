@@ -1,4 +1,4 @@
-import { Head, IS_BROWSER, asset } from "$fresh/runtime.ts";
+import { asset, Head, IS_BROWSER } from "$fresh/runtime.ts";
 import { GameProps } from "routes/game/[gameId].tsx";
 import WorldMap from "islands/WorldMap.tsx";
 import Controls from "islands/Controls.tsx";
@@ -10,22 +10,23 @@ import { selectedCountry } from "types/country.ts";
 
 export default function GameView(props: GameProps) {
   useEffect(() => {
-    selectedPlayerGame.value = props.playerGame
-    selectedGame.value = props.game
-    selectedCountry.value = props.playerGame.country
-    moves.value = props.moves || []
-  }, [])
+    selectedPlayerGame.value = props.playerGame;
+    selectedGame.value = props.game;
+    selectedCountry.value = props.playerGame.country;
+    moves.value = props.moves || [];
+  }, []);
 
-    return (
-      <>
-        <div class="grid lg:grid-cols-3 grid-cols-1">
-          <div class="col-span-2">
-            <WorldMap />
-          </div>
-          <div>
-            <Controls />
-          </div>
+  return (
+    <>
+
+      <div class="grid lg:grid-cols-3 grid-cols-1">
+        <div class="col-span-2">
+          <WorldMap />
         </div>
-      </>
-    );
-  }
+        <div>
+          <Controls />
+        </div>
+      </div>
+    </>
+  );
+}

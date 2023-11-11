@@ -3,6 +3,7 @@ import { selectedUnit, UnitType } from "types/units.ts";
 import { ProvinceType, provinces } from "types/provinces.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
 import { selectedGame } from "types/game.ts";
+import { sentenceCase } from "https://deno.land/x/case@2.2.0/mod.ts";
 
 export default function MoveTypeSelector() {
   const SpringMoves: MoveType[] = [
@@ -44,7 +45,7 @@ export default function MoveTypeSelector() {
                 class="bg-gray-500 px-4 py-2 hover:bg-gray-600 rounded-md text-white"
                 onClick={() => selectMoveType(val)}
               >
-                {val}
+                {sentenceCase(val)}
               </button>
             ))}
       </div>

@@ -26,7 +26,7 @@
     "preact/": "https://esm.sh/preact@10.18.1/",
     "twind": "https://esm.sh/twind@0.16.19",
     "twind/": "https://esm.sh/twind@0.16.19/",
-    "case": "https://deno.land/x/case/mod.ts",
+    "case": "https://deno.land/x/case@2.2.0/mod.ts",
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.0",
     "type-fest": "https://esm.sh/v133/type-fest@4.6.0",
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.1",

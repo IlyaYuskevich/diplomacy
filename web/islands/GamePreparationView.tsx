@@ -60,10 +60,6 @@ export default function GamePreparationView(props: GameProps) {
 
   return (
     <>
-      <Head>
-        <title>Diplomacy</title>
-        <link rel="stylesheet" href={asset("/style.css")} />
-      </Head>
       <div>
         <div class="text-xl">
           Players are joining.{" "}

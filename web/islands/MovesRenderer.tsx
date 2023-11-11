@@ -1,5 +1,4 @@
 import { Move, moves, MoveType } from "types/moves.ts";
-import { UnitType } from "types/units.ts";
 
 export default function MovesRenderer() {
   function moveFormatter(move: Move) {
