@@ -16,6 +16,7 @@ export type Database = MergeDeep<
             from: ProvinceCode | null
             origin: ProvinceCode
             to: ProvinceCode | null
+            created_at?: string
           }
           Insert: {
             from: ProvinceCode | null
@@ -30,7 +31,7 @@ export type Database = MergeDeep<
         }
       }
       Enums: {
-        Country: DatabaseGenerated["public"]["Enums"]["Country"] | null
+        Country: DatabaseGenerated["public"]["Enums"]["country"] | null
       }
     };
   }

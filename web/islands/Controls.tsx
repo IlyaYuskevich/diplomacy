@@ -39,11 +39,11 @@ export default function Controls() {
       phase: selectedGame.value!.phase,
       year: selectedGame.value!.year,
       player_game_id: selectedPlayerGame.value!.id,
-      created_at: null,
       deleted_at: null,
       from: null,
       status: "SUCCEED",
       to: null,
+      game_id: selectedGame.value!.id
     };
     moves.value = [...moves.value, newMove];
     selectedUnit.value = null;

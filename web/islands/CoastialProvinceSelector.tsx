@@ -26,10 +26,10 @@ export default function CoastialProvinceSelector() {
       year: selectedGame.value!.year,
       unit_type: selectedUnit.value!.unitType,
       player_game_id: selectedPlayerGame.value!.id,
-      created_at: null,
       deleted_at: null,
       from: null,
-      status: "SUBMITTED"
+      status: "SUBMITTED",
+      game_id: selectedGame.value!.id
     }
     moves.value = [...moves.value, newMove]
     selectedCountry.value = null
