@@ -12,7 +12,7 @@ export default function CoastialProvinceSelector() {
     return provinces[key].type == ProvinceType.Coast && !provinces[key].name.endsWith('Coast')
   }
 
-  const [to, setTo] = hooks.useState<string | null>(null)
+  const [to, setTo] = hooks.useState<ProvinceCode | null>(null)
 
   hooks.useEffect(() => {
     if (!to) {
@@ -29,8 +29,6 @@ export default function CoastialProvinceSelector() {
       created_at: null,
       deleted_at: null,
       from: null,
-      id: "",
-      player_id: "",
       status: "SUBMITTED"
     }
     moves.value = [...moves.value, newMove]
@@ -42,8 +40,8 @@ export default function CoastialProvinceSelector() {
   return (
     <div>
       <div class="flex flex-row flex-wrap gap-2">
-      {Object.keys(provinces).map(key =>
-        filterCoastialProvinces(key as ProvinceCode) && <button class="bg-gray-500 px-4 py-2 hover:bg-gray-600 rounded-md text-white" onClick={() => setTo(key)}>
+      {(Object.keys(provinces) as ProvinceCode[]).map((key) =>
+        filterCoastialProvinces(key) && <button class="bg-gray-500 px-4 py-2 hover:bg-gray-600 rounded-md text-white" onClick={() => setTo(key)}>
           {provinces[key as ProvinceCode].name}
         </button>
       )}

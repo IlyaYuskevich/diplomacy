@@ -1,8 +1,8 @@
 import { selectedCountry } from "types/country.ts";
-import { UnitType, selectedUnit } from "types/units.ts";
+import { selectedUnit, UnitType } from "types/units.ts";
 import CountrySelector from "islands/CountrySelector.tsx";
 import UnitSelector from "islands/UnitSelector.tsx";
-import { Move, MoveType, moves, selectedMoveType } from "types/moves.ts";
+import { Move, moves, MoveType, selectedMoveType } from "types/moves.ts";
 import MoveTypeSelector from "islands/MoveTypeSelector.tsx";
 import MoveTheUnit from "islands/MoveTheUnit.tsx";
 import SupportTheUnit from "islands/SupportTheUnit.tsx";
@@ -13,22 +13,21 @@ import { selectedPlayerGame } from "types/playerGames.ts";
 import { selectedGame } from "types/game.ts";
 
 export default function Controls() {
-
   function renderMoveBuilder() {
-     switch(selectedMoveType.value) {
+    switch (selectedMoveType.value) {
       case "MOVE":
-        return <MoveTheUnit/>;
+        return <MoveTheUnit />;
       case "SUPPORT":
-        return <SupportTheUnit/>;
+        return <SupportTheUnit />;
       case "CONVOY":
         if (selectedUnit.value!.unitType == "Fleet") {
-          return <ConvoyTheUnit/>;
+          return <ConvoyTheUnit />;
         } else {
-          return <CoastialProvinceSelector/>;
+          return <CoastialProvinceSelector />;
         }
       case "DEFEND":
-        makeDefendMove()
-        return
+        makeDefendMove();
+        return;
     }
   }
 
@@ -43,24 +42,21 @@ export default function Controls() {
       created_at: null,
       deleted_at: null,
       from: null,
-      id: "",
-      player_id: "",
       status: "SUCCEED",
-      to: null
-    }
-    moves.value = [...moves.value, newMove]
-    selectedUnit.value = null
-    selectedMoveType.value = null
+      to: null,
+    };
+    moves.value = [...moves.value, newMove];
+    selectedUnit.value = null;
+    selectedMoveType.value = null;
   }
 
   return (
     <div class="w-full p-3">
-        {moves.value.length !=0 && <MovesRenderer/>}
-        {/* <CountrySelector /> */}
-        {selectedCountry.value && <UnitSelector />}
-        {selectedUnit.value && <MoveTypeSelector />}
-        {selectedMoveType.value && renderMoveBuilder()}
+      {moves.value.length != 0 && <MovesRenderer />}
+      {/* <CountrySelector /> */}
+      {selectedCountry.value && <UnitSelector />}
+      {selectedUnit.value && <MoveTypeSelector />}
+      {selectedMoveType.value && renderMoveBuilder()}
     </div>
   );
 }
-

@@ -11,6 +11,8 @@ export type Database = MergeDeep<
       Tables: {
         moves: {
           Row: {
+            id?: string
+            player_id?: string
             from: ProvinceCode | null
             origin: ProvinceCode
             to: ProvinceCode | null

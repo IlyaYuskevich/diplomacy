@@ -27,8 +27,6 @@ export default function ConvoyTheUnit() {
       player_game_id: selectedPlayerGame.value!.id,
       created_at: null,
       deleted_at: null,
-      id: "",
-      player_id: "",
       status: "SUBMITTED"
     }
     moves.value = [...moves.value, newMove]

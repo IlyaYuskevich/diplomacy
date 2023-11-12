@@ -12,14 +12,15 @@ import * as $6 from "./routes/api-auth/sign-out.ts";
 import * as $7 from "./routes/api-auth/sign-up.tsx";
 import * as $8 from "./routes/api/_middleware.ts";
 import * as $9 from "./routes/api/create-game.ts";
-import * as $10 from "./routes/auth/confirm-email.tsx";
-import * as $11 from "./routes/auth/sign-in.tsx";
-import * as $12 from "./routes/auth/sign-up.tsx";
-import * as $13 from "./routes/game/[gameId].tsx";
-import * as $14 from "./routes/game/_middleware.ts";
-import * as $15 from "./routes/index.tsx";
-import * as $16 from "./routes/my-games/_middleware.ts";
-import * as $17 from "./routes/my-games/index.tsx";
+import * as $10 from "./routes/api/create-moves.ts";
+import * as $11 from "./routes/auth/confirm-email.tsx";
+import * as $12 from "./routes/auth/sign-in.tsx";
+import * as $13 from "./routes/auth/sign-up.tsx";
+import * as $14 from "./routes/game/[gameId].tsx";
+import * as $15 from "./routes/game/_middleware.ts";
+import * as $16 from "./routes/index.tsx";
+import * as $17 from "./routes/my-games/_middleware.ts";
+import * as $18 from "./routes/my-games/index.tsx";
 import * as $$0 from "./islands/AdjacentProvinceSelector.tsx";
 import * as $$1 from "./islands/AuthForm.tsx";
 import * as $$2 from "./islands/CoastialProvinceSelector.tsx";
@@ -48,14 +49,15 @@ const manifest = {
     "./routes/api-auth/sign-up.tsx": $7,
     "./routes/api/_middleware.ts": $8,
     "./routes/api/create-game.ts": $9,
-    "./routes/auth/confirm-email.tsx": $10,
-    "./routes/auth/sign-in.tsx": $11,
-    "./routes/auth/sign-up.tsx": $12,
-    "./routes/game/[gameId].tsx": $13,
-    "./routes/game/_middleware.ts": $14,
-    "./routes/index.tsx": $15,
-    "./routes/my-games/_middleware.ts": $16,
-    "./routes/my-games/index.tsx": $17,
+    "./routes/api/create-moves.ts": $10,
+    "./routes/auth/confirm-email.tsx": $11,
+    "./routes/auth/sign-in.tsx": $12,
+    "./routes/auth/sign-up.tsx": $13,
+    "./routes/game/[gameId].tsx": $14,
+    "./routes/game/_middleware.ts": $15,
+    "./routes/index.tsx": $16,
+    "./routes/my-games/_middleware.ts": $17,
+    "./routes/my-games/index.tsx": $18,
   },
   islands: {
     "./islands/AdjacentProvinceSelector.tsx": $$0,

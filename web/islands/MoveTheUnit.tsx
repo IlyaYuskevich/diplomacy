@@ -26,8 +26,6 @@ export default function MoveTheUnit() {
       created_at: null,
       deleted_at: null,
       from: null,
-      id: "",
-      player_id: "",
       status: "SUBMITTED"
     }
     moves.value = [...moves.value, newMove]
