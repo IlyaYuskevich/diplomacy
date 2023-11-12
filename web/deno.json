@@ -2,13 +2,17 @@
   "lock": false,
   "tasks": {
     "start": "deno run -A --watch=static/,routes/ --allow-env --allow-read dev.ts",
+    "crons": "deno run -A ./crons/calc-results.ts",
     "esm:add": "deno run -A https://esm.sh/v133 add",
     "esm:update": "deno run -A https://esm.sh/v133 update",
     "esm:remove": "deno run -A https://esm.sh/v133 remove",
     "build": "deno run -A dev.ts build",
     "preview": "deno run -A main.ts"
   },
-  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
+  },
   "imports": {
     "components/": "./components/",
     "islands/": "./islands/",
@@ -20,7 +24,7 @@
     "std": "https://deno.land/std@0.202.0",
     "std/": "https://deno.land/std@0.202.0/",
     "dotenv/": "https://deno.land/std@0.204.0/dotenv/",
-    "$fresh/": "https://deno.land/x/fresh@1.5.2/",
+    "$fresh/": "https://deno.land/x/fresh@1.5.4/",
     "@supabase": "https://esm.sh/@supabase/supabase-js@2.37.0",
     "preact": "https://esm.sh/preact@10.18.1",
     "preact/": "https://esm.sh/preact@10.18.1/",
@@ -32,6 +36,7 @@
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.1",
     "@svgdotjs/svg.js": "https://esm.sh/v127/@svgdotjs/svg.js@3.2.0",
     "color": "https://esm.sh/v127/*color@4.2.3",
+    "croner": "https://deno.land/x/croner@7.0.5/dist/croner.js",
     "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.2.2",
     "preact-render-to-string/": "https://esm.sh/v127/*preact-render-to-string@6.1.0/"
   },
