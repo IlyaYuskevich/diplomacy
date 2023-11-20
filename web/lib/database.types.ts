@@ -42,6 +42,7 @@ export type Database = MergeDeep<
           Row: {};
           Insert: {
             id?: string;
+            phase_id?: string;
           };
           Update: {
             id?: string;

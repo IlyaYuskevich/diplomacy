@@ -38,7 +38,8 @@
     "color": "https://esm.sh/v127/*color@4.2.3",
     "croner": "https://deno.land/x/croner@7.0.5/dist/croner.js",
     "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.2.2",
-    "preact-render-to-string/": "https://esm.sh/v127/*preact-render-to-string@6.1.0/"
+    "preact-render-to-string/": "https://esm.sh/v127/*preact-render-to-string@6.1.0/",
+    "date-fns": "https://deno.land/x/date_fns@v2.12.0/index.js"
   },
   "scopes": {
     "https://esm.sh/v127/": {
