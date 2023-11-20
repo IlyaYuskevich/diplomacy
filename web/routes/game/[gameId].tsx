@@ -49,6 +49,20 @@ export const handler: Handlers<GameProps, ServerState> = {
 
     const playerGamesCount = (game.player_games[0] as any).count;
 
+    let moves: Move[] | undefined = undefined;
+    if (game.status != 'FORMING') {
+      const query3 = supa.from("moves").select("*").eq(
+        "game_id",
+        game_id,
+      );
+      const resp3: DbResult<typeof query3> = await query3;
+      if (resp3.error) {
+        return ctx.render();
+      }
+      moves = resp3.data;
+      console.log(moves);
+    }
+
     const supaMetadata = ctx.state.supaMetadata;
 
     // const respUnitLocations = await fetch(
@@ -86,7 +100,7 @@ export const handler: Handlers<GameProps, ServerState> = {
     // const provinces: Record<string, IProvince> = await respProvinces.json();
 
     // return ctx.render({ playerGame, unitLocationsMap, gamePosition, provinces, state: ctx.state as ServerState });
-    return ctx.render({ playerGame, game, playerGamesCount, supaMetadata });
+    return ctx.render({ playerGame, game, playerGamesCount, supaMetadata, moves });
   },
 };
 

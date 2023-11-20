@@ -2,7 +2,7 @@ import { selectedCountry } from "types/country.ts";
 import { selectedUnit, UnitType } from "types/units.ts";
 import CountrySelector from "islands/CountrySelector.tsx";
 import UnitSelector from "islands/UnitSelector.tsx";
-import { Move, moves, MoveType, selectedMoveType } from "types/moves.ts";
+import { SubmittedMoveInsert, submittedMoves, MoveType, selectedMoveType } from "types/moves.ts";
 import MoveTypeSelector from "islands/MoveTypeSelector.tsx";
 import MoveTheUnit from "islands/MoveTheUnit.tsx";
 import SupportTheUnit from "islands/SupportTheUnit.tsx";
@@ -11,6 +11,7 @@ import CoastialProvinceSelector from "islands/CoastialProvinceSelector.tsx";
 import MovesRenderer from "islands/MovesRenderer.tsx";
 import { selectedPlayerGame } from "types/playerGames.ts";
 import { selectedGame } from "types/game.ts";
+import { currentPhase } from "types/gamePosition.ts";
 
 export default function Controls() {
   function renderMoveBuilder() {
@@ -32,27 +33,24 @@ export default function Controls() {
   }
 
   function makeDefendMove() {
-    const newMove: Move = {
+    const newMove: SubmittedMoveInsert = {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       unit_type: selectedUnit.value!.unitType,
-      phase: selectedGame.value!.phase,
-      year: selectedGame.value!.year,
+      phase_id: currentPhase.value!.id,
       player_game_id: selectedPlayerGame.value!.id,
-      deleted_at: null,
       from: null,
-      status: "SUCCEED",
       to: null,
-      game_id: selectedGame.value!.id
+      game_id: selectedGame.value!.id,
     };
-    moves.value = [...moves.value, newMove];
+    submittedMoves.value = [...submittedMoves.value, newMove];
     selectedUnit.value = null;
     selectedMoveType.value = null;
   }
 
   return (
     <div class="w-full p-3">
-      {moves.value.length != 0 && <MovesRenderer />}
+      {submittedMoves.value.length != 0 && <MovesRenderer />}
       {/* <CountrySelector /> */}
       {selectedCountry.value && <UnitSelector />}
       {selectedUnit.value && <MoveTypeSelector />}

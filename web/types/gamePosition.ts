@@ -2,11 +2,14 @@ import { signal } from "@preact/signals";
 import { Unit } from "types/units.ts";
 import { Country } from "types/country.ts";
 import { ProvinceCode } from "types/provinces.ts";
+import { Tables } from "lib/database.types.ts";
 
 export type GamePosition = {
   domains: { [K in NonNullable<Country>]: ProvinceCode[] };
   unitPositions: { [K in NonNullable<Country>]: Unit[] };
 };
+
+export type Phase = Tables<"phases">
 
 const START_POSITION: GamePosition = {
   domains: {
@@ -59,3 +62,4 @@ const START_POSITION: GamePosition = {
 };
 
 export const gamePosition = signal<GamePosition>(START_POSITION);
+export const currentPhase = signal<Phase | null>(null);

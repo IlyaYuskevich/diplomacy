@@ -11,28 +11,55 @@ export type Database = MergeDeep<
       Tables: {
         moves: {
           Row: {
-            id?: string
-            player_id?: string
-            from: ProvinceCode | null
-            origin: ProvinceCode
-            to: ProvinceCode | null
-            created_at?: string
-          }
+            player_id?: string;
+            from: ProvinceCode | null;
+            origin: ProvinceCode;
+            to: ProvinceCode | null;
+            created_at?: string;
+          };
           Insert: {
-            from: ProvinceCode | null
-            origin: ProvinceCode
-            to: ProvinceCode | null
-          }
+            id?: string;
+          };
           Update: {
-            from: ProvinceCode | null
-            origin: ProvinceCode
-            to: ProvinceCode | null
-          }
-        }
-      }
+            id?: string;
+          };
+        };
+        submitted_moves: {
+          Row: {
+            from: ProvinceCode | null;
+            origin: ProvinceCode;
+            to: ProvinceCode | null;
+            created_at?: string;
+          };
+          Insert: {
+            id?: string;
+          };
+          Update: {
+            id?: string;
+          };
+        };
+        games: {
+          Row: {};
+          Insert: {
+            id?: string;
+          };
+          Update: {
+            id?: string;
+          };
+        };
+        player_games: {
+          Row: {};
+          Insert: {
+            id?: string;
+          };
+          Update: {
+            id?: string;
+          };
+        };
+      };
       Enums: {
-        Country: DatabaseGenerated["public"]["Enums"]["country"] | null
-      }
+        Country: DatabaseGenerated["public"]["Enums"]["country"] | null;
+      };
     };
   }
 >;
@@ -47,4 +74,3 @@ export type DbResultOk<T> = T extends PromiseLike<{ data: infer U }>
   ? Exclude<U, null>
   : never;
 export type DbResultErr = PostgrestError;
-

@@ -1,8 +1,7 @@
-import { asset, Head, IS_BROWSER } from "$fresh/runtime.ts";
 import { GameProps } from "routes/game/[gameId].tsx";
 import WorldMap from "islands/WorldMap.tsx";
 import Controls from "islands/Controls.tsx";
-import { moves } from "types/moves.ts";
+import { submittedMoves } from "types/moves.ts";
 import { useEffect } from "preact/hooks";
 import { selectedPlayerGame } from "types/playerGames.ts";
 import { selectedGame } from "types/game.ts";
@@ -13,7 +12,7 @@ export default function GameView(props: GameProps) {
     selectedPlayerGame.value = props.playerGame;
     selectedGame.value = props.game;
     selectedCountry.value = props.playerGame.country;
-    moves.value = props.moves || [];
+    submittedMoves.value = props.moves || [];
   }, []);
 
   return (

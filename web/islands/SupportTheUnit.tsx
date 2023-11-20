@@ -1,10 +1,11 @@
 import { useEffect, useState } from "preact/hooks";
 import AdjacentProvinceSelector from "islands/AdjacentProvinceSelector.tsx";
-import { Move, moves, selectedMoveType } from "types/moves.ts";
+import { submittedMoves, selectedMoveType, SubmittedMoveInsert } from "types/moves.ts";
 import { selectedUnit } from "types/units.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
 import { selectedGame } from "types/game.ts";
 import { ProvinceCode } from "types/provinces.ts";
+import { currentPhase } from "types/gamePosition.ts";
 
 export default function SupportTheUnit() {
 
@@ -16,20 +17,17 @@ export default function SupportTheUnit() {
     if (!from || !to) {
       return
     }
-    const newMove: Move = {
+    const newMove: SubmittedMoveInsert = {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       to: to,
       from: from,
-      phase: selectedGame.value!.phase,
-      year: selectedGame.value!.year,
       unit_type: selectedUnit.value!.unitType,
       player_game_id: selectedPlayerGame.value!.id,
-      deleted_at: null,
-      status: "SUBMITTED",
-      game_id: selectedGame.value!.id
+      game_id: selectedGame.value!.id,
+      phase_id: currentPhase.value!.id,
     }
-    moves.value = [...moves.value, newMove]
+    submittedMoves.value = [...submittedMoves.value, newMove]
     selectedUnit.value = null
     selectedMoveType.value = null
   }, [to, from])

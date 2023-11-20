@@ -1,7 +1,7 @@
-import { Move, moves } from "types/moves.ts";
+import { SubmittedMoveInsert, submittedMoves } from "types/moves.ts";
 
 export default function MovesRenderer() {
-  function moveFormatter(move: Move) {
+  function moveFormatter(move: SubmittedMoveInsert) {
     switch (move.type) {
       case "MOVE":
         return `${move.unit_type} ${move.origin}-${move.to}`;
@@ -28,15 +28,15 @@ export default function MovesRenderer() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(moves.value),
+      body: JSON.stringify(submittedMoves.value),
     });
     const jsonData = await response.json();
-    moves.value = jsonData;
+    submittedMoves.value = jsonData;
   }
 
   return (
     <div class="bg-primary text-white rounded-lg p-3 text-center">
-      {moves.value.map((move: Move) => <p>{moveFormatter(move)}</p>)}
+      {submittedMoves.value.map((move: SubmittedMoveInsert) => <p>{moveFormatter(move)}</p>)}
       <button
         class="px-4 py-2 bg-primary hover:bg-primaryLight rounded-md text-white border-2 border-white"
         onClick={() => void submitMoves()}

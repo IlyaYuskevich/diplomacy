@@ -1,6 +1,6 @@
 import * as hooks from "preact/hooks";
 import AdjacentProvinceSelector from "islands/AdjacentProvinceSelector.tsx";
-import { Move, moves, selectedMoveType } from "types/moves.ts";
+import { SubmittedMoveInsert, submittedMoves, selectedMoveType } from "types/moves.ts";
 import { selectedUnit } from "types/units.ts";
 import { selectedCountry } from "types/country.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
@@ -16,20 +16,17 @@ export default function ConvoyTheUnit() {
     if (!from || !to) {
       return
     }
-    const newMove: Move = {
+    const newMove: SubmittedMoveInsert = {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       to: to,
       from: from,
       unit_type: selectedUnit.value!.unitType,
-      phase: selectedGame.value!.phase,
-      year: selectedGame.value!.year,
+      phase_id: selectedGame.value!.phase_id,
       player_game_id: selectedPlayerGame.value!.id,
-      deleted_at: null,
-      status: "SUBMITTED",
-      game_id: selectedGame.value!.id
+      game_id: selectedGame.value!.id,
     }
-    moves.value = [...moves.value, newMove]
+    submittedMoves.value = [...submittedMoves.value, newMove]
     selectedCountry.value = null
     selectedUnit.value = null
     selectedMoveType.value = null

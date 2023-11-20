@@ -1,9 +1,8 @@
 import { MoveType, selectedMoveType } from "types/moves.ts";
-import { selectedUnit, UnitType } from "types/units.ts";
+import { selectedUnit } from "types/units.ts";
 import { ProvinceType, provinces } from "types/provinces.ts";
-import { selectedPlayerGame } from "types/playerGames.ts";
-import { selectedGame } from "types/game.ts";
 import { sentenceCase } from "https://deno.land/x/case@2.2.0/mod.ts";
+import { currentPhase } from "types/gamePosition.ts";
 
 export default function MoveTypeSelector() {
   const SpringMoves: MoveType[] = [
@@ -37,8 +36,8 @@ export default function MoveTypeSelector() {
     <div>
       <h4>Select type of the move:</h4>
       <div class="flex flex-row flex-wrap gap-2">
-        {selectedGame.value &&
-          (selectedGame.value.phase == "SPRING"
+        {currentPhase.value &&
+          (currentPhase.value.turn == "SPRING"
             ? getSpringMoves()
             : FallMoves).map((val) => (
               <button

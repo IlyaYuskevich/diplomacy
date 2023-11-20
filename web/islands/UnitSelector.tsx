@@ -1,6 +1,6 @@
 import { selectedCountry } from "types/country.ts";
 import { gamePosition } from "types/gamePosition.ts";
-import { Move, moves, selectedMoveType } from "types/moves.ts";
+import { Move, submittedMoves, selectedMoveType } from "types/moves.ts";
 import { selectedUnit, Unit } from "types/units.ts";
 import { provinces } from "types/provinces.ts";
 import { useEffect, useState } from "preact/hooks";
@@ -24,10 +24,10 @@ export default function UnitSelector() {
       setUniteToSelect(
         filterOrigins(
           gamePosition.value.unitPositions[selectedCountry.value],
-          moves.value,
+          submittedMoves.value,
         ),
       );
-  }, [selectedCountry.value, moves.value, gamePosition.value]);
+  }, [selectedCountry.value, submittedMoves.value, gamePosition.value]);
 
   return (
     <div>

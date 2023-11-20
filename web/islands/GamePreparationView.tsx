@@ -1,4 +1,3 @@
-import { asset, Head, IS_BROWSER } from "$fresh/runtime.ts";
 import { GameProps } from "routes/game/[gameId].tsx";
 import { createClient } from "@supabase";
 import { useEffect, useState } from "preact/hooks";
