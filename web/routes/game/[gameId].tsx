@@ -35,10 +35,11 @@ async function fetchGame(
   supa: Awaited<ReturnType<typeof authSupabaseClient>>,
   gid: string,
 ) {
-  const query = supa.from("games").select("*, player_games(count), phase(*)").eq(
-    "id",
-    gid,
-  ).single();
+  const query = supa.from("games").select("*, player_games(count), phase(*)")
+    .eq(
+      "id",
+      gid,
+    ).single();
   const resp: DbResult<typeof query> = await query;
   return resp;
 }
@@ -48,7 +49,7 @@ async function fetchMoves(
   gid: string,
 ) {
   const query = supa.from("moves").select("*").eq(
-    "game_id",
+    "game",
     gid,
   );
   const resp: DbResult<typeof query> = await query;
@@ -90,6 +91,7 @@ export const handler: Handlers<GameProps, ServerState> = {
 
     if (game.status != "FORMING") {
       const resp3 = await fetchMoves(supa, game_id);
+      console.log(resp3.error)
       if (resp3.error) {
         return ctx.render();
       }
