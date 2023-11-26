@@ -62,4 +62,3 @@ const START_POSITION: GamePosition = {
 };
 
 export const gamePosition = signal<GamePosition>(START_POSITION);
-export const currentPhase = signal<Phase | null>(null);

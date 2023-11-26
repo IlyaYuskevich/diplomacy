@@ -1,6 +1,5 @@
 import { selectedCountry } from "types/country.ts";
 import { selectedUnit, UnitType } from "types/units.ts";
-import CountrySelector from "islands/CountrySelector.tsx";
 import UnitSelector from "islands/UnitSelector.tsx";
 import { SubmittedMoveInsert, submittedMoves, MoveType, selectedMoveType } from "types/moves.ts";
 import MoveTypeSelector from "islands/MoveTypeSelector.tsx";
@@ -11,10 +10,10 @@ import CoastialProvinceSelector from "islands/CoastialProvinceSelector.tsx";
 import MovesRenderer from "islands/MovesRenderer.tsx";
 import { selectedPlayerGame } from "types/playerGames.ts";
 import { selectedGame } from "types/game.ts";
-import { currentPhase } from "types/gamePosition.ts";
 
 export default function Controls() {
   function renderMoveBuilder() {
+    console.log(selectedCountry.value)
     switch (selectedMoveType.value) {
       case "MOVE":
         return <MoveTheUnit />;
@@ -37,7 +36,7 @@ export default function Controls() {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       unit_type: selectedUnit.value!.unitType,
-      phase_id: currentPhase.value!.id,
+      phase_id: selectedGame.value!.phase_id!.id,
       player_game_id: selectedPlayerGame.value!.id,
       from: null,
       to: null,

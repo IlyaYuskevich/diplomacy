@@ -9,7 +9,6 @@ import { selectedUnit } from "types/units.ts";
 import { selectedCountry } from "types/country.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
 import { selectedGame } from "types/game.ts";
-import { currentPhase } from "types/gamePosition.ts";
 
 export default function CoastialProvinceSelector() {
   function filterCoastialProvinces(key: ProvinceCode) {
@@ -27,7 +26,7 @@ export default function CoastialProvinceSelector() {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       to: to,
-      phase_id: currentPhase.value!.id,
+      phase_id: selectedGame.value!.phase_id!.id,
       unit_type: selectedUnit.value!.unitType,
       player_game_id: selectedPlayerGame.value!.id,
       from: null,

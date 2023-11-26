@@ -5,7 +5,6 @@ import { selectedUnit } from "types/units.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
 import { selectedGame } from "types/game.ts";
 import { ProvinceCode } from "types/provinces.ts";
-import { currentPhase } from "types/gamePosition.ts";
 
 export default function SupportTheUnit() {
 
@@ -25,7 +24,7 @@ export default function SupportTheUnit() {
       unit_type: selectedUnit.value!.unitType,
       player_game_id: selectedPlayerGame.value!.id,
       game_id: selectedGame.value!.id,
-      phase_id: currentPhase.value!.id,
+      phase_id: selectedGame.value!.phase_id!.id,
     }
     submittedMoves.value = [...submittedMoves.value, newMove]
     selectedUnit.value = null

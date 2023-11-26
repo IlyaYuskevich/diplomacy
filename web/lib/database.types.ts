@@ -39,7 +39,9 @@ export type Database = MergeDeep<
           };
         };
         games: {
-          Row: {};
+          Row: {
+            phase_id?: DatabaseGenerated["public"]["Tables"]["phases"]["Row"]
+          };
           Insert: {
             id?: string;
             phase_id?: string;

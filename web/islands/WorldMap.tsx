@@ -1,5 +1,5 @@
-import { Country, CountryColors } from "types/country.ts";
-import { currentPhase, gamePosition } from "types/gamePosition.ts";
+import { Country } from "types/country.ts";
+import { gamePosition } from "types/gamePosition.ts";
 import { Unit, UnitType } from "types/units.ts";
 import { computed } from "@preact/signals";
 import * as svg from "@svgdotjs/svg.js";
@@ -438,7 +438,7 @@ export default function WorldMap() {
             <rect x="25" y="25" height="70" width="750" className="currentnoterect" />
             <text x="35" y="50" className="currentnotetext" id="CurrentNote"></text>
             <text x="35" y="85" className="currentnotetext" id="CurrentNote2"></text>
-            {selectedGame.value && <text x="1650" y="1325" className="currentphasetext" id="CurrentPhase">{`${sentenceCase(currentPhase.value!.turn)} ${currentPhase.value!.year}`}</text>}
+            {selectedGame.value && <text x="1650" y="1325" className="currentphasetext" id="CurrentPhase">{`${sentenceCase(selectedGame.value!.phase_id!.turn)} ${selectedGame.value!.phase_id!.year}`}</text>}
 
             <g id="MouseLayer" className="invisibleContent" transform="translate(-195 -170)">
                 <g id="con">
