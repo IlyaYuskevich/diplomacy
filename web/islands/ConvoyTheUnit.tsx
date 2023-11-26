@@ -22,9 +22,9 @@ export default function ConvoyTheUnit() {
       to: to,
       from: from,
       unit_type: selectedUnit.value!.unitType,
-      phase_id: selectedGame.value!.phase_id,
-      player_game_id: selectedPlayerGame.value!.id,
-      game_id: selectedGame.value!.id,
+      phase: selectedGame.value!.phase!.id,
+      player_game: selectedPlayerGame.value!.id,
+      game: selectedGame.value!.id,
     }
     submittedMoves.value = [...submittedMoves.value, newMove]
     selectedCountry.value = null

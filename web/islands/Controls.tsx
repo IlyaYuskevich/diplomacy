@@ -13,7 +13,6 @@ import { selectedGame } from "types/game.ts";
 
 export default function Controls() {
   function renderMoveBuilder() {
-    console.log(selectedCountry.value)
     switch (selectedMoveType.value) {
       case "MOVE":
         return <MoveTheUnit />;
@@ -36,11 +35,11 @@ export default function Controls() {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       unit_type: selectedUnit.value!.unitType,
-      phase_id: selectedGame.value!.phase_id!.id,
-      player_game_id: selectedPlayerGame.value!.id,
+      phase: selectedGame.value!.phase!.id,
+      player_game: selectedPlayerGame.value!.id,
       from: null,
       to: null,
-      game_id: selectedGame.value!.id,
+      game: selectedGame.value!.id,
     };
     submittedMoves.value = [...submittedMoves.value, newMove];
     selectedUnit.value = null;

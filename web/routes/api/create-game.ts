@@ -18,12 +18,12 @@ export const handler: Handlers<unknown, ServerState> = {
     if (resp1.error) {
       return new Response(null, { status: Status.BadRequest });
     }
-    const query2 = superSupa.from("phases").insert({game_id: resp1.data!.id, ends_at: formatISO(addHours(Date.now(), 24), {})}).select('id').single();
+    const query2 = superSupa.from("phases").insert({game: resp1.data!.id, ends_at: formatISO(addHours(Date.now(), 24), {})}).select('id').single();
     const resp2: DbResult<typeof query2> = await query2;
     if (resp2.error) {
       return new Response(null, { status: Status.BadRequest });
     }
-    const query3 = superSupa.from("games").update({phase_id: resp2.data.id}).eq('id', resp1.data!.id);
+    const query3 = superSupa.from("games").update({phase: resp2.data.id}).eq('id', resp1.data!.id);
     const resp3: DbResult<typeof query3> = await query3;
     if (resp3.error) {
       return new Response(null, { status: Status.BadRequest });

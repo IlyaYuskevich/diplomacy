@@ -22,10 +22,10 @@ export default function MoveTheUnit() {
       origin: selectedUnit.value!.province,
       to: destination,
       unit_type: selectedUnit.value!.unitType,
-      player_game_id: selectedPlayerGame.value!.id,
+      player_game: selectedPlayerGame.value!.id,
       from: null,
-      game_id: selectedGame.value!.id,
-      phase_id: ""
+      game: selectedGame.value!.id,
+      phase: selectedGame.value!.phase!.id
     };
     submittedMoves.value = [...submittedMoves.value, newMove];
     selectedUnit.value = null;

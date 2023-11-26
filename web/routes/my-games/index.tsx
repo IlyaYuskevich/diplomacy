@@ -16,7 +16,7 @@ export const handler: Handlers<Props, ServerState> = {
     const supa = await authSupabaseClient(ctx.state.supaMetadata);
 
     const query = supa.from("player_games").select().eq(
-      "player_id",
+      "player",
       ctx.state.user!.id,
     );
     const resp: DbResult<typeof query> = await query;

@@ -35,7 +35,7 @@ async function fetchGame(
   supa: Awaited<ReturnType<typeof authSupabaseClient>>,
   gid: string,
 ) {
-  const query = supa.from("games").select("*, player_games(count), phase_id(*)").eq(
+  const query = supa.from("games").select("*, player_games(count), phase(*)").eq(
     "id",
     gid,
   ).single();

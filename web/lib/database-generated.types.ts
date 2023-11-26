@@ -17,10 +17,10 @@ export interface Database {
           gaining_loosing_phase: string
           game_type: string
           id: string
-          phase_id: string
+          phase: string | null
           retreat_phase: string
           started_at: string
-          status: Database["public"]["Enums"]["GameStatus"]
+          status: Database["public"]["Enums"]["game_status"]
         }
         Insert: {
           deleted_at?: string | null
@@ -29,10 +29,10 @@ export interface Database {
           gaining_loosing_phase?: string
           game_type?: string
           id?: string
-          phase_id: string
+          phase?: string | null
           retreat_phase?: string
           started_at?: string
-          status?: Database["public"]["Enums"]["GameStatus"]
+          status?: Database["public"]["Enums"]["game_status"]
         }
         Update: {
           deleted_at?: string | null
@@ -41,15 +41,15 @@ export interface Database {
           gaining_loosing_phase?: string
           game_type?: string
           id?: string
-          phase_id?: string
+          phase?: string | null
           retreat_phase?: string
           started_at?: string
-          status?: Database["public"]["Enums"]["GameStatus"]
+          status?: Database["public"]["Enums"]["game_status"]
         }
         Relationships: [
           {
-            foreignKeyName: "games_phase_id_fkey"
-            columns: ["phase_id"]
+            foreignKeyName: "games_phase_fkey"
+            columns: ["phase"]
             referencedRelation: "phases"
             referencedColumns: ["id"]
           }
@@ -60,12 +60,12 @@ export interface Database {
           created_at: string
           deleted_at: string | null
           from: string | null
-          game_id: string
+          game: string
           id: string
           origin: string
-          phase_id: string
-          player_game_id: string
-          player_id: string
+          phase: string
+          player: string
+          player_game: string
           status: Database["public"]["Enums"]["MoveStatus"]
           to: string | null
           type: Database["public"]["Enums"]["MoveType"]
@@ -75,12 +75,12 @@ export interface Database {
           created_at?: string
           deleted_at?: string | null
           from?: string | null
-          game_id: string
+          game: string
           id?: string
           origin: string
-          phase_id: string
-          player_game_id: string
-          player_id?: string
+          phase: string
+          player?: string
+          player_game: string
           status: Database["public"]["Enums"]["MoveStatus"]
           to?: string | null
           type: Database["public"]["Enums"]["MoveType"]
@@ -90,12 +90,12 @@ export interface Database {
           created_at?: string
           deleted_at?: string | null
           from?: string | null
-          game_id?: string
+          game?: string
           id?: string
           origin?: string
-          phase_id?: string
-          player_game_id?: string
-          player_id?: string
+          phase?: string
+          player?: string
+          player_game?: string
           status?: Database["public"]["Enums"]["MoveStatus"]
           to?: string | null
           type?: Database["public"]["Enums"]["MoveType"]
@@ -103,27 +103,27 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "moves_game_id_fkey"
-            columns: ["game_id"]
+            foreignKeyName: "moves_game_fkey"
+            columns: ["game"]
             referencedRelation: "games"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "moves_phase_id_fkey"
-            columns: ["phase_id"]
+            foreignKeyName: "moves_phase_fkey"
+            columns: ["phase"]
             referencedRelation: "phases"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "moves_player_game_id_fkey"
-            columns: ["player_game_id"]
-            referencedRelation: "player_games"
+            foreignKeyName: "moves_player_fkey"
+            columns: ["player"]
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "moves_player_id_fkey"
-            columns: ["player_id"]
-            referencedRelation: "users"
+            foreignKeyName: "moves_player_game_fkey"
+            columns: ["player_game"]
+            referencedRelation: "player_games"
             referencedColumns: ["id"]
           }
         ]
@@ -132,7 +132,7 @@ export interface Database {
         Row: {
           created_at: string
           ends_at: string
-          game_id: string
+          game: string
           id: string
           phase: Database["public"]["Enums"]["Phase"]
           starts_at: string
@@ -142,7 +142,7 @@ export interface Database {
         Insert: {
           created_at?: string
           ends_at: string
-          game_id: string
+          game: string
           id?: string
           phase?: Database["public"]["Enums"]["Phase"]
           starts_at?: string
@@ -152,7 +152,7 @@ export interface Database {
         Update: {
           created_at?: string
           ends_at?: string
-          game_id?: string
+          game?: string
           id?: string
           phase?: Database["public"]["Enums"]["Phase"]
           starts_at?: string
@@ -161,8 +161,8 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "phases_game_id_fkey"
-            columns: ["game_id"]
+            foreignKeyName: "phases_game_fkey"
+            columns: ["game"]
             referencedRelation: "games"
             referencedColumns: ["id"]
           }
@@ -173,36 +173,36 @@ export interface Database {
           country: Database["public"]["Enums"]["country"] | null
           created_at: string
           deleted_at: string | null
-          game_id: string
+          game: string
           id: string
-          player_id: string
+          player: string
         }
         Insert: {
           country?: Database["public"]["Enums"]["country"] | null
           created_at?: string
           deleted_at?: string | null
-          game_id: string
+          game: string
           id?: string
-          player_id?: string
+          player?: string
         }
         Update: {
           country?: Database["public"]["Enums"]["country"] | null
           created_at?: string
           deleted_at?: string | null
-          game_id?: string
+          game?: string
           id?: string
-          player_id?: string
+          player?: string
         }
         Relationships: [
           {
-            foreignKeyName: "player_games_game_id_fkey"
-            columns: ["game_id"]
+            foreignKeyName: "player_games_game_fkey"
+            columns: ["game"]
             referencedRelation: "games"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "player_games_player_id_fkey"
-            columns: ["player_id"]
+            foreignKeyName: "player_games_player_fkey"
+            columns: ["player"]
             referencedRelation: "users"
             referencedColumns: ["id"]
           }
@@ -212,12 +212,12 @@ export interface Database {
         Row: {
           created_at: string
           from: string | null
-          game_id: string
+          game: string
           id: string
           origin: string
-          phase_id: string
-          player_game_id: string
-          player_id: string
+          phase: string
+          player: string
+          player_game: string
           to: string | null
           type: Database["public"]["Enums"]["MoveType"]
           unit_type: Database["public"]["Enums"]["UnitType"]
@@ -225,12 +225,12 @@ export interface Database {
         Insert: {
           created_at?: string
           from?: string | null
-          game_id: string
+          game: string
           id?: string
           origin: string
-          phase_id: string
-          player_game_id: string
-          player_id: string
+          phase: string
+          player: string
+          player_game: string
           to?: string | null
           type?: Database["public"]["Enums"]["MoveType"]
           unit_type?: Database["public"]["Enums"]["UnitType"]
@@ -238,39 +238,39 @@ export interface Database {
         Update: {
           created_at?: string
           from?: string | null
-          game_id?: string
+          game?: string
           id?: string
           origin?: string
-          phase_id?: string
-          player_game_id?: string
-          player_id?: string
+          phase?: string
+          player?: string
+          player_game?: string
           to?: string | null
           type?: Database["public"]["Enums"]["MoveType"]
           unit_type?: Database["public"]["Enums"]["UnitType"]
         }
         Relationships: [
           {
-            foreignKeyName: "submitted_moves_game_id_fkey"
-            columns: ["game_id"]
+            foreignKeyName: "submitted_moves_game_fkey"
+            columns: ["game"]
             referencedRelation: "games"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "submitted_moves_phase_id_fkey"
-            columns: ["phase_id"]
+            foreignKeyName: "submitted_moves_phase_fkey"
+            columns: ["phase"]
             referencedRelation: "phases"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "submitted_moves_player_game_id_fkey"
-            columns: ["player_game_id"]
-            referencedRelation: "player_games"
+            foreignKeyName: "submitted_moves_player_fkey"
+            columns: ["player"]
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "submitted_moves_player_id_fkey"
-            columns: ["player_id"]
-            referencedRelation: "users"
+            foreignKeyName: "submitted_moves_player_game_fkey"
+            columns: ["player_game"]
+            referencedRelation: "player_games"
             referencedColumns: ["id"]
           }
         ]
@@ -295,9 +295,9 @@ export interface Database {
           country: Database["public"]["Enums"]["country"] | null
           created_at: string
           deleted_at: string | null
-          game_id: string
+          game: string
           id: string
-          player_id: string
+          player: string
         }
       }
       is_player_in: {
@@ -323,7 +323,8 @@ export interface Database {
         | "UNDONE"
         | "EFFECTLESS"
         | "SUBMITTED"
-      GameStatus: "FORMING" | "ACTIVE" | "FINISHED"
+      game_status: "FORMING" | "ACTIVE" | "FINISHED"
+      game_type: "FORMING" | "ACTIVE" | "FINISHED"
       MoveStatus: "SUCCEED" | "FAILED" | "INVALID"
       MoveType:
         | "BUILD"

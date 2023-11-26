@@ -26,11 +26,11 @@ export default function CoastialProvinceSelector() {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       to: to,
-      phase_id: selectedGame.value!.phase_id!.id,
+      phase: selectedGame.value!.phase!.id,
       unit_type: selectedUnit.value!.unitType,
-      player_game_id: selectedPlayerGame.value!.id,
+      player_game: selectedPlayerGame.value!.id,
       from: null,
-      game_id: selectedGame.value!.id,
+      game: selectedGame.value!.id,
     };
     submittedMoves.value = [...submittedMoves.value, newMove];
     selectedCountry.value = null;

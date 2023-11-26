@@ -36,7 +36,7 @@ export default function WorldMap() {
     } 
 
     useEffect(() => {
-        submittedMoves.value.forEach((val: SubmittedMoveInsert) => selectedPlayerGame.value?.country && drawLink(arrowDrawer.current, val.origin, val.to, val.from, val.type, selectedPlayerGame.value.country))
+        submittedMoves.value.forEach((val: SubmittedMoveInsert) => selectedPlayerGame.value?.country && drawLink(arrowDrawer.current, val.origin, val.to, val.from, val.type!, selectedPlayerGame.value.country))
     }, [submittedMoves.value])
 
     const unitsWithLocation = computed(() => (
@@ -438,7 +438,7 @@ export default function WorldMap() {
             <rect x="25" y="25" height="70" width="750" className="currentnoterect" />
             <text x="35" y="50" className="currentnotetext" id="CurrentNote"></text>
             <text x="35" y="85" className="currentnotetext" id="CurrentNote2"></text>
-            {selectedGame.value && <text x="1650" y="1325" className="currentphasetext" id="CurrentPhase">{`${sentenceCase(selectedGame.value!.phase_id!.turn)} ${selectedGame.value!.phase_id!.year}`}</text>}
+            {selectedGame.value && <text x="1650" y="1325" className="currentphasetext" id="CurrentPhase">{`${sentenceCase(selectedGame.value!.phase!.turn)} ${selectedGame.value!.phase!.year}`}</text>}
 
             <g id="MouseLayer" className="invisibleContent" transform="translate(-195 -170)">
                 <g id="con">

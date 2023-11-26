@@ -22,9 +22,9 @@ export default function SupportTheUnit() {
       to: to,
       from: from,
       unit_type: selectedUnit.value!.unitType,
-      player_game_id: selectedPlayerGame.value!.id,
-      game_id: selectedGame.value!.id,
-      phase_id: selectedGame.value!.phase_id!.id,
+      player_game: selectedPlayerGame.value!.id,
+      game: selectedGame.value!.id,
+      phase: selectedGame.value!.phase!.id,
     }
     submittedMoves.value = [...submittedMoves.value, newMove]
     selectedUnit.value = null

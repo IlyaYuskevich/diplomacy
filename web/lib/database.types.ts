@@ -11,7 +11,7 @@ export type Database = MergeDeep<
       Tables: {
         moves: {
           Row: {
-            player_id?: string;
+            player?: string;
             from: ProvinceCode | null;
             origin: ProvinceCode;
             to: ProvinceCode | null;
@@ -33,6 +33,10 @@ export type Database = MergeDeep<
           };
           Insert: {
             id?: string;
+            player?: string;
+            from: ProvinceCode | null;
+            origin: ProvinceCode;
+            to: ProvinceCode | null;
           };
           Update: {
             id?: string;
@@ -40,11 +44,11 @@ export type Database = MergeDeep<
         };
         games: {
           Row: {
-            phase_id?: DatabaseGenerated["public"]["Tables"]["phases"]["Row"]
+            phase?: DatabaseGenerated["public"]["Tables"]["phases"]["Row"];
           };
           Insert: {
             id?: string;
-            phase_id?: string;
+            phase?: string;
           };
           Update: {
             id?: string;
@@ -69,6 +73,11 @@ export type Database = MergeDeep<
 
 export type Tables<T extends keyof Database["public"]["Tables"]> =
   Database["public"]["Tables"][T]["Row"];
+
+export type TablesInsert<T extends keyof Database["public"]["Tables"]> =
+  Database["public"]["Tables"][T]["Insert"];
+export type TablesUpdate<T extends keyof Database["public"]["Tables"]> =
+  Database["public"]["Tables"][T]["Update"];
 export type Enums<T extends keyof Database["public"]["Enums"]> =
   Database["public"]["Enums"][T];
 

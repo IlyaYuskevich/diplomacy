@@ -36,8 +36,8 @@ export default function MoveTypeSelector() {
     <div>
       <h4>Select type of the move:</h4>
       <div class="flex flex-row flex-wrap gap-2">
-        {selectedGame.value?.phase_id &&
-          (selectedGame.value.phase_id.turn == "SPRING"
+        {selectedGame.value?.phase &&
+          (selectedGame.value.phase.turn == "SPRING"
             ? getSpringMoves()
             : FallMoves).map((val) => (
               <button
