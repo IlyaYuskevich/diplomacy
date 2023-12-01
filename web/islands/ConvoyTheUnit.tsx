@@ -1,30 +1,32 @@
 import * as hooks from "preact/hooks";
 import AdjacentProvinceSelector from "islands/AdjacentProvinceSelector.tsx";
-import { IMove, moves, selectedMoveType } from "types/moves.ts";
+import { SubmittedMoveInsert, submittedMoves, selectedMoveType } from "types/moves.ts";
 import { selectedUnit } from "types/units.ts";
 import { selectedCountry } from "types/country.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
+import { selectedGame } from "types/game.ts";
+import { ProvinceCode } from "types/provinces.ts";
 
 export default function ConvoyTheUnit() {
 
-  const [from, setFrom] = hooks.useState<string | null>(null)
-  const [to, setTo] = hooks.useState<string | null>(null)
+  const [from, setFrom] = hooks.useState<ProvinceCode | null>(null)
+  const [to, setTo] = hooks.useState<ProvinceCode | null>(null)
 
   hooks.useEffect(() => {
     if (!from || !to) {
       return
     }
-    const newMove: IMove = {
+    const newMove: SubmittedMoveInsert = {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       to: to,
       from: from,
-      unitType: selectedUnit.value!.unitType,
-      phase: selectedPlayerGame.value!.game.phase,
-      year: selectedPlayerGame.value!.game.year,
-      playerGame: selectedPlayerGame.value!
-  }
-    moves.value = [...moves.value, newMove]
+      unit_type: selectedUnit.value!.unitType,
+      phase: selectedGame.value!.phase!.id,
+      player_game: selectedPlayerGame.value!.id,
+      game: selectedGame.value!.id,
+    }
+    submittedMoves.value = [...submittedMoves.value, newMove]
     selectedCountry.value = null
     selectedUnit.value = null
     selectedMoveType.value = null

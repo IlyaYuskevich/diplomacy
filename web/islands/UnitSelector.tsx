@@ -1,29 +1,46 @@
 import { selectedCountry } from "types/country.ts";
 import { gamePosition } from "types/gamePosition.ts";
-import { IMove, moves, selectedMoveType } from "types/moves.ts";
-import { provincesMap } from "types/provinces.ts";
-import { IUnit, selectedUnit } from "types/units.ts";
+import { Move, submittedMoves, selectedMoveType } from "types/moves.ts";
+import { selectedUnit, Unit } from "types/units.ts";
+import { provinces } from "types/provinces.ts";
+import { useEffect, useState } from "preact/hooks";
 
 export default function UnitSelector() {
-  
-  function selectUnit(unit: IUnit) {
-    selectedUnit.value = unit
-    selectedMoveType.value = null
+  function selectUnit(unit: Unit) {
+    selectedUnit.value = unit;
+    selectedMoveType.value = null;
   }
 
-  function filterOrigins(units: IUnit[], moves: IMove[]) {
-    return units.filter(unit => moves.every(x => x.origin != unit.province))
+  function filterOrigins(units: Unit[], moves: Move[]) {
+    return units.filter((unit) =>
+      moves.every((x) => x.origin != unit.province)
+    );
   }
+
+  const [unitsToSelect, setUniteToSelect] = useState<Unit[]>([]);
+
+  useEffect(() => {
+    selectedCountry.value &&
+      setUniteToSelect(
+        filterOrigins(
+          gamePosition.value.unitPositions[selectedCountry.value],
+          submittedMoves.value,
+        ),
+      );
+  }, [selectedCountry.value, submittedMoves.value, gamePosition.value]);
 
   return (
     <div>
-      <h4>Select unit that you want to move:</h4>
+      {unitsToSelect.length != 0 && <h4>Select unit that you want to move:</h4>}
       <div class="flex flex-row flex-wrap gap-2">
-      {selectedCountry.value && filterOrigins(gamePosition.value.unitPositions[selectedCountry.value], moves.value).map((unit) =>
-        <button class="bg-gray-500 px-4 py-2 hover:bg-gray-600 rounded-md text-white" onClick={() => selectUnit(unit)}>
-          {provincesMap.value![unit.province].name}
-        </button>
-      )}
+        {unitsToSelect.map((unit) => (
+          <button
+            class="bg-primary hover:bg-primaryLight px-4 py-2 rounded-md text-white"
+            onClick={() => selectUnit(unit)}
+          >
+            {provinces[unit.province].name}
+          </button>
+        ))}
       </div>
     </div>
   );

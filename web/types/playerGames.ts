@@ -1,15 +1,6 @@
 import { signal } from "@preact/signals";
-import { IGame } from "types/games.ts";
-import { IPlayer } from "types/player.ts";
-import { Country } from "types/country.ts";
+import { Tables } from "lib/database.types.ts";
 
-export interface IPlayerGame {
-	id: string,
-	createdAt: string,
-	country: Country,
-	color: string,
-	game: IGame,
-	player: IPlayer
-}
+export type PlayerGame = Tables<"player_games">
 
-export const selectedPlayerGame = signal<IPlayerGame | null>(null);
+export const selectedPlayerGame = signal<PlayerGame | null>(null);

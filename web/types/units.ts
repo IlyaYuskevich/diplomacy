@@ -1,19 +1,12 @@
 import { signal } from "@preact/signals";
-
-export interface IUnitLocation {
-    X: number
-    Y: number
-  }
+import { ProvinceCode } from "types/provinces.ts";
+import { Enums } from "lib/database.types.ts";
   
-export enum UnitType {
-  Army = "A",
-  Fleet = "F"
-}
+export type UnitType = Enums<"UnitType">
 
-export interface IUnit {
-  province: string
+export type Unit = {
+  province: ProvinceCode
   unitType: UnitType
 }
 
-export const selectedUnit = signal<IUnit | null>(null)
-export const unitLocationsMap = signal<Record<string, IUnitLocation> | null>(null)
+export const selectedUnit = signal<Unit | null>(null)

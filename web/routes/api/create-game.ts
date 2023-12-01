@@ -1,27 +1,37 @@
 
 import { Handlers, Status } from "$fresh/server.ts";
-import { currentGame } from "types/games.ts";
 import { ServerState } from "middlewares/auth-middleware.ts";
+import { authSupabaseClient, superSupa } from "lib/supabase.ts";
+import { DbResult } from "lib/database.types.ts";
+import {addHours, formatISO} from "date-fns";
 
-const BACKEND_URL = Deno.env.get("BACKEND_URL");
-
-export const handler: Handlers = {
+export const handler: Handlers<unknown, ServerState> = {
   async GET(req, ctx) {
-    const response = await fetch(`${BACKEND_URL}/games`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-User-Id": (ctx.state as ServerState).user!.id,
-        },
-        body: JSON.stringify({}),
-      });
+    if (!ctx.state.supaMetadata) {
+      return ctx.render();
+    }
 
-    const jsonData = await response.json();
-    currentGame.value = jsonData;
+    const supa = await authSupabaseClient(ctx.state.supaMetadata);
+
+    const query1 = supa.from("games").insert({}).select().single();
+    const resp1: DbResult<typeof query1> = await query1;
+    if (resp1.error) {
+      return new Response(null, { status: Status.BadRequest });
+    }
+    const query2 = superSupa.from("phases").insert({game: resp1.data!.id, ends_at: formatISO(addHours(Date.now(), 24), {})}).select('id').single();
+    const resp2: DbResult<typeof query2> = await query2;
+    if (resp2.error) {
+      return new Response(null, { status: Status.BadRequest });
+    }
+    const query3 = superSupa.from("games").update({phase: resp2.data.id}).eq('id', resp1.data!.id);
+    const resp3: DbResult<typeof query3> = await query3;
+    if (resp3.error) {
+      return new Response(null, { status: Status.BadRequest });
+    }
 
     const headers = new Headers(req.headers);
 
-    headers.set("location", `/game/${currentGame.value!.id}`);
+    headers.set("location", `/game/${resp1.data!.id}`);
 
     return new Response(null, { status: Status.Found, headers });
   },
