@@ -1,5 +1,5 @@
 
-import { Handlers, Status } from "$fresh/server.ts";
+import { Handlers, STATUS_CODE } from "$fresh/server.ts";
 import { ServerState } from "middlewares/auth-middleware.ts";
 import { authSupabaseClient } from "lib/supabase.ts";
 import { DbResult } from "lib/database.types.ts";
@@ -19,9 +19,9 @@ export const handler: Handlers<unknown, ServerState> = {
     const resp: DbResult<typeof query> = await query;
     if (resp.error) {
       console.log(resp.error)
-      return new Response(null, { status: Status.BadRequest });
+      return new Response(null, { status: STATUS_CODE.BadRequest });
     }
 
-    return new Response(null, { status: Status.OK });
+    return new Response(null, { status: STATUS_CODE.OK });
   },
 }

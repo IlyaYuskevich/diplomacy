@@ -1,4 +1,4 @@
-import { Handlers, Status } from "$fresh/server.ts";
+import { Handlers, STATUS_CODE } from "$fresh/server.ts";
 import { supabase } from "lib/supabase.ts";
 
 export const handler: Handlers = {
@@ -19,13 +19,13 @@ export const handler: Handlers = {
 
     const exists = await supabase.auth.getUser(String(user));
     if (exists?.data.user) {
-      return new Response('This email is already registred', { status: Status.BadRequest });
+      return new Response('This email is already registred', { status: STATUS_CODE.BadRequest });
     }
 
     const headers = new Headers();
 
     headers.set("location", `/auth/confirm-email?email=${email}`);
     
-    return new Response(null, { status: Status.SeeOther, headers });
+    return new Response(null, { status: STATUS_CODE.SeeOther, headers });
   },
 };

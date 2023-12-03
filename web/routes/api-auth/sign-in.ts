@@ -1,4 +1,4 @@
-import { Handlers, Status } from "$fresh/server.ts";
+import { Handlers, STATUS_CODE } from "$fresh/server.ts";
 import { setCookie } from "std/http/cookie.ts";
 import { supabase } from "lib/supabase.ts";
 import { isAuthApiError } from "@supabase";
@@ -24,11 +24,11 @@ export const handler: Handlers = {
       if (isAuthApiError(error)) {
         if (error.message == "Email not confirmed") {
           headers.set("location", `/auth/confirm-email?email=${email}`);
-          return new Response(null, { status: Status.SeeOther, headers });
+          return new Response(null, { status: STATUS_CODE.SeeOther, headers });
         }
         return new Response(error.message, { status: error.status });
       }
-      return new Response(null, { status: Status.InternalServerError });
+      return new Response(null, { status: STATUS_CODE.InternalServerError });
     }
 
     setCookie(headers, {
@@ -54,7 +54,7 @@ export const handler: Handlers = {
 
     return new Response(
       null,
-      { status: Status.SeeOther, headers },
+      { status: STATUS_CODE.SeeOther, headers },
     );
   },
 };

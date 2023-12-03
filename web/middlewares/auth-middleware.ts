@@ -1,19 +1,20 @@
-import { MiddlewareHandlerContext, Status } from "$fresh/server.ts";
+import { FreshContext } from "$fresh/server.ts";
 import { deleteCookie, getCookies, setCookie } from "std/http/cookie.ts";
 import { supabase } from "lib/supabase.ts";
 import { User } from "@supabase";
 import { ISupaSettings } from "types/supaSettings.ts";
 import { SUPABASE_KEY, SUPABASE_URL } from "lib/environment.ts";
+import { STATUS_CODE } from "https://deno.land/std@0.208.0/http/status.ts";
 
 export type ServerState = {
-  user: User | null;
+  user: User | null
   supaMetadata?: ISupaSettings;
   error: { code: number; msg: string } | null;
 };
 
 export async function authMiddleware(
   req: Request,
-  ctx: MiddlewareHandlerContext<ServerState>,
+  ctx: FreshContext<ServerState>,
 ) {
   if (ctx.destination !== "route") {
     return ctx.next();
@@ -30,13 +31,13 @@ export async function authMiddleware(
 
     if (!user_data) {
       headers.set("location", "/auth/sign-in");
-      return new Response(null, { headers, status: Status.SeeOther });
+      return new Response(null, { headers, status: STATUS_CODE.SeeOther });
     }
 
     if (user_data.error) {
       return new Response(user_data.error.message, {
         headers,
-        status: Status.InternalServerError,
+        status: STATUS_CODE.InternalServerError,
       });
     }
 
@@ -48,7 +49,7 @@ export async function authMiddleware(
 
 export async function protectedRouteMiddleware(
   req: Request,
-  ctx: MiddlewareHandlerContext<ServerState>,
+  ctx: FreshContext<ServerState>,
 ) {
   if (ctx.destination !== "route") {
     return ctx.next();
@@ -65,7 +66,7 @@ export async function protectedRouteMiddleware(
       console.error(resp.error.message)
       deleteCookie(headers, "refresh", { path: "/", domain: url.hostname });
       headers.set("location", '/');
-      return new Response(null, { headers, status: Status.SeeOther });
+      return new Response(null, { headers, status: STATUS_CODE.SeeOther });
     }
     access_token = resp.data.session!.access_token
     refresh_token = resp.data.session!.refresh_token
@@ -89,12 +90,12 @@ export async function protectedRouteMiddleware(
       secure: true,
     });
     headers.set("location", url.pathname);
-    return new Response(null, { headers, status: Status.SeeOther });
+    return new Response(null, { headers, status: STATUS_CODE.SeeOther });
   }
 
   if (!access_token) {
     headers.set("location", `/auth/sign-in?redirectUrl=${url.pathname}`);
-    return new Response(null, { headers, status: Status.SeeOther });
+    return new Response(null, { headers, status: STATUS_CODE.SeeOther });
   }
 
   ctx.state.supaMetadata = {
