@@ -28,7 +28,7 @@ export default function MovesRenderer() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(submittedMoves.value),
+      body: JSON.stringify(submittedMoves.value.filter(mv => !mv.created_at)),
     });
     const jsonData = await response.json();
     submittedMoves.value = jsonData;

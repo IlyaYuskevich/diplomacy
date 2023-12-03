@@ -67,7 +67,7 @@ export const provinces = {
   },
   Bul: {
     name: "Bulgaria",
-    type: ProvinceType.Coast,
+    type: ProvinceType.Land,
   },
   BulS: {
     name: "Bulgaria South Coast",
@@ -251,7 +251,7 @@ export const provinces = {
   },
   Spa: {
     name: "Spain",
-    type: ProvinceType.Coast,
+    type: ProvinceType.Land,
   },
   SpaS: {
     name: "Spain South Coast",
@@ -263,7 +263,7 @@ export const provinces = {
   },
   StP: {
     name: "Saint Petersburg",
-    type: ProvinceType.Coast,
+    type: ProvinceType.Land,
   },
   StPN: {
     name: "Saint Petersburg North Coast",

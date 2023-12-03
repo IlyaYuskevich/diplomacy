@@ -32,15 +32,15 @@ export const handler: Handlers<Props, ServerState> = {
 };
 
 export default function MyGames(
-  { data }: PageProps<Props>,
+  props: PageProps<Props>,
 ) {
   return (
     <>
-      {data && (
+      {props.data && (
         <div class="container">
           <PlayerGames
-            playerGames={data.playerGames}
-            userId={data.state.user!.id}
+            playerGames={props.data.playerGames}
+            userId={props.data.state.user!.id}
           />
         </div>
       )}

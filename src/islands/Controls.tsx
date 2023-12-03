@@ -40,6 +40,7 @@ export default function Controls() {
       from: null,
       to: null,
       game: selectedGame.value!.id,
+      player: selectedPlayerGame.value!.player,
     };
     submittedMoves.value = [...submittedMoves.value, newMove];
     selectedUnit.value = null;

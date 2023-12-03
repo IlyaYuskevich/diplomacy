@@ -6,14 +6,14 @@ import { authSupabaseClient, superSupa } from "lib/supabase.ts";
 import { DbResult } from "lib/database.types.ts";
 import { Game } from "types/game.ts";
 import GameView from "islands/GameView.tsx";
-import { Move } from "types/moves.ts";
+import { SubmittedMove } from "types/moves.ts";
 import { ISupaSettings } from "types/supaSettings.ts";
 import GamePreparationView from "islands/GamePreparationView.tsx";
 
 export type GameProps = {
   playerGame: PlayerGame;
   game: Game;
-  moves?: Move[];
+  submittedMoves?: SubmittedMove[];
   playerGamesCount: number;
   supaMetadata: ISupaSettings;
 };
@@ -44,11 +44,11 @@ async function fetchGame(
   return resp;
 }
 
-async function fetchMoves(
+async function fetchSubmittedMoves(
   supa: Awaited<ReturnType<typeof authSupabaseClient>>,
   gid: string,
 ) {
-  const query = supa.from("moves").select("*").eq(
+  const query = supa.from("submitted_moves").select("*").eq(
     "game",
     gid,
   );
@@ -79,7 +79,7 @@ export const handler: Handlers<GameProps, ServerState> = {
     const game = resp2.data;
     const playerGamesCount = (game.player_games[0] as any).count as number;
 
-    let moves: Move[] = [];
+    let submittedMoves: SubmittedMove[] = [];
 
     if (game.status == "FORMING" && playerGamesCount == 7) {
       const resp3 = await superSupa.rpc("assign_countries", { gid: game_id });
@@ -90,13 +90,13 @@ export const handler: Handlers<GameProps, ServerState> = {
     }
 
     if (game.status != "FORMING") {
-      const resp3 = await fetchMoves(supa, game_id);
-      console.log(resp3.error)
+      const resp3 = await fetchSubmittedMoves(supa, game_id);
       if (resp3.error) {
         return ctx.render();
       }
 
-      moves = resp3.data;
+      submittedMoves = resp3.data;
+      console.log(submittedMoves)
     }
 
     const supaMetadata = ctx.state.supaMetadata;
@@ -106,17 +106,17 @@ export const handler: Handlers<GameProps, ServerState> = {
       game,
       playerGamesCount,
       supaMetadata,
-      moves,
+      submittedMoves,
     });
   },
 };
 
-export default function GamePage({ data }: PageProps<GameProps>) {
+export default function GamePage(props: PageProps<GameProps>) {
   return (
     <>
-      {data.game.status == "FORMING"
-        ? <GamePreparationView {...data} />
-        : <GameView {...data} />}
+      {props.data.game.status == "FORMING"
+        ? <GamePreparationView {...props.data} />
+        : <GameView {...props.data} />}
     </>
   );
 }

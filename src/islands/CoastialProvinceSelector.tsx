@@ -31,6 +31,7 @@ export default function CoastialProvinceSelector() {
       player_game: selectedPlayerGame.value!.id,
       from: null,
       game: selectedGame.value!.id,
+      player: selectedPlayerGame.value!.player
     };
     submittedMoves.value = [...submittedMoves.value, newMove];
     selectedCountry.value = null;

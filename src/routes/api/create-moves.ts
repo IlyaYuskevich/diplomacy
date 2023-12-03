@@ -3,7 +3,7 @@ import { Handlers, STATUS_CODE } from "$fresh/server.ts";
 import { ServerState } from "middlewares/auth-middleware.ts";
 import { authSupabaseClient } from "lib/supabase.ts";
 import { DbResult } from "lib/database.types.ts";
-import { Move } from "types/moves.ts";
+import { SubmittedMoveInsert } from "types/moves.ts";
 
 export const handler: Handlers<unknown, ServerState> = {
   async POST(req, ctx) {
@@ -14,7 +14,8 @@ export const handler: Handlers<unknown, ServerState> = {
 
     const supa = await authSupabaseClient(ctx.state.supaMetadata);
     const payload = await req.json()
-    const query = supa.from("moves").insert(payload as Move[])
+    console.log(payload, ctx.state.supaMetadata)
+    const query = supa.from("submitted_moves").insert(payload as SubmittedMoveInsert[])
 
     const resp: DbResult<typeof query> = await query;
     if (resp.error) {

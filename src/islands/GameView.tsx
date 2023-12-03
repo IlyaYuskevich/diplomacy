@@ -12,7 +12,8 @@ export default function GameView(props: GameProps) {
     selectedPlayerGame.value = props.playerGame;
     selectedGame.value = props.game;
     selectedCountry.value = props.playerGame.country;
-    submittedMoves.value = props.moves || [];
+    console.log("!!!", props.submittedMoves)
+    submittedMoves.value = props.submittedMoves || [];
   }, []);
 
   return (

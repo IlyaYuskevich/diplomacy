@@ -25,6 +25,7 @@ export default function ConvoyTheUnit() {
       phase: selectedGame.value!.phase!.id,
       player_game: selectedPlayerGame.value!.id,
       game: selectedGame.value!.id,
+      player: selectedPlayerGame.value!.player,
     }
     submittedMoves.value = [...submittedMoves.value, newMove]
     selectedCountry.value = null

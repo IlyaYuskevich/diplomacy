@@ -25,7 +25,8 @@ export default function MoveTheUnit() {
       player_game: selectedPlayerGame.value!.id,
       from: null,
       game: selectedGame.value!.id,
-      phase: selectedGame.value!.phase!.id
+      phase: selectedGame.value!.phase!.id,
+      player: selectedPlayerGame.value!.player,
     };
     submittedMoves.value = [...submittedMoves.value, newMove];
     selectedUnit.value = null;

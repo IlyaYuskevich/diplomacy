@@ -19,6 +19,10 @@ export type Database = MergeDeep<
           };
           Insert: {
             id?: string;
+            from: ProvinceCode | null;
+            origin: ProvinceCode;
+            to: ProvinceCode | null;
+            status: DatabaseGenerated["public"]["Enums"]["MoveStatus"] | "VALID"
           };
           Update: {
             id?: string;
