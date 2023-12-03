@@ -2,8 +2,6 @@ version: "3"
 services:
 
   diplomacy-fe:
-    build:
-      context: ./web
     volumes:
       - ./:/app
     ports:

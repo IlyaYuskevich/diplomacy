@@ -2,7 +2,7 @@ import { JSX } from "preact";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export function Input(props: JSX.HTMLAttributes<HTMLInputElement>) {
-  const name = props.name || "";
+  const name = String(props.name) || "";
   const displayName = name.charAt(0).toLocaleUpperCase() + name.slice(1);
 
   return (

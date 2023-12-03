@@ -1,23 +1,24 @@
 {
   "lock": false,
   "tasks": {
-    "start": "deno run -A --watch=static/,routes/ --allow-env dev.ts",
-    "crons": "deno run -A ./crons/calc-results.ts",
+    "start": "deno run -A --watch=static/,routes/ --allow-env ./src/dev.ts",
+    "crons": "deno run -A ./src/crons/calc-results.ts",
     "esm:add": "deno run -A https://esm.sh/v133 add",
     "esm:update": "deno run -A https://esm.sh/v133 update",
     "esm:remove": "deno run -A https://esm.sh/v133 remove",
-    "build": "deno run -A dev.ts build",
-    "preview": "deno run -A main.ts"
+    "build": "deno run -A ./src/dev.ts build",
+    "preview": "deno run -A ./src/main.ts",
+    "test": "deno test src/"
   },
   "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
   "imports": {
-    "components/": "./components/",
-    "islands/": "./islands/",
-    "lib/": "./lib/",
-    "routes/": "./routes/",
-    "types/": "./types/",
-    "utils/": "./utils/",
-    "middlewares/": "./middlewares/",
+    "components/": "./src/components/",
+    "islands/": "./src/islands/",
+    "lib/": "./src/lib/",
+    "routes/": "./src/routes/",
+    "types/": "./src/types/",
+    "utils/": "./src/utils/",
+    "middlewares/": "./src/middlewares/",
     "std": "https://deno.land/std@0.202.0",
     "std/": "https://deno.land/std@0.202.0/",
     "dotenv/": "https://deno.land/std@0.204.0/dotenv/",
@@ -36,7 +37,8 @@
     "croner": "https://deno.land/x/croner@7.0.5/dist/croner.js",
     "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.2.2",
     "preact-render-to-string/": "https://esm.sh/v127/*preact-render-to-string@6.1.0/",
-    "date-fns": "https://deno.land/x/date_fns@v2.12.0/index.js"
+    "date-fns": "https://deno.land/x/date_fns@v2.12.0/index.js",
+    "assert": "https://deno.land/std@0.208.0/assert/mod.ts"
   },
   "scopes": {
     "https://esm.sh/v127/": {

@@ -1,6 +1,6 @@
 import { selectedCountry } from "types/country.ts";
 import { gamePosition } from "types/gamePosition.ts";
-import { Move, submittedMoves, selectedMoveType } from "types/moves.ts";
+import { submittedMoves, selectedMoveType, SubmittedMoveInsert } from "types/moves.ts";
 import { selectedUnit, Unit } from "types/units.ts";
 import { provinces } from "types/provinces.ts";
 import { useEffect, useState } from "preact/hooks";
@@ -11,7 +11,7 @@ export default function UnitSelector() {
     selectedMoveType.value = null;
   }
 
-  function filterOrigins(units: Unit[], moves: Move[]) {
+  function filterOrigins(units: Unit[], moves: SubmittedMoveInsert[]) {
     return units.filter((unit) =>
       moves.every((x) => x.origin != unit.province)
     );
