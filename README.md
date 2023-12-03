@@ -1,6 +1,28 @@
-# fresh project
+# diplomacy
 
-### Usage
+Classic strategic board game.
+
+## Prerequisites:
+
+1. Download and install Docker Desktop: https://docs.docker.com/desktop/install/mac-install/
+2. This project uses Supabase as a database-as-a-service:
+   * Create a project in https://supabase.com/;
+   * Create four tables: games, players, player_games, moves (see project folder api/types);
+   * Create and .env.local using provided template and fill values accordingly to connect to your supabase instance;
+
+
+## Usage:
+### With Docker:
+
+Run docker images:
+
+```bash
+docker-compose -f ./docker-compose.yaml up -d
+
+frontend: http://localhost:4000
+```
+
+### To develop with live webserver on localmachine:
 
 Install deno code extension for your favorite IDE and enable it for current workspace.
 

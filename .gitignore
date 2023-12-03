@@ -39,7 +39,6 @@ _test
 
 .env.local
 .env
-./web/.env
 
 # IDE
 .vscode
