@@ -83,6 +83,8 @@ export const handler: Handlers<GameProps, ServerState> = {
 
     if (game.status == "FORMING" && playerGamesCount == 7) {
       const resp3 = await superSupa.rpc("assign_countries", { gid: game_id });
+      console.log(resp3)
+
       if (resp3.error) {
         return ctx.render();
       }
@@ -96,7 +98,6 @@ export const handler: Handlers<GameProps, ServerState> = {
       }
 
       submittedMoves = resp3.data;
-      console.log(submittedMoves)
     }
 
     const supaMetadata = ctx.state.supaMetadata;

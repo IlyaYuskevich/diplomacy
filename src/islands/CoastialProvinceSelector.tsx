@@ -8,7 +8,7 @@ import * as hooks from "preact/hooks";
 import { selectedUnit } from "types/units.ts";
 import { selectedCountry } from "types/country.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
-import { selectedGame } from "types/game.ts";
+import { currentGame } from "types/game.ts";
 
 export default function CoastialProvinceSelector() {
   function filterCoastialProvinces(key: ProvinceCode) {
@@ -26,11 +26,11 @@ export default function CoastialProvinceSelector() {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       to: to,
-      phase: selectedGame.value!.phase!.id,
+      phase: currentGame.value!.phase!.id,
       unit_type: selectedUnit.value!.unitType,
       player_game: selectedPlayerGame.value!.id,
       from: null,
-      game: selectedGame.value!.id,
+      game: currentGame.value!.id,
       player: selectedPlayerGame.value!.player
     };
     submittedMoves.value = [...submittedMoves.value, newMove];

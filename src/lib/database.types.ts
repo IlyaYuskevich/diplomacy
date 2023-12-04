@@ -3,6 +3,7 @@ import { Database as DatabaseGenerated } from "lib/database-generated.types.ts";
 export type { Json } from "lib/database-generated.types.ts";
 import { PostgrestError } from "@supabase";
 import { ProvinceCode } from "types/provinces.ts";
+import { GamePosition } from "types/gamePosition.ts";
 
 export type Database = MergeDeep<
   DatabaseGenerated,
@@ -48,14 +49,17 @@ export type Database = MergeDeep<
         };
         games: {
           Row: {
+            game_position: GamePosition;
             phase?: DatabaseGenerated["public"]["Tables"]["phases"]["Row"];
           };
           Insert: {
             id?: string;
             phase?: string;
+            game_position: GamePosition;
           };
           Update: {
             id?: string;
+            game_position?: GamePosition;
           };
         };
         player_games: {

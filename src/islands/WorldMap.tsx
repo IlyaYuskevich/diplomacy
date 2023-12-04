@@ -1,12 +1,11 @@
 import { Country } from "types/country.ts";
-import { gamePosition } from "types/gamePosition.ts";
 import { Unit, UnitType } from "types/units.ts";
 import { computed } from "@preact/signals";
 import * as svg from "@svgdotjs/svg.js";
 import { drawLink } from "utils/worldMapUtils.ts";
 import { useEffect, useRef } from "preact/hooks";
 import { SubmittedMoveInsert, submittedMoves } from "types/moves.ts";
-import { selectedGame } from "types/game.ts";
+import { currentGame, gamePosition } from "types/game.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
 import { ProvinceCode, UNIT_LOC_MAP } from "types/provinces.ts";
 import { sentenceCase } from "case";
@@ -438,7 +437,7 @@ export default function WorldMap() {
             <rect x="25" y="25" height="70" width="750" className="currentnoterect" />
             <text x="35" y="50" className="currentnotetext" id="CurrentNote"></text>
             <text x="35" y="85" className="currentnotetext" id="CurrentNote2"></text>
-            {selectedGame.value && <text x="1650" y="1325" className="currentphasetext" id="CurrentPhase">{`${sentenceCase(selectedGame.value!.phase!.turn)} ${selectedGame.value!.phase!.year}`}</text>}
+            {currentGame.value && <text x="1650" y="1325" className="currentphasetext" id="CurrentPhase">{`${sentenceCase(currentGame.value!.phase!.turn)} ${currentGame.value!.phase!.year}`}</text>}
 
             <g id="MouseLayer" className="invisibleContent" transform="translate(-195 -170)">
                 <g id="con">

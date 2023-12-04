@@ -1,4 +1,3 @@
-import { signal } from "@preact/signals";
 import { Unit } from "types/units.ts";
 import { Country } from "types/country.ts";
 import { ProvinceCode } from "types/provinces.ts";
@@ -11,7 +10,7 @@ export type GamePosition = {
 
 export type Phase = Tables<"phases">
 
-const START_POSITION: GamePosition = {
+export const START_POSITION: GamePosition = {
   domains: {
     AUSTRIA: ["Boh", "Bud", "Gal", "Tri", "Tyr", "Vie"],
     ENGLAND: ["Cly", "Edi", "Lvp", "Lon", "Wal", "Yor"],
@@ -97,5 +96,3 @@ export const SUPPLY_CENTERS: Partial<Record<ProvinceCode, Country>> = {
   Tun: null,
   Gre: null,
 }
-
-export const gamePosition = signal<GamePosition>(START_POSITION);

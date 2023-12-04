@@ -4,13 +4,13 @@ import Controls from "islands/Controls.tsx";
 import { submittedMoves } from "types/moves.ts";
 import { useEffect } from "preact/hooks";
 import { selectedPlayerGame } from "types/playerGames.ts";
-import { selectedGame } from "types/game.ts";
+import { currentGame } from "types/game.ts";
 import { selectedCountry } from "types/country.ts";
 
 export default function GameView(props: GameProps) {
   useEffect(() => {
     selectedPlayerGame.value = props.playerGame;
-    selectedGame.value = props.game;
+    currentGame.value = props.game;
     selectedCountry.value = props.playerGame.country;
     console.log("!!!", props.submittedMoves)
     submittedMoves.value = props.submittedMoves || [];

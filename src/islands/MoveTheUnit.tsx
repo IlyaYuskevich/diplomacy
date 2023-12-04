@@ -7,7 +7,7 @@ import {
 } from "types/moves.ts";
 import { selectedUnit } from "types/units.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
-import { selectedGame } from "types/game.ts";
+import { currentGame } from "types/game.ts";
 import { ProvinceCode } from "types/provinces.ts";
 
 export default function MoveTheUnit() {
@@ -24,8 +24,8 @@ export default function MoveTheUnit() {
       unit_type: selectedUnit.value!.unitType,
       player_game: selectedPlayerGame.value!.id,
       from: null,
-      game: selectedGame.value!.id,
-      phase: selectedGame.value!.phase!.id,
+      game: currentGame.value!.id,
+      phase: currentGame.value!.phase!.id,
       player: selectedPlayerGame.value!.player,
     };
     submittedMoves.value = [...submittedMoves.value, newMove];

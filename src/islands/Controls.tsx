@@ -9,7 +9,7 @@ import ConvoyTheUnit from "islands/ConvoyTheUnit.tsx";
 import CoastialProvinceSelector from "islands/CoastialProvinceSelector.tsx";
 import MovesRenderer from "islands/MovesRenderer.tsx";
 import { selectedPlayerGame } from "types/playerGames.ts";
-import { selectedGame } from "types/game.ts";
+import { currentGame } from "types/game.ts";
 
 export default function Controls() {
   function renderMoveBuilder() {
@@ -35,11 +35,11 @@ export default function Controls() {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       unit_type: selectedUnit.value!.unitType,
-      phase: selectedGame.value!.phase!.id,
+      phase: currentGame.value!.phase!.id,
       player_game: selectedPlayerGame.value!.id,
       from: null,
       to: null,
-      game: selectedGame.value!.id,
+      game: currentGame.value!.id,
       player: selectedPlayerGame.value!.player,
     };
     submittedMoves.value = [...submittedMoves.value, newMove];

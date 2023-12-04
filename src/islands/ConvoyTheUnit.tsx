@@ -4,7 +4,7 @@ import { SubmittedMoveInsert, submittedMoves, selectedMoveType } from "types/mov
 import { selectedUnit } from "types/units.ts";
 import { selectedCountry } from "types/country.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
-import { selectedGame } from "types/game.ts";
+import { currentGame } from "types/game.ts";
 import { ProvinceCode } from "types/provinces.ts";
 
 export default function ConvoyTheUnit() {
@@ -22,9 +22,9 @@ export default function ConvoyTheUnit() {
       to: to,
       from: from,
       unit_type: selectedUnit.value!.unitType,
-      phase: selectedGame.value!.phase!.id,
+      phase: currentGame.value!.phase!.id,
       player_game: selectedPlayerGame.value!.id,
-      game: selectedGame.value!.id,
+      game: currentGame.value!.id,
       player: selectedPlayerGame.value!.player,
     }
     submittedMoves.value = [...submittedMoves.value, newMove]

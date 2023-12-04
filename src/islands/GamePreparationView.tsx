@@ -2,7 +2,7 @@ import { GameProps } from "routes/game/[gameId].tsx";
 import { createClient } from "@supabase";
 import { useEffect, useState } from "preact/hooks";
 import { selectedPlayerGame } from "types/playerGames.ts";
-import { Game, selectedGame } from "types/game.ts";
+import { Game, currentGame } from "types/game.ts";
 
 export default function GamePreparationView(props: GameProps) {
   const [playersCount, setPlayersCount] = useState<number>(
@@ -11,7 +11,7 @@ export default function GamePreparationView(props: GameProps) {
 
   useEffect(() => {
     selectedPlayerGame.value = props.playerGame;
-    selectedGame.value = props.game;
+    currentGame.value = props.game;
   }, [props]);
 
   useEffect(() => {
@@ -30,12 +30,13 @@ export default function GamePreparationView(props: GameProps) {
         schema: "public",
         table: "player_games",
       }, (v) => {
-        if (v.new?.game_id == selectedGame.value!.id) {
-          console.log(v);
+        console.log(v, currentGame.value)
+        if (v.new?.game == currentGame.value!.id) {
           setPlayersCount((prevState) => prevState += 1);
         }
       })
-      .subscribe();
+      .subscribe((status, err) => console.log(status, err));
+
       const gameUpdateChannel = supa
       .channel("games_update")
       .on("postgres_changes", {
@@ -44,13 +45,15 @@ export default function GamePreparationView(props: GameProps) {
         table: "games",
       }, (v) => {
         const newValue = v.new as Game;
-        console.warn(v);
-        if (v.old?.id == selectedGame.value!.id && newValue.status == "ACTIVE") {
+        if (v.old?.id == currentGame.value!.id && newValue.status == "ACTIVE") {
           location.reload()
         }
       })
-      .subscribe();
-    return () => supa.removeChannel(pgInsertChannel);
+      .subscribe((status, err) => console.log(status, err));
+    return () => { 
+      supa.removeChannel(pgInsertChannel);
+      supa.removeChannel(gameUpdateChannel);
+    };
   }, []);
 
   function copyToClipboard() {

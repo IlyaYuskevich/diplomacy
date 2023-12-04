@@ -1,7 +1,6 @@
 import { signal } from "@preact/signals";
-import { Enums } from "lib/database.types.ts";
 
-export type Country = Enums<"Country">
+export type Country = "FRANCE" | "GERMANY" | "ITALY" | "RUSSIA" | "AUSTRIA" | "ENGLAND" | "TURKEY" | null
 
 export const CountryColors: { [key in NonNullable<Country>]: string } = {
 	"AUSTRIA": "#C48F85",

@@ -1,9 +1,9 @@
 import { selectedCountry } from "types/country.ts";
-import { gamePosition } from "types/gamePosition.ts";
 import { submittedMoves, selectedMoveType, SubmittedMoveInsert } from "types/moves.ts";
 import { selectedUnit, Unit } from "types/units.ts";
 import { provinces } from "types/provinces.ts";
 import { useEffect, useState } from "preact/hooks";
+import { gamePosition } from "types/game.ts";
 
 export default function UnitSelector() {
   function selectUnit(unit: Unit) {

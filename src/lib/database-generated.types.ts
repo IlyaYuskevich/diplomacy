@@ -15,6 +15,7 @@ export interface Database {
           diplomatic_phase_fall: string
           diplomatic_phase_spring: string
           gaining_loosing_phase: string
+          game_position: Json | null
           game_type: string
           id: string
           phase: string | null
@@ -27,6 +28,7 @@ export interface Database {
           diplomatic_phase_fall?: string
           diplomatic_phase_spring?: string
           gaining_loosing_phase?: string
+          game_position?: Json | null
           game_type?: string
           id?: string
           phase?: string | null
@@ -39,6 +41,7 @@ export interface Database {
           diplomatic_phase_fall?: string
           diplomatic_phase_spring?: string
           gaining_loosing_phase?: string
+          game_position?: Json | null
           game_type?: string
           id?: string
           phase?: string | null
@@ -210,7 +213,7 @@ export interface Database {
       }
       submitted_moves: {
         Row: {
-          created_at: string
+          created_at: string | null
           from: string | null
           game: string
           id: string
@@ -223,7 +226,7 @@ export interface Database {
           unit_type: Database["public"]["Enums"]["UnitType"]
         }
         Insert: {
-          created_at?: string
+          created_at?: string | null
           from?: string | null
           game: string
           id?: string
@@ -236,7 +239,7 @@ export interface Database {
           unit_type?: Database["public"]["Enums"]["UnitType"]
         }
         Update: {
-          created_at?: string
+          created_at?: string | null
           from?: string | null
           game?: string
           id?: string
@@ -324,7 +327,6 @@ export interface Database {
         | "EFFECTLESS"
         | "SUBMITTED"
       game_status: "FORMING" | "ACTIVE" | "FINISHED"
-      game_type: "FORMING" | "ACTIVE" | "FINISHED"
       MoveStatus: "SUCCEED" | "FAILED" | "INVALID"
       MoveType:
         | "BUILD"
