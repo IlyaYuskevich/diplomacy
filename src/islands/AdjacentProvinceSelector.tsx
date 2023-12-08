@@ -6,6 +6,8 @@ import {
   ProvinceCode,
   provinces,
 } from "types/provinces.ts";
+import { computed } from "@preact/signals";
+import { submittedMoves } from "types/moves.ts";
 
 export default function AdjacentProvinceSelector(
   props: {
@@ -14,12 +16,10 @@ export default function AdjacentProvinceSelector(
     unitType?: UnitType;
   },
 ) {
-  console.log(props)
   function getMoves(
     province: ProvinceCode,
     unitType?: UnitType,
   ): ProvinceCode[] {
-    console.log(province, unitType)
     if (unitType == "Fleet") {
       return fleetBorders[province] || [];
     } else if (unitType == "Army") {
@@ -28,11 +28,13 @@ export default function AdjacentProvinceSelector(
     return [...armyBorders[province] || [], ...fleetBorders[province] || []]
   }
 
+  const alreadyMovesToProvinces = computed(() => submittedMoves.value.filter(mv => mv.type == "MOVE").map(mv => mv.to))
+
   return (
     <div>
       <div class="flex flex-row flex-wrap gap-2">
         {props.province &&
-          getMoves(props.province, props.unitType).map((key: ProvinceCode) => (
+          getMoves(props.province, props.unitType).filter(prov => !alreadyMovesToProvinces.value.includes(prov)).map((key: ProvinceCode) => (
             <button
               class="bg-primary hover:bg-primaryLight px-4 py-2 rounded-md text-white"
               onClick={() => props.setter(key)}

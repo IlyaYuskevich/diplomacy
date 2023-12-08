@@ -13,16 +13,20 @@ export const handler: Handlers<unknown, ServerState> = {
 
 
     const supa = await authSupabaseClient(ctx.state.supaMetadata);
-    const payload = await req.json()
-    console.log(payload, ctx.state.supaMetadata)
-    const query = supa.from("submitted_moves").insert(payload as SubmittedMoveInsert[])
+    const payload = await req.json() as SubmittedMoveInsert[]
+    if (payload.length == 0) {
+      return new Response(null, { status: STATUS_CODE.BadRequest });
+    }
+    const query = supa.from("submitted_moves").insert(payload)
 
     const resp: DbResult<typeof query> = await query;
     if (resp.error) {
-      console.log(resp.error)
       return new Response(null, { status: STATUS_CODE.BadRequest });
     }
 
-    return new Response(null, { status: STATUS_CODE.OK });
+    const query2 = supa.from("submitted_moves").select().eq("phase", payload.at(0)!.phase)
+    const resp2: DbResult<typeof query2> = await query2;
+
+    return new Response(JSON.stringify(resp2.data), { status: STATUS_CODE.OK });
   },
 }

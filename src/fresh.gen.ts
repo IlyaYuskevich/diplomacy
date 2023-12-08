@@ -13,6 +13,7 @@ import * as $api_auth_sign_up from "./routes/api-auth/sign-up.tsx";
 import * as $api_middleware from "./routes/api/_middleware.ts";
 import * as $api_create_game from "./routes/api/create-game.ts";
 import * as $api_create_moves from "./routes/api/create-moves.ts";
+import * as $api_submitted_move_id_ from "./routes/api/submitted-move/[id].ts";
 import * as $auth_confirm_email from "./routes/auth/confirm-email.tsx";
 import * as $auth_sign_in from "./routes/auth/sign-in.tsx";
 import * as $auth_sign_up from "./routes/auth/sign-up.tsx";
@@ -33,6 +34,7 @@ import * as $MoveTheUnit from "./islands/MoveTheUnit.tsx";
 import * as $MoveTypeSelector from "./islands/MoveTypeSelector.tsx";
 import * as $MovesRenderer from "./islands/MovesRenderer.tsx";
 import * as $PlayerGames from "./islands/PlayerGames.tsx";
+import * as $SubmittedMoveRenderer from "./islands/SubmittedMoveRenderer.tsx";
 import * as $SupportTheUnit from "./islands/SupportTheUnit.tsx";
 import * as $UnitSelector from "./islands/UnitSelector.tsx";
 import * as $WorldMap from "./islands/WorldMap.tsx";
@@ -51,6 +53,7 @@ const manifest = {
     "./routes/api/_middleware.ts": $api_middleware,
     "./routes/api/create-game.ts": $api_create_game,
     "./routes/api/create-moves.ts": $api_create_moves,
+    "./routes/api/submitted-move/[id].ts": $api_submitted_move_id_,
     "./routes/auth/confirm-email.tsx": $auth_confirm_email,
     "./routes/auth/sign-in.tsx": $auth_sign_in,
     "./routes/auth/sign-up.tsx": $auth_sign_up,
@@ -73,6 +76,7 @@ const manifest = {
     "./islands/MoveTypeSelector.tsx": $MoveTypeSelector,
     "./islands/MovesRenderer.tsx": $MovesRenderer,
     "./islands/PlayerGames.tsx": $PlayerGames,
+    "./islands/SubmittedMoveRenderer.tsx": $SubmittedMoveRenderer,
     "./islands/SupportTheUnit.tsx": $SupportTheUnit,
     "./islands/UnitSelector.tsx": $UnitSelector,
     "./islands/WorldMap.tsx": $WorldMap,

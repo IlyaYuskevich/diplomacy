@@ -42,3 +42,5 @@ _test
 
 # IDE
 .vscode
+# Fresh build directory
+_fresh/
