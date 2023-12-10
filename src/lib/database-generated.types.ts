@@ -12,42 +12,39 @@ export interface Database {
       games: {
         Row: {
           deleted_at: string | null
-          diplomatic_phase_fall: string
-          diplomatic_phase_spring: string
-          gaining_loosing_phase: string
+          gaining_and_loosing_phase_duration: number
           game_position: Json | null
           game_type: string
           id: string
           phase: string | null
-          retreat_phase: string
+          retreat_and_disbanding_phase_duration: number
           started_at: string
           status: Database["public"]["Enums"]["game_status"]
+          turn_duration: number
         }
         Insert: {
           deleted_at?: string | null
-          diplomatic_phase_fall?: string
-          diplomatic_phase_spring?: string
-          gaining_loosing_phase?: string
+          gaining_and_loosing_phase_duration?: number
           game_position?: Json | null
           game_type?: string
           id?: string
           phase?: string | null
-          retreat_phase?: string
+          retreat_and_disbanding_phase_duration?: number
           started_at?: string
           status?: Database["public"]["Enums"]["game_status"]
+          turn_duration?: number
         }
         Update: {
           deleted_at?: string | null
-          diplomatic_phase_fall?: string
-          diplomatic_phase_spring?: string
-          gaining_loosing_phase?: string
+          gaining_and_loosing_phase_duration?: number
           game_position?: Json | null
           game_type?: string
           id?: string
           phase?: string | null
-          retreat_phase?: string
+          retreat_and_disbanding_phase_duration?: number
           started_at?: string
           status?: Database["public"]["Enums"]["game_status"]
+          turn_duration?: number
         }
         Relationships: [
           {
@@ -133,7 +130,6 @@ export interface Database {
       }
       phases: {
         Row: {
-          created_at: string
           ends_at: string
           game: string
           id: string
@@ -143,7 +139,6 @@ export interface Database {
           year: number
         }
         Insert: {
-          created_at?: string
           ends_at: string
           game: string
           id?: string
@@ -153,7 +148,6 @@ export interface Database {
           year?: number
         }
         Update: {
-          created_at?: string
           ends_at?: string
           game?: string
           id?: string

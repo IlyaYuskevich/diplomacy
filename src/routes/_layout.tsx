@@ -16,8 +16,8 @@ export default function Layout({ Component, state }: LayoutProps) {
       </Head>
 
       <div class="bg-primary">
-        <nav class="flex items-center justify-between flex-wrap min-h-[80px] max-w-screen-md mx-auto p-4">
-          <a href="/">
+        <nav class="flex items-center justify-between flex-wrap min-h-[80px] mx-auto p-4">
+          <a href="/" class="pl-10">
             <div class="flex flex-shrink-0 border-white">
               <img
                 src={asset("/logo-inverted.svg")}
@@ -28,7 +28,7 @@ export default function Layout({ Component, state }: LayoutProps) {
             </div>
           </a>
 
-          <div class="flex flex-grow border-gray pt-1">
+          <div class="flex flex-grow border-gray pt-1 pr-10">
             <div class="flex flex-grow">
               <NavLink href="/my-games">Games</NavLink>
             </div>
