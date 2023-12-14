@@ -65,7 +65,7 @@ export default function Controls() {
       phase: currentGame.value!.phase!.id,
       player_game: selectedPlayerGame.value!.id,
       from: null,
-      to: null,
+      to: selectedUnit.value!.province,
       game: currentGame.value!.id,
       player: selectedPlayerGame.value!.player,
     };

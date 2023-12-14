@@ -13,6 +13,7 @@ import { GamePhase } from "types/game.ts";
 const ruleAdjacency = (move: MoveInsert) => {
   /* Checking that provinces have common border */
   if (move.type == "CONVOY" && move.unit_type == "Army") return move; // army convoy to not adjacent provinces is allowed
+  if (move.type == "DEFEND") return move; // in defend origin == to
   const isBordering = (province1: ProvinceCode, province2: ProvinceCode) =>
     fleetBorders[province1]?.some((prv) => prv == province2) ||
     armyBorders[province1]?.some((prv) => prv == province2);
@@ -30,7 +31,6 @@ const ruleAdjacency = (move: MoveInsert) => {
 
 const ruleUnitTypeDestination = (move: MoveInsert) => {
   /* Armies cannot go to sea, fleets cannot go to land */
-  if (!move.to) return move;
   if (provinces[move.to].type == ProvinceType.Sea && move.unit_type == "Army") {
     move.status = "INVALID";
   }
@@ -43,7 +43,7 @@ const ruleUnitTypeDestination = (move: MoveInsert) => {
 const ruleArmyConvoyedFromCoastToCoast = (move: MoveInsert) => {
   /* Army convoyed from Coast to Coast */
   if (move.type !== "CONVOY" || move.unit_type !== "Army") return move;
-  if (!move.to) return move;
+  if (!move.origin) return move;
   if (
     provinces[move.to].type !== ProvinceType.Coast ||
     provinces[move.origin].type !== ProvinceType.Coast
@@ -57,17 +57,25 @@ const ruleBuildinSuppCenters = (move: MoveInsert) => {
   const supplyCenters = Object.keys(SUPPLY_CENTERS);
   if (!supplyCenters.some((x) => x === move.origin)) move.status = "INVALID";
   if (
-    provinces[move.origin].type === ProvinceType.Land &&
+    provinces[move.to].type === ProvinceType.Land &&
     move.unit_type === "Fleet"
   ) move.status = "INVALID";
   return move;
 };
 
+const ruleDefendOnlySelfOrigin = (move: MoveInsert) => {
+  /* Reject defend moves if where to not equals origin */
+  if (move.type !== "DEFEND") return move;
+  if (move.to !== move.origin) move.status = "INVALID"  
+  return move;
+};
+
 const ruleOneMovePerUnit = (prevOrigins: ProvinceCode[], move: MoveInsert) => {
   /* Unit can do only one move */
-  if (prevOrigins.includes(move.origin)) move.status = "INVALID";
+  if (move.type == "BUILD") return prevOrigins;
+  if (prevOrigins.includes(move.origin!)) move.status = "INVALID";
   else if (move.status !== "INVALID") {
-    const origins = [...prevOrigins, move.origin];
+    const origins = [...prevOrigins, move.origin!];
     return origins;
   }
   return prevOrigins;
@@ -76,9 +84,10 @@ const ruleOneMovePerUnit = (prevOrigins: ProvinceCode[], move: MoveInsert) => {
 const ruleSelfUnitShouldExist =
   (gamePosition: GamePosition, country: NonNullable<Country>) =>
   (move: MoveInsert) => {
+    if (move.type == "BUILD") return move;
     if (
       !gamePosition.unitPositions[country].map((unit) => unit.province)
-        .includes(move.origin)
+        .includes(move.origin!)
     ) move.status = "INVALID";
     return move;
   };
@@ -86,7 +95,7 @@ const ruleSelfUnitShouldExist =
 const ruleBuildOnlyInDomesticSupplyCenters =
   (country: NonNullable<Country>) => (move: MoveInsert) => {
     if (move.type !== "BUILD") return move;
-    if (SUPPLY_CENTERS[move.origin] !== country) move.status = "INVALID";
+    if (SUPPLY_CENTERS[move.to] !== country) move.status = "INVALID";
     return move;
   };
 
@@ -122,6 +131,7 @@ export function individualMoveValidator(
     .map(ruleAdjacency)
     .map(ruleUnitTypeDestination)
     .map(ruleArmyConvoyedFromCoastToCoast)
+    .map(ruleDefendOnlySelfOrigin)
     .map(ruleBuildinSuppCenters);
   return moves;
 }

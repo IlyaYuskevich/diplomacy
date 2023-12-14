@@ -62,12 +62,12 @@ export interface Database {
           from: string | null
           game: string
           id: string
-          origin: string
+          origin: string | null
           phase: string
           player: string
           player_game: string
           status: Database["public"]["Enums"]["MoveStatus"]
-          to: string | null
+          to: string
           type: Database["public"]["Enums"]["MoveType"]
           unit_type: Database["public"]["Enums"]["UnitType"]
         }
@@ -77,12 +77,12 @@ export interface Database {
           from?: string | null
           game: string
           id?: string
-          origin: string
+          origin?: string | null
           phase: string
           player?: string
           player_game: string
           status: Database["public"]["Enums"]["MoveStatus"]
-          to?: string | null
+          to: string
           type: Database["public"]["Enums"]["MoveType"]
           unit_type: Database["public"]["Enums"]["UnitType"]
         }
@@ -92,12 +92,12 @@ export interface Database {
           from?: string | null
           game?: string
           id?: string
-          origin?: string
+          origin?: string | null
           phase?: string
           player?: string
           player_game?: string
           status?: Database["public"]["Enums"]["MoveStatus"]
-          to?: string | null
+          to?: string
           type?: Database["public"]["Enums"]["MoveType"]
           unit_type?: Database["public"]["Enums"]["UnitType"]
         }
@@ -211,11 +211,11 @@ export interface Database {
           from: string | null
           game: string
           id: string
-          origin: string
+          origin: string | null
           phase: string
           player: string
           player_game: string
-          to: string | null
+          to: string
           type: Database["public"]["Enums"]["MoveType"]
           unit_type: Database["public"]["Enums"]["UnitType"]
         }
@@ -224,11 +224,11 @@ export interface Database {
           from?: string | null
           game: string
           id?: string
-          origin: string
+          origin?: string | null
           phase: string
           player: string
           player_game: string
-          to?: string | null
+          to: string
           type?: Database["public"]["Enums"]["MoveType"]
           unit_type?: Database["public"]["Enums"]["UnitType"]
         }
@@ -237,11 +237,11 @@ export interface Database {
           from?: string | null
           game?: string
           id?: string
-          origin?: string
+          origin?: string | null
           phase?: string
           player?: string
           player_game?: string
-          to?: string | null
+          to?: string
           type?: Database["public"]["Enums"]["MoveType"]
           unit_type?: Database["public"]["Enums"]["UnitType"]
         }

@@ -34,7 +34,7 @@ Deno.test("assert valid moves receive status VALID", () => {
   }, {
     created_at: "2023-12-03T18:20:15.186285+00:00",
     type: "DEFEND",
-    to: null,
+    to: "Kie",
     from: null,
     origin: "Kie",
     unit_type: "Fleet",
@@ -45,7 +45,7 @@ Deno.test("assert valid moves receive status VALID", () => {
     id: "1c75a72f-718c-4d29-8aa3-ca656b7cf4ad",
   }];
   const movesToSubmit = individualMoveValidator(validMoves);
-  movesToSubmit.forEach((move) => assertEquals(move.status, "VALID"));
+  movesToSubmit.forEach((move) => assertEquals(move.status, "VALID", move.id));
 });
 
 Deno.test("assert invalid moves receive status INVALID", () => {
@@ -104,9 +104,9 @@ Deno.test("assert invalid moves receive status INVALID", () => {
   const buildIsOnlyInSupplyCenter: SubmittedMove = {
     "created_at": "2023-12-03T15:19:05.411808+00:00",
     "type": "BUILD",
-    "to": null,
+    "to": "Gas",
     "from": null,
-    "origin": "Gas",
+    "origin": null,
     "unit_type": "Army",
     "player_game": "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
     "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
@@ -117,9 +117,9 @@ Deno.test("assert invalid moves receive status INVALID", () => {
   const buildFleetsOnlyInCoastialSupplyCenters: SubmittedMove = {
     "created_at": "2023-12-03T15:19:05.411808+00:00",
     "type": "BUILD",
-    "to": null,
+    "to": "Vie",
     "from": null,
-    "origin": "Vie",
+    "origin": null,
     "unit_type": "Fleet",
     "player_game": "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
     "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
@@ -130,9 +130,9 @@ Deno.test("assert invalid moves receive status INVALID", () => {
   const buildFleetsOnlyInTwoCoastSupplyCenters: SubmittedMove = {
     "created_at": "2023-12-03T15:19:05.411808+00:00",
     "type": "BUILD",
-    "to": null,
+    "to": "StP",
     "from": null,
-    "origin": "StP",
+    "origin": null,
     "unit_type": "Fleet",
     "player_game": "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
     "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
@@ -193,7 +193,6 @@ Deno.test("assert validity of moves with respect to previous position", () => {
       ],
       ITALY: [
         { province: "Rom", unitType: "Army" },
-        { province: "Ven", unitType: "Army" },
         { province: "Nap", unitType: "Fleet" },
       ],
       RUSSIA: [
@@ -238,7 +237,7 @@ Deno.test("assert validity of moves with respect to previous position", () => {
   }, {
     created_at: "2023-12-03T18:20:15.186285+00:00",
     type: "DEFEND",
-    to: null,
+    to: "Kie",
     from: null,
     origin: "Kie",
     unit_type: "Fleet",
@@ -253,8 +252,8 @@ Deno.test("assert validity of moves with respect to previous position", () => {
     validMoves,
     gamePosition,
     "GERMANY",
-  );
-  movesToSubmit.forEach((move) => assertEquals(move.status, "VALID"));
+  )
+  movesToSubmit.forEach((move) => assertEquals(move.status, "VALID", move.id));
 });
 
 Deno.test("test invalid moves in a context", () => {
@@ -336,7 +335,7 @@ Deno.test("test invalid moves in a context", () => {
   }, {
     created_at: "2023-12-03T18:20:15.186285+00:00",
     type: "DEFEND",
-    to: null,
+    to: "Ber",
     from: null,
     origin: "Ber",
     unit_type: "Army",
@@ -362,9 +361,9 @@ Deno.test("test invalid moves in a context", () => {
   }, {
     created_at: "2023-12-03T18:20:15.186285+00:00",
     type: "BUILD",
-    to: null,
+    to: "Hol",
     from: null,
-    origin: "Hol",
+    origin: null,
     unit_type: "Fleet",
     status: "VALID",
     player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",

@@ -14,15 +14,15 @@ export type Database = MergeDeep<
           Row: {
             player?: string;
             from: ProvinceCode | null;
-            origin: ProvinceCode;
-            to: ProvinceCode | null;
+            origin: ProvinceCode | null;
+            to: ProvinceCode;
             created_at?: string;
           };
           Insert: {
             id?: string;
             from: ProvinceCode | null;
-            origin: ProvinceCode;
-            to: ProvinceCode | null;
+            origin: ProvinceCode | null;
+            to: ProvinceCode;
             status: DatabaseGenerated["public"]["Enums"]["MoveStatus"] | "VALID"
           };
           Update: {
@@ -32,16 +32,16 @@ export type Database = MergeDeep<
         submitted_moves: {
           Row: {
             from: ProvinceCode | null;
-            origin: ProvinceCode;
-            to: ProvinceCode | null;
+            origin: ProvinceCode | null;
+            to: ProvinceCode;
             created_at?: string;
           };
           Insert: {
             id?: string;
             player?: string;
             from: ProvinceCode | null;
-            origin: ProvinceCode;
-            to: ProvinceCode | null;
+            origin: ProvinceCode | null;
+            to: ProvinceCode;
           };
           Update: {
             id?: string;
