@@ -52,7 +52,6 @@ export async function initAllPhaseJobs() {
 }
 
 function initNextPhase(game: Game) {
-  console.log("Init phase!!!")
   let nextPhase: PhaseType;
   let nextYear: number = game.phase!.year;
   let nextTurn = game.phase!.turn;

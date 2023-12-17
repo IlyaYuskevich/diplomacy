@@ -16,7 +16,7 @@ export function SubmittedMoveRenderer(
         return move.unit_type == "Fleet"
           ? `${move.unit_type} ${move.origin} C ${move.from}-${move.to}`
           : `${move.unit_type} ${move.origin} C ${move.to}`;
-      case "DEFEND":
+      case "HOLD":
         return `${move.unit_type} ${move.origin} Defends`;
       case "BUILD":
         return `${move.unit_type} ${move.origin} Builds`;

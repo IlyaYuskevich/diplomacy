@@ -13,7 +13,7 @@ import { GamePhase } from "types/game.ts";
 const ruleAdjacency = (move: MoveInsert) => {
   /* Checking that provinces have common border */
   if (move.type == "CONVOY" && move.unit_type == "Army") return move; // army convoy to not adjacent provinces is allowed
-  if (move.type == "DEFEND") return move; // in defend origin == to
+  if (move.type == "HOLD") return move; // in defend origin == to
   const isBordering = (province1: ProvinceCode, province2: ProvinceCode) =>
     fleetBorders[province1]?.some((prv) => prv == province2) ||
     armyBorders[province1]?.some((prv) => prv == province2);
@@ -65,7 +65,7 @@ const ruleBuildinSuppCenters = (move: MoveInsert) => {
 
 const ruleDefendOnlySelfOrigin = (move: MoveInsert) => {
   /* Reject defend moves if where to not equals origin */
-  if (move.type !== "DEFEND") return move;
+  if (move.type !== "HOLD") return move;
   if (move.to !== move.origin) move.status = "INVALID"  
   return move;
 };
@@ -102,7 +102,7 @@ const ruleBuildOnlyInDomesticSupplyCenters =
 const rulePhase = (phase: GamePhase) => (move: MoveInsert) => {
   switch (phase) {
     case "Diplomatic":
-      if (!["MOVE", "SUPPORT", "CONVOY", "DEFEND"].includes(move.type)) {
+      if (!["MOVE", "SUPPORT", "CONVOY", "HOLD"].includes(move.type)) {
         move.status = "INVALID";
       }
       break;

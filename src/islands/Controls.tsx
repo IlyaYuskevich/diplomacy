@@ -34,7 +34,7 @@ export default function Controls() {
         } else {
           return <CoastialProvinceSelector />;
         }
-      case "DEFEND":
+      case "HOLD":
         makeDefendMove();
         return;
     }

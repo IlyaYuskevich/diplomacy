@@ -11,7 +11,6 @@ export interface Database {
     Tables: {
       games: {
         Row: {
-          deleted_at: string | null
           gaining_and_loosing_phase_duration: number
           game_position: Json | null
           game_type: string
@@ -23,7 +22,6 @@ export interface Database {
           turn_duration: number
         }
         Insert: {
-          deleted_at?: string | null
           gaining_and_loosing_phase_duration?: number
           game_position?: Json | null
           game_type?: string
@@ -35,7 +33,6 @@ export interface Database {
           turn_duration?: number
         }
         Update: {
-          deleted_at?: string | null
           gaining_and_loosing_phase_duration?: number
           game_position?: Json | null
           game_type?: string
@@ -58,7 +55,6 @@ export interface Database {
       moves: {
         Row: {
           created_at: string
-          deleted_at: string | null
           from: string | null
           game: string
           id: string
@@ -73,7 +69,6 @@ export interface Database {
         }
         Insert: {
           created_at?: string
-          deleted_at?: string | null
           from?: string | null
           game: string
           id?: string
@@ -88,7 +83,6 @@ export interface Database {
         }
         Update: {
           created_at?: string
-          deleted_at?: string | null
           from?: string | null
           game?: string
           id?: string
@@ -169,7 +163,6 @@ export interface Database {
         Row: {
           country: Database["public"]["Enums"]["country"] | null
           created_at: string
-          deleted_at: string | null
           game: string
           id: string
           player: string
@@ -177,7 +170,6 @@ export interface Database {
         Insert: {
           country?: Database["public"]["Enums"]["country"] | null
           created_at?: string
-          deleted_at?: string | null
           game: string
           id?: string
           player?: string
@@ -185,7 +177,6 @@ export interface Database {
         Update: {
           country?: Database["public"]["Enums"]["country"] | null
           created_at?: string
-          deleted_at?: string | null
           game?: string
           id?: string
           player?: string
@@ -291,7 +282,6 @@ export interface Database {
         Returns: {
           country: Database["public"]["Enums"]["country"] | null
           created_at: string
-          deleted_at: string | null
           game: string
           id: string
           player: string
@@ -321,14 +311,20 @@ export interface Database {
         | "EFFECTLESS"
         | "SUBMITTED"
       game_status: "FORMING" | "ACTIVE" | "FINISHED"
-      MoveStatus: "SUCCEED" | "FAILED" | "INVALID"
+      MoveStatus:
+        | "SUCCEED"
+        | "FAILED"
+        | "INVALID"
+        | "VALID"
+        | "EFFECTLESS"
+        | "DISLODGED"
       MoveType:
         | "BUILD"
         | "DESTROY"
         | "MOVE"
         | "SUPPORT"
         | "CONVOY"
-        | "DEFEND"
+        | "HOLD"
         | "RETREAT"
       Phase: "Diplomatic" | "Retreat and Disbanding" | "Gaining and Losing"
       ProvinceType: "LAND" | "COAST" | "SEA"

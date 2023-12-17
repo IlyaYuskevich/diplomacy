@@ -7,7 +7,7 @@ import { currentGame } from "types/game.ts";
 export default function MoveTypeSelector() {
   const SpringMoves: MoveType[] = [
     "MOVE",
-    "DEFEND",
+    "HOLD",
     "SUPPORT",
   ];
   const FallMoves: MoveType[] = ["BUILD", "RETREAT", "DESTROY"];

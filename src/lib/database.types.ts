@@ -23,7 +23,7 @@ export type Database = MergeDeep<
             from: ProvinceCode | null;
             origin: ProvinceCode | null;
             to: ProvinceCode;
-            status: DatabaseGenerated["public"]["Enums"]["MoveStatus"] | "VALID"
+            status: DatabaseGenerated["public"]["Enums"]["MoveStatus"]
           };
           Update: {
             id?: string;

@@ -33,7 +33,7 @@ Deno.test("assert valid moves receive status VALID", () => {
     id: "16e72381-452f-4b70-a1e3-7e1d0c39d24c",
   }, {
     created_at: "2023-12-03T18:20:15.186285+00:00",
-    type: "DEFEND",
+    type: "HOLD",
     to: "Kie",
     from: null,
     origin: "Kie",
@@ -236,7 +236,7 @@ Deno.test("assert validity of moves with respect to previous position", () => {
     id: "16e72381-452f-4b70-a1e3-7e1d0c39d24c",
   }, {
     created_at: "2023-12-03T18:20:15.186285+00:00",
-    type: "DEFEND",
+    type: "HOLD",
     to: "Kie",
     from: null,
     origin: "Kie",
@@ -334,7 +334,7 @@ Deno.test("test invalid moves in a context", () => {
     id: "16e72381-452f-4b70-a1e3-7e1d0c39d24c",
   }, {
     created_at: "2023-12-03T18:20:15.186285+00:00",
-    type: "DEFEND",
+    type: "HOLD",
     to: "Ber",
     from: null,
     origin: "Ber",
