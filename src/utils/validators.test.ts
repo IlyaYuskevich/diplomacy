@@ -256,7 +256,7 @@ Deno.test("assert validity of moves with respect to previous position", () => {
   movesToSubmit.forEach((move) => assertEquals(move.status, "VALID", move.id));
 });
 
-Deno.test("test invalid moves in a context", () => {
+Deno.test("test invalid moves with respect to a game position", () => {
   const gamePosition: GamePosition = {
     domains: {
       AUSTRIA: ["Boh", "Bud", "Gal", "Tri", "Tyr", "Vie"],
