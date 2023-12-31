@@ -328,7 +328,7 @@ Deno.test("simple support", () => {
     "Bur",
     "Bur",
     null,
-    "Fleet",
+    "Army",
     "GERMANY",
     moves,
     playerGames,
@@ -800,53 +800,6 @@ Deno.test("Cutting support from where support was given by dislodge", () => {
   const playerGames: PlayerGame[] = [];
   generateMove(
     "MOVE",
-    "Pru",
-    "War",
-    null,
-    "Army",
-    "GERMANY",
-    moves,
-    playerGames,
-    game,
-  );
-  generateMove(
-    "SUPPORT",
-    "Sil",
-    "War",
-    "Pru",
-    "Army",
-    "GERMANY",
-    moves,
-    playerGames,
-    game,
-  );
-  generateMove(
-    "MOVE",
-    "War",
-    "Sil",
-    null,
-    "Army",
-    "RUSSIA",
-    moves,
-    playerGames,
-    game,
-  );
-
-  const [resultMoves] = phaseResolver(
-    moves,
-    game,
-  );
-  assertEquals(resultMoves[0].status, "SUCCEED");
-  assertEquals(resultMoves[1].status, "SUCCEED");
-  assertEquals(resultMoves[2].status, "FAILED");
-});
-
-Deno.test("Cutting support from where support was given by dislodge", () => {
-  const game = createGame();
-  const moves: Move[] = [];
-  const playerGames: PlayerGame[] = [];
-  generateMove(
-    "MOVE",
     "Ber",
     "Pru",
     null,
@@ -901,7 +854,6 @@ Deno.test("Cutting support from where support was given by dislodge", () => {
     game,
   );
 
-
   const [resultMoves] = phaseResolver(
     moves,
     game,
@@ -912,7 +864,6 @@ Deno.test("Cutting support from where support was given by dislodge", () => {
   assertEquals(resultMoves[3].status, "SUCCEED");
   assertEquals(resultMoves[4].status, "FAILED");
 });
-
 
 Deno.test("Dislodged army can still cut support", () => {
   const game = createGame();
@@ -985,7 +936,6 @@ Deno.test("Dislodged army can still cut support", () => {
     game,
   );
 
-
   const [resultMoves] = phaseResolver(
     moves,
     game,
@@ -996,4 +946,322 @@ Deno.test("Dislodged army can still cut support", () => {
   assertEquals(resultMoves[3].status, "FAILED");
   assertEquals(resultMoves[4].status, "SUCCEED");
   assertEquals(resultMoves[5].status, "SUCCEED");
+});
+
+Deno.test("Convoying army across one water province.", () => {
+  const game = createGame();
+  const moves: Move[] = [];
+  const playerGames: PlayerGame[] = [];
+  generateMove(
+    "CONVOY",
+    "Lon",
+    "Nwy",
+    null,
+    "Army",
+    "ENGLAND",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "CONVOY",
+    "Nth",
+    "Nwy",
+    "Lon",
+    "Fleet",
+    "ENGLAND",
+    moves,
+    playerGames,
+    game,
+  );
+
+  const [resultMoves] = phaseResolver(
+    moves,
+    game,
+  );
+  assertEquals(resultMoves[0].status, "SUCCEED");
+  assertEquals(resultMoves[1].status, "SUCCEED");
+});
+
+Deno.test("Convoying army across several water provinces.", () => {
+  const game = createGame();
+  const moves: Move[] = [];
+  const playerGames: PlayerGame[] = [];
+  generateMove(
+    "CONVOY",
+    "Lon",
+    "Tun",
+    null,
+    "Army",
+    "ENGLAND",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "CONVOY",
+    "Eng",
+    "Tun",
+    "Lon",
+    "Fleet",
+    "ENGLAND",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "CONVOY",
+    "Mid",
+    "Tun",
+    "Lon",
+    "Fleet",
+    "ENGLAND",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "CONVOY",
+    "Wes",
+    "Tun",
+    "Lon",
+    "Fleet",
+    "FRANCE",
+    moves,
+    playerGames,
+    game,
+  );
+
+  const [resultMoves] = phaseResolver(
+    moves,
+    game,
+  );
+  assertEquals(resultMoves[0].status, "SUCCEED");
+  assertEquals(resultMoves[1].status, "SUCCEED");
+  assertEquals(resultMoves[2].status, "SUCCEED");
+  assertEquals(resultMoves[3].status, "SUCCEED");
+});
+
+
+
+Deno.test("Cutting convoy.", () => {
+  const game = createGame();
+  const moves: Move[] = [];
+  const playerGames: PlayerGame[] = [];
+  generateMove(
+    "CONVOY",
+    "SpaS",
+    "Nap",
+    null,
+    "Army",
+    "FRANCE",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "CONVOY",
+    "GoL",
+    "Nap",
+    "SpaS",
+    "Fleet",
+    "FRANCE",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "CONVOY",
+    "Tyn",
+    "Nap",
+    "SpaS",
+    "Fleet",
+    "FRANCE",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "MOVE",
+    "Ion",
+    "Tyn",
+    null,
+    "Fleet",
+    "ITALY",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "SUPPORT",
+    "Tun",
+    "Tyn",
+    "Ion",
+    "Fleet",
+    "ITALY",
+    moves,
+    playerGames,
+    game,
+  );
+
+  const [resultMoves] = phaseResolver(
+    moves,
+    game,
+  );
+  assertEquals(resultMoves[0].status, "FAILED");
+  assertEquals(resultMoves[1].status, "SUCCEED");
+  assertEquals(resultMoves[2].status, "FAILED");
+  assertEquals(resultMoves[3].status, "SUCCEED");
+  assertEquals(resultMoves[3].status, "SUCCEED");
+});
+
+
+Deno.test("Self dislodgement is not possible", () => {
+  const game = createGame();
+  const moves: Move[] = [];
+  const playerGames: PlayerGame[] = [];
+  generateMove(
+    "MOVE",
+    "Par",
+    "Bur",
+    null,
+    "Army",
+    "FRANCE",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "SUPPORT",
+    "Mar",
+    "Bur",
+    "Par",
+    "Army",
+    "FRANCE",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "HOLD",
+    "Bur",
+    "Bur",
+    null,
+    "Army",
+    "FRANCE",
+    moves,
+    playerGames,
+    game,
+  );
+  const [resultMoves, { game_position }] = phaseResolver(
+    moves,
+    game,
+  );
+  assertEquals(resultMoves[0].status, "FAILED");
+  assertEquals(resultMoves[1].status, "SUCCEED");
+  assertEquals(resultMoves[2].status, "SUCCEED");
+});
+
+Deno.test("Self dislodgement is not possible-2", () => {
+  const game = createGame();
+  const moves: Move[] = [];
+  const playerGames: PlayerGame[] = [];
+  generateMove(
+    "MOVE",
+    "Par",
+    "Bur",
+    null,
+    "Army",
+    "FRANCE",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "SUPPORT",
+    "Ruh",
+    "Bur",
+    "Par",
+    "Army",
+    "GERMANY",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "MOVE",
+    "Bur",
+    "Mar",
+    null,
+    "Army",
+    "FRANCE",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "MOVE",
+    "Mar",
+    "Bur",
+    null,
+    "Army",
+    "ITALY",
+    moves,
+    playerGames,
+    game,
+  );
+  const [resultMoves, { game_position }] = phaseResolver(
+    moves,
+    game,
+  );
+  assertEquals(resultMoves[0].status, "FAILED");
+  assertEquals(resultMoves[1].status, "SUCCEED");
+  assertEquals(resultMoves[2].status, "FAILED");
+  assertEquals(resultMoves[3].status, "FAILED");
+});
+
+Deno.test("Foreign support of self-standoff", () => {
+  const game = createGame();
+  const moves: Move[] = [];
+  const playerGames: PlayerGame[] = [];
+  generateMove(
+    "MOVE",
+    "Ser",
+    "Bud",
+    null,
+    "Army",
+    "AUSTRIA",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "MOVE",
+    "Vie",
+    "Bud",
+    null,
+    "Army",
+    "AUSTRIA",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "SUPPORT",
+    "Gal",
+    "Bud",
+    "Ser",
+    "Army",
+    "RUSSIA",
+    moves,
+    playerGames,
+    game,
+  );
+  const [resultMoves, { game_position }] = phaseResolver(
+    moves,
+    game,
+  );
+  assertEquals(resultMoves[0].status, "SUCCEED");
+  assertEquals(resultMoves[1].status, "FAILED");
+  assertEquals(resultMoves[2].status, "SUCCEED");
 });

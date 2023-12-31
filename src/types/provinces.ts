@@ -831,3 +831,11 @@ export const UNIT_LOC_MAP: Record<
     "Y": 616,
   },
 };
+
+export function isSea(provinceCode: ProvinceCode) {
+  return provinces[provinceCode].type == ProvinceType.Sea;
+}
+
+export function isLand(provinceCode: ProvinceCode) {
+  return provinces[provinceCode].type == ProvinceType.Land;
+}

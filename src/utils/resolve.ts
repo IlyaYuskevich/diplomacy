@@ -1,5 +1,5 @@
 import { Move } from "types/moves.ts";
-import { ProvinceCode } from "types/provinces.ts";
+import { ProvinceCode, fleetBorders } from "types/provinces.ts";
 import { PlayerGame } from "types/playerGames.ts";
 import { Game } from "types/game.ts";
 import { Country } from "types/country.ts";
@@ -28,22 +28,83 @@ const isActiveMove = (intention: MoveIntention) => {
     (intention.move.type == "CONVOY" && intention.move.unit_type == "Army");
 };
 
+const isTargetingSameProvince = (
+  intention1: MoveIntention,
+  intention2: MoveIntention,
+) => {
+  /* Verifies that provided intentions target same province. */
+  return intention1.move.to == intention2.move.to;
+};
+
+const isTradingProvinceAttempt = (
+  intention1: MoveIntention,
+  intention2: MoveIntention,
+) => {
+  /* Verify if provided moves try to occupy each other's origin province. */
+  return intention1.move.origin == intention2.move.to &&
+    intention2.move.origin == intention1.move.to &&
+    intention1.move.id != intention2.move.id;
+};
+
+const isSupporting = (support: MoveIntention, supported: MoveIntention) => {
+  /* Verify that argument supports second argument. */
+  return support.move.type == "SUPPORT" &&
+    support.move.from == supported.move.origin &&
+    support.move.to == supported.move.to;
+};
+
+const isConvoying = (convoyer: MoveIntention, convoyee: MoveIntention) => {
+  /* Verify atomic convoy order. */
+  return convoyer.move.type == "CONVOY" && convoyer.move.unit_type == "Fleet" &&
+    convoyer.move.from == convoyee.move.origin &&
+    convoyer.move.to == convoyee.move.to;
+};
+
+const isAttacking = (attacker: MoveIntention, defender: MoveIntention) => {
+  /* Verify that first argument tries to attack (move or support) province occupied by second argument. */
+  return attacker.move.to == defender.move.origin &&
+    attacker.move.id != defender.move.id;
+};
+
+const isHoldingProvince = (
+  intention: MoveIntention,
+  province: ProvinceCode,
+) => {
+  return intention.move.type == "HOLD" && intention.move.origin == province;
+};
+
+const isDisrupted = (intention: MoveIntention) => {
+  return intention.cut || intention.bounced || intention.dislodged || false;
+};
+
 const cutSupports =
   (intentions: MoveIntention[]) => (intention: MoveIntention) => {
-    /* Cuts support or convoy whenever origin province being under attack. */
+    /* Cuts support whenever origin province being under attack. */
     if (
-      isActiveMove(intention)
+      intention.move.type != "SUPPORT"
     ) return intention;
     if (
-      intentions.some((int) =>
-        int.move.to == intention.move.origin &&
-        intention.move.to != int.move.origin // support cannot be cut from province where support is directed
+      intentions.some((i) =>
+        isAttacking(i, intention) &&
+        intention.move.to != i.move.origin && // support cannot be cut from province where support is directed
+        isActiveMove(i)
       )
     ) {
       intention.cut = true;
     }
     return intention;
   };
+
+const dislodgeUnit = (occupant: MoveIntention, attacker: MoveIntention) => {
+  /* Dislodges unit or bounce if dislodged belongs to self. */
+  if (attacker.move.player_game == occupant.move.player_game) {
+    attacker.bounced = true;
+    return
+  }
+  occupant.dislodged = true;
+  !isActiveMove(occupant) ? occupant.cut = true : null; // cut support or convoy
+  occupant.dislodgedFrom = attacker.move.origin;
+}
 
 const verifyConvoy =
   (intentions: MoveIntention[]) => (intention: MoveIntention) => {
@@ -54,23 +115,23 @@ const verifyConvoy =
       return intention;
     }
     const convIntentions = intentions.filter((i) =>
-      i.move.unit_type == "Fleet" && i.move.type == "CONVOY" &&
-      !i.cut
+      !i.dislodged && isConvoying(i, intention)
     );
 
-    const findNextChainEl = (current: ProvinceCode, k: number) => { // builds recursive chain of convoys while not reached destination (move.to)
-      if (current == intention.move.to) {
+    const findNextChainEl = (current: ProvinceCode, prev: ProvinceCode | null, k: number) => { // builds recursive chain of convoys while not reached destination (move.to)
+      if (fleetBorders[current]!.includes(intention.move.to)) {
         intention.bounced = false; // convoy succed
+        return
       }
       k += 1;
       if (k > 30) return;
-      convIntentions.filter((i) => i.move.from == current).forEach(
-        (i) => findNextChainEl(i.move.to, k),
+      convIntentions.filter(i => i.move.origin != prev).filter((i) => fleetBorders[current]!.includes(i.move.origin!)).forEach(
+        (i) => findNextChainEl(i.move.origin!, current, k),
       );
     };
     let k = 0; // prevents infinite recursions
     intention.bounced = true; // assume convoy failed
-    findNextChainEl(intention.move.origin!, k);
+    findNextChainEl(intention.move.origin!, null, k);
 
     return intention;
   };
@@ -79,12 +140,10 @@ const calcScores =
   (intentions: MoveIntention[]) => (intention: MoveIntention) => {
     /* Adds 1 to intention score if move was successfuly supported */
     intentions.filter((i) =>
-      intention.move.type == "SUPPORT" && !intention.cut &&
-      i.move.origin == intention.move.from &&
-      i.move.to == intention.move.to
+      !intention.cut &&
+      isSupporting(intention, i)
     ).forEach((i) => {
       i.score += 1;
-      i.move.status = "SUCCEED";
     });
     return intention;
   };
@@ -95,14 +154,10 @@ const resolveProvinceSwitch =
     if (intention.move.type !== "MOVE") return intention;
     intentions.forEach((i) => {
       if (
-        intention.move.origin == i.move.to &&
-        i.move.origin == intention.move.to &&
-        intention.move.id != i.move.id
+        isTradingProvinceAttempt(i, intention)
       ) {
         if (i.score > intention.score) { // if weaker, the unit is dislodged and move is bounced
-          intention.dislodged = true;
-          intention.dislodgedFrom = i.move.origin;
-          intention.bounced = true;
+          dislodgeUnit(intention, i);
         }
         if (i.score == intention.score) intention.bounced = true; // if strength are equal bounced
       }
@@ -118,19 +173,20 @@ const resolveConflicts = (group: MoveIntention[], occupant?: MoveIntention) =>
   if (occupant && intention.score == 1) {
     intention.bounced = true;
   }
+  if (occupant && intention.score > 1) {
+    dislodgeUnit(occupant, intention);
+  }
+
   if (group.length == 1) return intention;
   const isFirst = group[0].move.id == intention.move.id;
   const isStandoff = group[0].score == group[1].score;
-  if (!isFirst || isStandoff) {
+  if ((!isFirst || isStandoff) && intention.move.type != "HOLD") {
     intention.bounced = true;
   }
   if (!isFirst && !isStandoff && intention.move.type == "HOLD") { // dislodge unit with HOLD order
-    intention.dislodged = true;
+    dislodgeUnit(intention, group[0]);
   }
-  if (occupant && intention.score > 1) {
-    occupant.dislodged = true;
-    occupant.dislodgedFrom = intention.move.from;
-  }
+
   return intention;
 };
 
@@ -140,12 +196,15 @@ const resolveContestedRegions =
     if (!isActiveMove(intention)) return intention;
     const group = intentions
       .filter((i) => isActiveMove(i))
-      .filter((i) => (i.move.to == intention.move.to)) // select active moves targeting the same province
+      .filter((i) =>
+        isTargetingSameProvince(i, intention) ||
+        isHoldingProvince(i, intention.move.to)
+      ) // select moves attacking or holding province
       .filter((i) => !(i.dislodged && i.dislodgedFrom == i.move.to)); // dislodged units have no effect on provinces that disloded it
 
     const occupant = intentions.find((i) =>
-      (i.bounced && i.move.origin == intention.move.to) ||
-      (!isActiveMove(i) && i.move.origin == intention.move.to)
+      (i.bounced && isAttacking(intention, i)) ||
+      (!isActiveMove(i) && isAttacking(intention, i))
     );
 
     const sortedGroup = group.sort((a, b) => b.score - a.score);
@@ -165,7 +224,7 @@ export function phaseResolver(
   game: Game,
 ): [Move[], Game] {
   const intentions = createIntentions(moves);
-  let prevBounced = intentions.map((i) => i.bounced);
+  let prevDisrupted = intentions.map(isDisrupted);
 
   intentions
     .map(cutSupports(intentions))
@@ -174,17 +233,23 @@ export function phaseResolver(
     .map(resolveProvinceSwitch(intentions))
     .map(resolveContestedRegions(intentions));
 
-  while (intentions.some((i, index) => i.bounced !== prevBounced[index])) { // resolve chained bounces
-    prevBounced = intentions.map((i) => i.bounced);
-    intentions.map(resolveContestedRegions(intentions));
-    console.log("loop!");
+  while (
+    intentions.some((i, index) => isDisrupted(i) !== prevDisrupted[index])
+  ) { // resolve chained bounces
+    prevDisrupted = intentions.map(isDisrupted);
+    intentions.forEach((i) => i.score = i.move.type == "HOLD" ? 1.5 : 1);
+    intentions
+      .map(calcScores(intentions))
+      .map(verifyConvoy(intentions))
+      .map(resolveContestedRegions(intentions));
+    // console.log("loop!");
   }
 
   console.log("!!!", intentions);
 
   const resultMoves = intentions.map(markFailedMoves(moves));
 
-  console.log("@", resultMoves);
+  // console.log("@", resultMoves);
   return [resultMoves, game];
 }
 
