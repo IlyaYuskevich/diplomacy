@@ -11,7 +11,7 @@ import { ISupaSettings } from "types/supaSettings.ts";
 import GamePreparationView from "islands/GamePreparationView.tsx";
 import formatISO from "date-fns/formatISO/index.js";
 import add from "date-fns/add/index.ts";
-import { addOverPhaseJob } from "../../crons/calc-results.ts";
+import { addFinishPhaseJob } from "../../crons/calc-results.ts";
 
 export type GameProps = {
   playerGame: PlayerGame;
@@ -49,11 +49,11 @@ async function fetchGame(
 
 async function fetchSubmittedMoves(
   supa: Awaited<ReturnType<typeof authSupabaseClient>>,
-  gid: string,
+  phaseId: string,
 ) {
   const query = supa.from("submitted_moves").select("*").eq(
-    "game",
-    gid,
+    "phase",
+    phaseId,
   );
   const resp: DbResult<typeof query> = await query;
   return resp;
@@ -72,7 +72,7 @@ async function startGame(gid: string) {
     gid,
   ).select("*, player_games(count)").single();
   const resp3 = await query3;
-  addOverPhaseJob(resp3.data!)
+  addFinishPhaseJob(resp3.data!)
 }
 
 export const handler: Handlers<GameProps, ServerState> = {
@@ -110,7 +110,7 @@ export const handler: Handlers<GameProps, ServerState> = {
     }
 
     if (game.status != "FORMING") {
-      const resp3 = await fetchSubmittedMoves(supa, game_id);
+      const resp3 = await fetchSubmittedMoves(supa, game.phase.id);
       if (resp3.error) {
         return ctx.render();
       }
@@ -133,7 +133,7 @@ export const handler: Handlers<GameProps, ServerState> = {
 export default function GamePage(props: PageProps<GameProps>) {
   return (
     <>
-      {props.data.game.status == "FORMING"
+      {props.data?.game.status == "FORMING"
         ? <GamePreparationView {...props.data} />
         : <GameView {...props.data} />}
     </>

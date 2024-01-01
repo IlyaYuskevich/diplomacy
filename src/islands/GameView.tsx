@@ -10,6 +10,7 @@ import { createClient } from "@supabase";
 
 export default function GameView(props: GameProps) {
   useEffect(() => {
+    console.log('!!!', props.game.game_position);
     selectedPlayerGame.value = props.playerGame;
     currentGame.value = props.game;
     selectedCountry.value = props.playerGame.country;

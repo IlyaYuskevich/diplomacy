@@ -1,6 +1,0 @@
-{
-  "imports": {
-    "lodash/fp": "https://esm.sh/v133/lodash@4.17.21/fp"
-  },
-  "scopes": {}
-}

@@ -12,8 +12,6 @@ import twindConfig from "./twind.config.ts";
 
 import { initAllPhaseJobs } from "./crons/calc-results.ts";
 
-
-await initAllPhaseJobs()
+await initAllPhaseJobs();
 
 await start(manifest, { port: 4000, plugins: [twindPlugin(twindConfig)] });
-

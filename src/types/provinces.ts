@@ -67,7 +67,7 @@ export const provinces = {
   },
   Bul: {
     name: "Bulgaria",
-    type: ProvinceType.Land,
+    type: ProvinceType.Coast,
   },
   BulS: {
     name: "Bulgaria South Coast",
@@ -251,7 +251,7 @@ export const provinces = {
   },
   Spa: {
     name: "Spain",
-    type: ProvinceType.Land,
+    type: ProvinceType.Coast,
   },
   SpaS: {
     name: "Spain South Coast",
@@ -263,7 +263,7 @@ export const provinces = {
   },
   StP: {
     name: "Saint Petersburg",
-    type: ProvinceType.Land,
+    type: ProvinceType.Coast,
   },
   StPN: {
     name: "Saint Petersburg North Coast",
@@ -838,4 +838,48 @@ export function isSea(provinceCode: ProvinceCode) {
 
 export function isLand(provinceCode: ProvinceCode) {
   return provinces[provinceCode].type == ProvinceType.Land;
+}
+
+export function isCoast(provinceCode: ProvinceCode) {
+  return provinces[provinceCode].type == ProvinceType.Coast;
+}
+
+export function fleetToArmyBorder(province: ProvinceCode) {
+  if (
+    (["SpaN", "SpaS", "BulE", "BulS", "StPN", "StPS"] as ProvinceCode[])
+      .includes(province)
+  ) {
+    return province.slice(0, -1) as ProvinceCode;
+  }
+  return province;
+}
+
+export function armyToFleetBorder(province: ProvinceCode) {
+  if (
+    province == "Spa" || province == "StP"
+  ) {
+    return [`${province}S`, `${province}N`] as ProvinceCode[];
+  }
+  if (
+    province == "Bul"
+  ) {
+    return [`${province}S`, `${province}E`] as ProvinceCode[];
+  }
+  return [province] as ProvinceCode[];
+}
+
+export function isConvoyFromPossible(from: ProvinceCode, origin: ProvinceCode) {
+  /* Verifies that convoy is possible from particular province (including Spa, StP, and Bul). E.g. isConvoyFromPossible("Bul", "Bla") => true */
+  return armyToFleetBorder(from).some((prv) =>
+    fleetBorders[prv]!.includes(
+      origin,
+    )
+  );
+}
+
+export function isConvoyToPossible(origin: ProvinceCode, to: ProvinceCode) {
+  /* Verifies that convoy is possible to a particular province (including Spa, StP, and Bul). E.g. isConvoyToPossible("Bla", "Bul") => true */
+  return fleetBorders[origin]?.includes(
+    fleetToArmyBorder(to),
+  ) || false;
 }

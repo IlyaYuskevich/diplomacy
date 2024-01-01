@@ -6,6 +6,8 @@ import { Tables } from "lib/database.types.ts";
 export type GamePosition = {
   domains: { [K in NonNullable<Country>]: ProvinceCode[] };
   unitPositions: { [K in NonNullable<Country>]: Unit[] };
+  dislodged?: { [K in NonNullable<Country>]: ProvinceCode[] };
+  standoffs?: ProvinceCode[];
 };
 
 export type Phase = Tables<"phases">

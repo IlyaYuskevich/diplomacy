@@ -1,14 +1,23 @@
 import { assertEquals } from "assert";
-import { MoveInsert, SubmittedMove } from "types/moves.ts";
+import { Move, MoveInsert, SubmittedMove } from "types/moves.ts";
 import {
   individualMoveValidator,
   moveInPositionValidator,
 } from "utils/validators.ts";
 import { GamePosition } from "types/gamePosition.ts";
+import { PlayerGame } from "types/playerGames.ts";
+import formatISO from "date-fns/formatISO/index.js";
+
+const pgMock = {
+  id: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
+  country: "GERMANY",
+  game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
+  player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
+} as PlayerGame;
 
 Deno.test("assert valid moves receive status VALID", () => {
   const validMoves: SubmittedMove[] = [{
-    created_at: "2023-12-03T15:19:05.411808+00:00",
+    created_at: formatISO(new Date(), {}),
     type: "MOVE",
     to: "Kie",
     from: null,
@@ -18,9 +27,9 @@ Deno.test("assert valid moves receive status VALID", () => {
     game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: "2739a8b1-1f4d-4057-896b-5eb44f6c81aa",
+    id: crypto.randomUUID(),
   }, {
-    created_at: "2023-12-03T18:20:15.186285+00:00",
+    created_at: formatISO(new Date(), {}),
     type: "SUPPORT",
     to: "Tyr",
     from: "Ven",
@@ -30,9 +39,9 @@ Deno.test("assert valid moves receive status VALID", () => {
     game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: "16e72381-452f-4b70-a1e3-7e1d0c39d24c",
+    id: crypto.randomUUID(),
   }, {
-    created_at: "2023-12-03T18:20:15.186285+00:00",
+    created_at: formatISO(new Date(), {}),
     type: "HOLD",
     to: "Kie",
     from: null,
@@ -42,15 +51,39 @@ Deno.test("assert valid moves receive status VALID", () => {
     game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: "1c75a72f-718c-4d29-8aa3-ca656b7cf4ad",
+    id: crypto.randomUUID(),
+  }, {
+    created_at: formatISO(new Date(), {}),
+    type: "CONVOY",
+    to: "Spa",
+    from: null,
+    origin: "Lon",
+    unit_type: "Army",
+    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
+    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
+    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
+    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
+    id: crypto.randomUUID(),
+  }, {
+    created_at: formatISO(new Date(), {}),
+    type: "CONVOY",
+    to: "StP",
+    from: null,
+    origin: "Lon",
+    unit_type: "Fleet",
+    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
+    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
+    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
+    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
+    id: crypto.randomUUID(),
   }];
   const movesToSubmit = individualMoveValidator(validMoves);
-  movesToSubmit.forEach((move) => assertEquals(move.status, "VALID", move.id));
+  movesToSubmit.forEach((move) => assertEquals(move.status, "VALID", JSON.stringify(move)));
 });
 
 Deno.test("assert invalid moves receive status INVALID", () => {
   const provincesAreNotAdjacent: SubmittedMove = {
-    "created_at": "2023-12-03T15:19:05.411808+00:00",
+    "created_at": formatISO(new Date(), {}),
     "type": "MOVE",
     "to": "Boh",
     "from": null,
@@ -60,10 +93,10 @@ Deno.test("assert invalid moves receive status INVALID", () => {
     "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     "player": "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     "phase": "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    "id": "2739a8b1-1f4d-4057-896b-5eb44f6c81aa",
+    id: crypto.randomUUID(),
   };
   const armyCannotGoSea: SubmittedMove = {
-    "created_at": "2023-12-03T15:19:05.411808+00:00",
+    "created_at": formatISO(new Date(), {}),
     "type": "MOVE",
     "to": "Bal",
     "from": null,
@@ -73,7 +106,7 @@ Deno.test("assert invalid moves receive status INVALID", () => {
     "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     "player": "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     "phase": "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    "id": "2739a8b1-1f4d-4057-896b-5eb44f6c81aa",
+    id: crypto.randomUUID(),
   };
   const fleetCannotGoLand: SubmittedMove = {
     "created_at": "2023-12-03T15:19:05.411808+00:00",
@@ -86,7 +119,7 @@ Deno.test("assert invalid moves receive status INVALID", () => {
     "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     "player": "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     "phase": "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    "id": "2739a8b1-1f4d-4057-896b-5eb44f6c81aa",
+    id: crypto.randomUUID(),
   };
   const convoyCannotHappenToLand: SubmittedMove = {
     "created_at": "2023-12-03T15:19:05.411808+00:00",
@@ -99,7 +132,7 @@ Deno.test("assert invalid moves receive status INVALID", () => {
     "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     "player": "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     "phase": "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    "id": "2739a8b1-1f4d-4057-896b-5eb44f6c81aa",
+    id: crypto.randomUUID(),
   };
   const buildIsOnlyInSupplyCenter: SubmittedMove = {
     "created_at": "2023-12-03T15:19:05.411808+00:00",
@@ -112,7 +145,7 @@ Deno.test("assert invalid moves receive status INVALID", () => {
     "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     "player": "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     "phase": "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    "id": "2739a8b1-1f4d-4057-896b-5eb44f6c81aa",
+    id: crypto.randomUUID(),
   };
   const buildFleetsOnlyInCoastialSupplyCenters: SubmittedMove = {
     "created_at": "2023-12-03T15:19:05.411808+00:00",
@@ -125,7 +158,7 @@ Deno.test("assert invalid moves receive status INVALID", () => {
     "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     "player": "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     "phase": "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    "id": "2739a8b1-1f4d-4057-896b-5eb44f6c81aa",
+    id: crypto.randomUUID(),
   };
   const buildFleetsOnlyInTwoCoastSupplyCenters: SubmittedMove = {
     "created_at": "2023-12-03T15:19:05.411808+00:00",
@@ -138,7 +171,7 @@ Deno.test("assert invalid moves receive status INVALID", () => {
     "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     "player": "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     "phase": "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    "id": "2739a8b1-1f4d-4057-896b-5eb44f6c81aa",
+    id: crypto.randomUUID(),
   };
   const movesToSubmit = individualMoveValidator([
     provincesAreNotAdjacent,
@@ -208,7 +241,7 @@ Deno.test("assert validity of moves with respect to previous position", () => {
       ],
     },
   };
-  const validMoves: MoveInsert[] = [{
+  const validMoves: Move[] = [{
     created_at: "2023-12-03T15:19:05.411808+00:00",
     type: "MOVE",
     to: "Kie",
@@ -220,7 +253,7 @@ Deno.test("assert validity of moves with respect to previous position", () => {
     game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: "2739a8b1-1f4d-4057-896b-5eb44f6c81aa",
+    id: crypto.randomUUID(),
   }, {
     created_at: "2023-12-03T18:20:15.186285+00:00",
     type: "SUPPORT",
@@ -233,7 +266,7 @@ Deno.test("assert validity of moves with respect to previous position", () => {
     game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: "16e72381-452f-4b70-a1e3-7e1d0c39d24c",
+    id: crypto.randomUUID(),
   }, {
     created_at: "2023-12-03T18:20:15.186285+00:00",
     type: "HOLD",
@@ -246,13 +279,11 @@ Deno.test("assert validity of moves with respect to previous position", () => {
     game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: "1c75a72f-718c-4d29-8aa3-ca656b7cf4ad",
+    id: crypto.randomUUID(),
   }];
-  const movesToSubmit = moveInPositionValidator(
+  const movesToSubmit = moveInPositionValidator(gamePosition, [pgMock])(
     validMoves,
-    gamePosition,
-    "GERMANY",
-  )
+  );
   movesToSubmit.forEach((move) => assertEquals(move.status, "VALID", move.id));
 });
 
@@ -306,7 +337,7 @@ Deno.test("test invalid moves with respect to a game position", () => {
       ],
     },
   };
-  const validMoves: MoveInsert[] = [{
+  const validMoves: Move[] = [{
     created_at: "2023-12-03T15:19:05.411808+00:00",
     type: "MOVE",
     to: "Kie",
@@ -318,7 +349,7 @@ Deno.test("test invalid moves with respect to a game position", () => {
     game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: "2739a8b1-1f4d-4057-896b-5eb44f6c81aa",
+    id: crypto.randomUUID(),
   }, {
     created_at: "2023-12-03T18:20:15.186285+00:00",
     type: "SUPPORT",
@@ -331,7 +362,7 @@ Deno.test("test invalid moves with respect to a game position", () => {
     game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: "16e72381-452f-4b70-a1e3-7e1d0c39d24c",
+    id: crypto.randomUUID(),
   }, {
     created_at: "2023-12-03T18:20:15.186285+00:00",
     type: "HOLD",
@@ -344,7 +375,7 @@ Deno.test("test invalid moves with respect to a game position", () => {
     game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: "1c75a72f-718c-4d29-8aa3-ca656b7cf4ad",
+    id: crypto.randomUUID(),
   }, {
     created_at: "2023-12-03T18:20:15.186285+00:00",
     type: "MOVE",
@@ -357,7 +388,7 @@ Deno.test("test invalid moves with respect to a game position", () => {
     game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: "1c75a72f-718c-4d29-8aa3-ca656b7cf4ad",
+    id: crypto.randomUUID(),
   }, {
     created_at: "2023-12-03T18:20:15.186285+00:00",
     type: "BUILD",
@@ -370,13 +401,12 @@ Deno.test("test invalid moves with respect to a game position", () => {
     game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
     player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
     phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: "1c75a72f-718c-4d29-8aa3-ca656b7cf4ad",
+    id: crypto.randomUUID(),
   }];
   const movesToSubmit = moveInPositionValidator(
-    validMoves,
     gamePosition,
-    "GERMANY",
-  );
+    [pgMock],
+  )(validMoves);
   assertEquals(movesToSubmit[0].status, "INVALID"); // overriden by third move
   assertEquals(movesToSubmit[1].status, "INVALID"); // unit doesn't exist
   assertEquals(movesToSubmit[2].status, "VALID");

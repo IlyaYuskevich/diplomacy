@@ -1,4 +1,4 @@
-import { MoveInsert, SubmittedMove } from "types/moves.ts";
+import { Move, SubmittedMove } from "types/moves.ts";
 import {
   armyBorders,
   fleetBorders,
@@ -7,12 +7,12 @@ import {
   ProvinceType,
 } from "types/provinces.ts";
 import { GamePosition, SUPPLY_CENTERS } from "types/gamePosition.ts";
-import { Country } from "types/country.ts";
-import { GamePhase } from "types/game.ts";
+import { Game, GamePhase } from "types/game.ts";
+import { getCountry, PlayerGame } from "types/playerGames.ts";
 
-const ruleAdjacency = (move: MoveInsert) => {
+const ruleAdjacency = (move: Move) => {
   /* Checking that provinces have common border */
-  if (move.type == "CONVOY" && move.unit_type == "Army") return move; // army convoy to not adjacent provinces is allowed
+  if (move.type == "CONVOY") return move;
   if (move.type == "HOLD") return move; // in defend origin == to
   const isBordering = (province1: ProvinceCode, province2: ProvinceCode) =>
     fleetBorders[province1]?.some((prv) => prv == province2) ||
@@ -29,7 +29,7 @@ const ruleAdjacency = (move: MoveInsert) => {
   return move;
 };
 
-const ruleUnitTypeDestination = (move: MoveInsert) => {
+const ruleUnitTypeDestination = (move: Move) => {
   /* Armies cannot go to sea, fleets cannot go to land */
   if (provinces[move.to].type == ProvinceType.Sea && move.unit_type == "Army") {
     move.status = "INVALID";
@@ -40,9 +40,9 @@ const ruleUnitTypeDestination = (move: MoveInsert) => {
   return move;
 };
 
-const ruleArmyConvoyedFromCoastToCoast = (move: MoveInsert) => {
+const ruleArmyConvoyedFromCoastToCoast = (move: Move) => {
   /* Army convoyed from Coast to Coast */
-  if (move.type !== "CONVOY" || move.unit_type !== "Army") return move;
+  if (move.type != "CONVOY" || move.unit_type != "Army") return move;
   if (!move.origin) return move;
   if (
     provinces[move.to].type !== ProvinceType.Coast ||
@@ -51,7 +51,7 @@ const ruleArmyConvoyedFromCoastToCoast = (move: MoveInsert) => {
   return move;
 };
 
-const ruleBuildinSuppCenters = (move: MoveInsert) => {
+const ruleBuildinSuppCenters = (move: Move) => {
   /* Build is possible only in supply centers, fleets should be built in the coast */
   if (move.type !== "BUILD") return move;
   const supplyCenters = Object.keys(SUPPLY_CENTERS);
@@ -63,14 +63,14 @@ const ruleBuildinSuppCenters = (move: MoveInsert) => {
   return move;
 };
 
-const ruleDefendOnlySelfOrigin = (move: MoveInsert) => {
+const ruleDefendOnlySelfOrigin = (move: Move) => {
   /* Reject defend moves if where to not equals origin */
   if (move.type !== "HOLD") return move;
-  if (move.to !== move.origin) move.status = "INVALID"  
+  if (move.to !== move.origin) move.status = "INVALID";
   return move;
 };
 
-const ruleOneMovePerUnit = (prevOrigins: ProvinceCode[], move: MoveInsert) => {
+const ruleOneMovePerUnit = (prevOrigins: ProvinceCode[], move: Move) => {
   /* Unit can do only one move */
   if (move.type == "BUILD") return prevOrigins;
   if (prevOrigins.includes(move.origin!)) move.status = "INVALID";
@@ -82,9 +82,11 @@ const ruleOneMovePerUnit = (prevOrigins: ProvinceCode[], move: MoveInsert) => {
 };
 
 const ruleSelfUnitShouldExist =
-  (gamePosition: GamePosition, country: NonNullable<Country>) =>
-  (move: MoveInsert) => {
+  (gamePosition: GamePosition, playerGames: PlayerGame[]) =>
+  (move: Move) => {
+    const country = getCountry(move.player_game, playerGames);
     if (move.type == "BUILD") return move;
+    if (!country) return move;
     if (
       !gamePosition.unitPositions[country].map((unit) => unit.province)
         .includes(move.origin!)
@@ -93,13 +95,15 @@ const ruleSelfUnitShouldExist =
   };
 
 const ruleBuildOnlyInDomesticSupplyCenters =
-  (country: NonNullable<Country>) => (move: MoveInsert) => {
+  (playerGames: PlayerGame[]) => (move: Move) => {
+    const country = getCountry(move.player_game, playerGames);
     if (move.type !== "BUILD") return move;
+    if (!country) return move;
     if (SUPPLY_CENTERS[move.to] !== country) move.status = "INVALID";
     return move;
   };
 
-const rulePhase = (phase: GamePhase) => (move: MoveInsert) => {
+const rulePhase = (phase: GamePhase) => (move: Move) => {
   switch (phase) {
     case "Diplomatic":
       if (!["MOVE", "SUPPORT", "CONVOY", "HOLD"].includes(move.type)) {
@@ -116,42 +120,74 @@ const rulePhase = (phase: GamePhase) => (move: MoveInsert) => {
   return move;
 };
 
-export function individualMoveValidator(
+export const individualMoveValidator = (
   submittedMoves: SubmittedMove[],
-): MoveInsert[] {
+): Move[] => {
   /* Validates submitted moves (to prevent players' cheating by submitting moves directly to supabase). */
   const moveMapper = (smove: SubmittedMove) => {
-    const move = smove as MoveInsert;
+    const move = smove as Move;
     move.status = "VALID";
     return move;
   };
 
-  const moves = submittedMoves
+  return submittedMoves
     .map(moveMapper)
     .map(ruleAdjacency)
     .map(ruleUnitTypeDestination)
     .map(ruleArmyConvoyedFromCoastToCoast)
     .map(ruleDefendOnlySelfOrigin)
     .map(ruleBuildinSuppCenters);
-  return moves;
-}
+};
 
-export function moveInPositionValidator(
-  moves: MoveInsert[],
-  gamePosition: GamePosition,
-  playerCountry: NonNullable<Country>,
-) {
-  moves
-    .map(ruleSelfUnitShouldExist(gamePosition, playerCountry))
-    .map(ruleBuildOnlyInDomesticSupplyCenters(playerCountry))
-    .reduceRight(ruleOneMovePerUnit, []);
-  return moves;
-}
+export const moveInPositionValidator =
+  (gamePosition: GamePosition, playerGames: PlayerGame[]) =>
+  (
+    moves: Move[],
+  ) => {
+    moves
+      .map(ruleSelfUnitShouldExist(gamePosition, playerGames))
+      .map(ruleBuildOnlyInDomesticSupplyCenters(playerGames))
+      .reduceRight(ruleOneMovePerUnit, []);
+    return moves;
+  };
 
-export function movePhaseValidator(
-  moves: MoveInsert[],
+export const movePhaseValidator = (
   phase: GamePhase,
-) {
-  moves.map(rulePhase(phase));
+) =>
+(moves: Move[]) => {
+  return moves.map(rulePhase(phase));
+};
+
+const insertUnmovedUnits = (
+  game: Game,
+  pg: PlayerGame,
+  moves: Move[],
+) => {
+  game.game_position.unitPositions[pg.country!].filter((unit) =>
+    !moves.map((mv) => mv.origin).includes(unit.province)
+  )
+    .forEach((unit) =>
+      moves.push({
+        type: "HOLD",
+        to: unit.province,
+        from: null,
+        origin: unit.province,
+        unit_type: unit.unitType,
+        player_game: pg.id,
+        game: game.id,
+        status: "VALID",
+        player: pg.player,
+        phase: game.phase!.id,
+      } as Move)
+    );
+};
+
+export const addAutoMoves = (
+  game: Game,
+  playerGames: PlayerGame[],
+) =>
+(moves: Move[]) => {
+  if (game.phase!.phase != "Diplomatic") return moves
+  playerGames.forEach((pg) => insertUnmovedUnits(game, pg, moves));
   return moves;
-}
+};
