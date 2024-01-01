@@ -132,7 +132,6 @@ async function fetchAndProcessResults(
     logger.error(resp.error.message);
   }
   const validatedMoves = resp.data
-  console.log('!!!', validatedMoves);
 
   if (!validatedMoves) return;
   const [resultMoves, { game_position }] = phaseResolver(
