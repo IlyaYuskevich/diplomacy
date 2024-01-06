@@ -1,12 +1,13 @@
 import { Unit } from "types/units.ts";
-import { Country } from "types/country.ts";
+import { Country, COUNTRY_ARRAY } from "types/country.ts";
 import { ProvinceCode } from "types/provinces.ts";
 import { Tables } from "lib/database.types.ts";
 
+export type Dislodge = { province: ProvinceCode, dislodgedFrom: ProvinceCode }
 export type GamePosition = {
   domains: { [K in NonNullable<Country>]: ProvinceCode[] };
   unitPositions: { [K in NonNullable<Country>]: Unit[] };
-  dislodged?: { [K in NonNullable<Country>]: ProvinceCode[] };
+  dislodged?: { [K in NonNullable<Country>]: Dislodge[]};
   standoffs?: ProvinceCode[];
 };
 
@@ -97,4 +98,9 @@ export const SUPPLY_CENTERS: Partial<Record<ProvinceCode, Country>> = {
   Bel: null,
   Tun: null,
   Gre: null,
+}
+
+export const isOccupied = (gamePosition: GamePosition) => (province: ProvinceCode) => {
+  /* Finds out if the province is already occupied. */
+  return COUNTRY_ARRAY.some(country => gamePosition.unitPositions[country].some(unit => unit.province == province));
 }

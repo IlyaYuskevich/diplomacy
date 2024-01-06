@@ -304,12 +304,6 @@ export interface Database {
         | "AUSTRIA"
         | "ENGLAND"
         | "TURKEY"
-      DeprMoveStatus:
-        | "SUCCEED"
-        | "FAILED"
-        | "UNDONE"
-        | "EFFECTLESS"
-        | "SUBMITTED"
       game_status: "FORMING" | "ACTIVE" | "FINISHED"
       MoveStatus:
         | "SUCCEED"
@@ -320,7 +314,7 @@ export interface Database {
         | "DISLODGED"
       MoveType:
         | "BUILD"
-        | "DESTROY"
+        | "DISBAND"
         | "MOVE"
         | "SUPPORT"
         | "CONVOY"

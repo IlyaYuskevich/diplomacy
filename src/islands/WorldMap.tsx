@@ -1,4 +1,4 @@
-import { Country } from "types/country.ts";
+import { Country, COUNTRY_ARRAY } from "types/country.ts";
 import { Unit, UnitType } from "types/units.ts";
 import { computed } from "@preact/signals";
 import * as svg from "@svgdotjs/svg.js";
@@ -19,7 +19,7 @@ export default function WorldMap() {
     }, [])
 
     function provinceColor(province: ProvinceCode) {
-        return ["AUSTRIA", "ENGLAND", "FRANCE", "GERMANY", "ITALY", "RUSSIA", "TURKEY"].find(country => 
+        return COUNTRY_ARRAY.find(country => 
             gamePosition.value.domains[country as NonNullable<Country>]?.includes(province))?.toLowerCase() || "nopower" 
     }
 
@@ -35,11 +35,11 @@ export default function WorldMap() {
     } 
 
     useEffect(() => {
-        submittedMoves.value.forEach((val: SubmittedMoveInsert) => selectedPlayerGame.value?.country && drawLink(arrowDrawer.current, val.origin, val.to, val.from, val.type!, selectedPlayerGame.value.country))
+        submittedMoves.value.forEach((val: SubmittedMoveInsert) => selectedPlayerGame.value?.country && drawLink(arrowDrawer.current, val.origin!, val.to, val.from, val.type!, selectedPlayerGame.value.country))
     }, [submittedMoves.value])
 
     const unitsWithLocation = computed(() => (
-        ["AUSTRIA", "ENGLAND", "FRANCE", "GERMANY", "ITALY", "RUSSIA", "TURKEY"]
+        COUNTRY_ARRAY
             .flatMap((country) => mapUnitPositions(country as NonNullable<Country>, gamePosition.value.unitPositions))
         ))
 
