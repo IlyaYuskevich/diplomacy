@@ -2,7 +2,7 @@ import { GameProps } from "routes/game/[gameId].tsx";
 import { createClient } from "@supabase";
 import { useEffect, useState } from "preact/hooks";
 import { selectedPlayerGame } from "types/playerGames.ts";
-import { Game, currentGame } from "types/game.ts";
+import { currentGame, Game } from "types/game.ts";
 
 export default function GamePreparationView(props: GameProps) {
   const [playersCount, setPlayersCount] = useState<number>(
@@ -30,14 +30,14 @@ export default function GamePreparationView(props: GameProps) {
         schema: "public",
         table: "player_games",
       }, (v) => {
-        console.log(v, currentGame.value)
+        console.log(v, currentGame.value);
         if (v.new?.game == currentGame.value!.id) {
           setPlayersCount((prevState) => prevState += 1);
         }
       })
       .subscribe((status, err) => console.log(status, err));
 
-      const gameUpdateChannel = supa
+    const gameUpdateChannel = supa
       .channel("games_update")
       .on("postgres_changes", {
         event: "UPDATE",
@@ -45,12 +45,13 @@ export default function GamePreparationView(props: GameProps) {
         table: "games",
       }, (v) => {
         const newValue = v.new as Game;
-        if (v.old?.id == currentGame.value!.id && newValue.status == "ACTIVE") {
-          location.reload()
+        console.log(v, currentGame.value);
+        if (newValue.id == currentGame.value!.id && newValue.status == "ACTIVE") {
+          location.reload();
         }
       })
       .subscribe((status, err) => console.log(status, err));
-    return () => { 
+    return () => {
       supa.removeChannel(pgInsertChannel);
       supa.removeChannel(gameUpdateChannel);
     };
@@ -65,8 +66,14 @@ export default function GamePreparationView(props: GameProps) {
       <div>
         <div class="text-xl">
           Players are joining.{" "}
-          <button class="bg-primary p-1 rounded border-primary text-white text-white hover:bg-primaryStrong" onClick={copyToClipboard}>Click here</button>{" "}
-          to copy the link and share it with friends to invite them to this game.
+          <button
+            class="bg-primary p-1 rounded border-primary text-white text-white hover:bg-primaryStrong"
+            onClick={copyToClipboard}
+          >
+            Click here
+          </button>{" "}
+          to copy the link and share it with friends to invite them to this
+          game.
         </div>
         <div class="my-3">Number of players: {playersCount}</div>
       </div>

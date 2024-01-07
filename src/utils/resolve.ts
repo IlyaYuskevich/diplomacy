@@ -1,5 +1,9 @@
 import { Move } from "types/moves.ts";
-import { isConvoyFromPossible, isConvoyToPossible, ProvinceCode } from "types/provinces.ts";
+import {
+  isConvoyFromPossible,
+  isConvoyToPossible,
+  ProvinceCode,
+} from "types/provinces.ts";
 import { PlayerGame } from "types/playerGames.ts";
 import { Game } from "types/game.ts";
 import {
@@ -15,7 +19,7 @@ import {
   MoveIntention,
 } from "types/intention.ts";
 
-import { calcNextPosition } from "utils/calcPosition.ts";
+import { calcNextPositionDiplomatic, calcNextPositionDisbandAndRetreat, calcNextPositiongainingAndLosing } from "utils/calcPosition.ts";
 
 const findOccupant = (
   provinceCode: ProvinceCode,
@@ -171,7 +175,7 @@ const resolveContestedRegions =
     return resolveConflicts(sortedGroup, occupant)(intention);
   };
 
-export function phaseResolver(
+function diplomaticPhaseResolver(
   moves: Move[],
   game: Game,
   playerGames: PlayerGame[],
@@ -197,8 +201,26 @@ export function phaseResolver(
       .map(resolveContestedRegions(intentions));
   }
 
-  // console.log("!!!", intentions);
+  return calcNextPositionDiplomatic(intentions, moves, game, playerGames);
+}
 
-  // console.log("@", resultMoves);
-  return calcNextPosition(intentions, moves, game, playerGames);
+export function phaseResolver(
+  moves: Move[],
+  game: Game,
+  playerGames: PlayerGame[],
+): [Move[], Game] {
+  switch (game.phase?.phase) {
+    case "Diplomatic":
+      delete game.game_position.built;
+      delete game.game_position.disbanded;
+      return diplomaticPhaseResolver(moves, game, playerGames);
+    case "Retreat and Disbanding":
+      delete game.game_position.standoffs;
+      delete game.game_position.dislodged;
+      return calcNextPositionDisbandAndRetreat(moves, game, playerGames);;
+    case "Gaining and Losing":
+      delete game.game_position.dislodged;
+      return calcNextPositiongainingAndLosing(moves, game, playerGames);
+  }
+  return [moves, game];
 }

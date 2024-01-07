@@ -20,7 +20,7 @@ export function SubmittedMoveRenderer(
         return `${move.unit_type} ${move.origin} Defends`;
       case "BUILD":
         return `${move.unit_type} ${move.origin} Builds`;
-      case "DESTROY":
+      case "DISBAND":
         return `${move.unit_type} ${move.origin} Disbands`;
     }
   };

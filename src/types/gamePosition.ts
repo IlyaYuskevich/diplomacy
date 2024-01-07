@@ -3,11 +3,13 @@ import { Country, COUNTRY_ARRAY } from "types/country.ts";
 import { ProvinceCode } from "types/provinces.ts";
 import { Tables } from "lib/database.types.ts";
 
-export type Dislodge = { province: ProvinceCode, dislodgedFrom: ProvinceCode }
+export type Dislodgement = { province: ProvinceCode, dislodgedFrom: ProvinceCode }
 export type GamePosition = {
   domains: { [K in NonNullable<Country>]: ProvinceCode[] };
   unitPositions: { [K in NonNullable<Country>]: Unit[] };
-  dislodged?: { [K in NonNullable<Country>]: Dislodge[]};
+  dislodged?: { [K in NonNullable<Country>]: Dislodgement[]};
+  built?: { [K in NonNullable<Country>]: Unit[]},
+  disbanded?: { [K in NonNullable<Country>]: Unit[]},
   standoffs?: ProvinceCode[];
 };
 

@@ -9,7 +9,7 @@ import { Country } from "types/country.ts";
 import formatISO from "date-fns/formatISO/index.js";
 import add from "date-fns/add/index.ts";
 
-function createGame(): Game {
+export function createGame(): Game {
   const gameId = crypto.randomUUID();
   return {
     id: gameId,
@@ -48,10 +48,10 @@ function createGame(): Game {
     turn_duration: 60,
     retreat_and_disbanding_phase_duration: 15,
     gaining_and_loosing_phase_duration: 15,
-  };
+  } as Game;
 }
 
-function findOrCreatePlayerGame(
+export function findOrCreatePlayerGame(
   playerGames: PlayerGame[],
   game: Game,
   country: Country,
@@ -72,7 +72,7 @@ function findOrCreatePlayerGame(
   }
 }
 
-function generateMove(
+export function generateMove(
   moveType: MoveType,
   origin: ProvinceCode,
   to: ProvinceCode,
@@ -87,7 +87,7 @@ function generateMove(
   const id = crypto.randomUUID();
   const move = {
     id,
-    created_at: "2023-12-03T15:19:05.411808+00:00",
+    created_at: formatISO(new Date(), {}),
     type: moveType,
     origin: origin,
     to: to,
@@ -397,7 +397,7 @@ Deno.test("simple support", () => {
     game_position.unitPositions.FRANCE.map((u) => u.province),
     ["Gas", "Bur"],
   );
-  assertArrayIncludes(game_position.dislodged!.GERMANY, ["Bur"])
+  assertArrayIncludes(game_position.dislodged!.GERMANY.map(dslg => dslg.province), ["Bur"])
 });
 
 Deno.test("standoff while support", () => {
@@ -626,7 +626,7 @@ Deno.test("dislodged unit can cause standoff in other province than origin", () 
     ["Ber"],
   );
   assertArrayIncludes(
-    game_position.dislodged!.GERMANY,
+    game_position.dislodged!.GERMANY.map(dslg => dslg.province),
     ["Mun"],
   );
   assertArrayIncludes(
@@ -698,7 +698,7 @@ Deno.test("dislodged while exchange provinces by two units: dislodged must retre
   assertEquals(resultMoves[2].status, "SUCCEED");
   assertEquals(resultMoves[3].status, "SUCCEED");
   assertArrayIncludes(
-    game_position.dislodged!.TURKEY,
+    game_position.dislodged!.TURKEY.map(dslg => dslg.province),
     ["Bul"],
   );
   assertArrayIncludes(
@@ -789,7 +789,7 @@ Deno.test("dislodged while exchange provinces by two units: dislodged must retre
   assertEquals(resultMoves[4].status, "SUCCEED");
   assertEquals(resultMoves[5].status, "SUCCEED");
   assertArrayIncludes(
-    game_position.dislodged!.TURKEY,
+    game_position.dislodged!.TURKEY.map(dslg => dslg.province),
     ["Bul"],
   );
   assertArrayIncludes(
@@ -921,7 +921,7 @@ Deno.test("Cutting support from where support was given", () => {
     ["Sil", "War", "Pru"],
   );
   assertArrayIncludes(
-    game_position.dislodged!.RUSSIA,
+    game_position.dislodged!.RUSSIA.map(dslg => dslg.province),
     ["War"],
   );
 });
@@ -997,7 +997,7 @@ Deno.test("Cutting support from where support was given by dislodge", () => {
   assertEquals(resultMoves[3].status, "SUCCEED");
   assertEquals(resultMoves[4].status, "FAILED");
   assertArrayIncludes(
-    game_position.dislodged!.GERMANY,
+    game_position.dislodged!.GERMANY.map(dslg => dslg.province),
     ["Sil"],
   );
   assertArrayIncludes(
@@ -1093,7 +1093,7 @@ Deno.test("Dislodged army can still cut support", () => {
   assertEquals(resultMoves[4].status, "SUCCEED");
   assertEquals(resultMoves[5].status, "SUCCEED");
   assertArrayIncludes(
-    game_position.dislodged!.GERMANY,
+    game_position.dislodged!.GERMANY.map(dslg => dslg.province),
     ["Mun"],
   );
   assertArrayIncludes(
@@ -1293,7 +1293,7 @@ Deno.test("Cutting convoy.", () => {
     ["Tyn", "Tun"],
   );
   assertArrayIncludes(
-    game_position.dislodged!.FRANCE,
+    game_position.dislodged!.FRANCE.map(dslg => dslg.province),
     ["Tyn"],
   );
 });

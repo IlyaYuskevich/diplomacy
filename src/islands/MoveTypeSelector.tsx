@@ -10,7 +10,7 @@ export default function MoveTypeSelector() {
     "HOLD",
     "SUPPORT",
   ];
-  const FallMoves: MoveType[] = ["BUILD", "RETREAT", "DESTROY"];
+  const FallMoves: MoveType[] = ["BUILD", "RETREAT", "DISBAND"];
   
   function getSpringMoves(): MoveType[] {
     if (!selectedUnit.value) {

@@ -1,5 +1,5 @@
 import { assertEquals } from "assert";
-import { Move, MoveInsert, SubmittedMove } from "types/moves.ts";
+import { Move, MoveType, SubmittedMove } from "types/moves.ts";
 import {
   individualMoveValidator,
   moveInPositionValidator,
@@ -7,183 +7,66 @@ import {
 import { GamePosition } from "types/gamePosition.ts";
 import { PlayerGame } from "types/playerGames.ts";
 import formatISO from "date-fns/formatISO/index.js";
+import { ProvinceCode } from "types/provinces.ts";
+import { UnitType } from "types/units.ts";
+import { Country } from "types/country.ts";
+import { Game } from "types/game.ts";
+import { createGame, findOrCreatePlayerGame, generateMove } from "utils/resolve.test.ts";
 
-const pgMock = {
-  id: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-  country: "GERMANY",
-  game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-  player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-} as PlayerGame;
+function generateSubmittedMove(
+  moveType: MoveType,
+  origin: ProvinceCode,
+  to: ProvinceCode,
+  from: ProvinceCode | null,
+  unitType: UnitType,
+  country: NonNullable<Country>,
+  submittedMoves: SubmittedMove[],
+  playerGames: PlayerGame[],
+  game: Game,
+) {
+  const playerGame = findOrCreatePlayerGame(playerGames, game, country);
+  const id = crypto.randomUUID();
+  const move = {
+    id,
+    created_at: formatISO(new Date(), {}),
+    type: moveType,
+    origin: origin,
+    to: to,
+    from: from,
+    unit_type: unitType,
+    player_game: playerGame!.id,
+    game: game.id,
+    player: playerGame!.player,
+    phase: game.phase!.id,
+  } as SubmittedMove;
+  submittedMoves.push(move);
+}
 
 Deno.test("assert valid moves receive status VALID", () => {
-  const validMoves: SubmittedMove[] = [{
-    created_at: formatISO(new Date(), {}),
-    type: "MOVE",
-    to: "Kie",
-    from: null,
-    origin: "Ber",
-    unit_type: "Army",
-    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  }, {
-    created_at: formatISO(new Date(), {}),
-    type: "SUPPORT",
-    to: "Tyr",
-    from: "Ven",
-    origin: "Mun",
-    unit_type: "Army",
-    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  }, {
-    created_at: formatISO(new Date(), {}),
-    type: "HOLD",
-    to: "Kie",
-    from: null,
-    origin: "Kie",
-    unit_type: "Fleet",
-    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  }, {
-    created_at: formatISO(new Date(), {}),
-    type: "CONVOY",
-    to: "Spa",
-    from: null,
-    origin: "Lon",
-    unit_type: "Army",
-    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  }, {
-    created_at: formatISO(new Date(), {}),
-    type: "CONVOY",
-    to: "StP",
-    from: null,
-    origin: "Lon",
-    unit_type: "Fleet",
-    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  }];
+  const validMoves: SubmittedMove[] = [];
+  const playerGames: PlayerGame[] = [];
+  const game = createGame();
+  generateSubmittedMove("MOVE", "Ber", "Kie", null, "Army", "GERMANY", validMoves, playerGames, game);
+  generateSubmittedMove("SUPPORT", "Mun", "Tyr", "Ven", "Army", "GERMANY", validMoves, playerGames, game);
+  generateSubmittedMove("HOLD", "Kie", "Kie", null, "Fleet", "GERMANY", validMoves, playerGames, game);
+  generateSubmittedMove("CONVOY", "Lon", "Spa", null, "Army", "ENGLAND", validMoves, playerGames, game);
+  generateSubmittedMove("CONVOY", "StP", "Lon", null, "Fleet", "RUSSIA", validMoves, playerGames, game);
   const movesToSubmit = individualMoveValidator(validMoves);
   movesToSubmit.forEach((move) => assertEquals(move.status, "VALID", JSON.stringify(move)));
 });
 
 Deno.test("assert invalid moves receive status INVALID", () => {
-  const provincesAreNotAdjacent: SubmittedMove = {
-    "created_at": formatISO(new Date(), {}),
-    "type": "MOVE",
-    "to": "Boh",
-    "from": null,
-    "origin": "Ber",
-    "unit_type": "Army",
-    "player_game": "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    "player": "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    "phase": "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  };
-  const armyCannotGoSea: SubmittedMove = {
-    "created_at": formatISO(new Date(), {}),
-    "type": "MOVE",
-    "to": "Bal",
-    "from": null,
-    "origin": "Ber",
-    "unit_type": "Army",
-    "player_game": "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    "player": "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    "phase": "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  };
-  const fleetCannotGoLand: SubmittedMove = {
-    "created_at": "2023-12-03T15:19:05.411808+00:00",
-    "type": "MOVE",
-    "to": "Sil",
-    "from": null,
-    "origin": "Ber",
-    "unit_type": "Fleet",
-    "player_game": "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    "player": "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    "phase": "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  };
-  const convoyCannotHappenToLand: SubmittedMove = {
-    "created_at": "2023-12-03T15:19:05.411808+00:00",
-    "type": "CONVOY",
-    "to": "Mos",
-    "from": null,
-    "origin": "NAf",
-    "unit_type": "Army",
-    "player_game": "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    "player": "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    "phase": "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  };
-  const buildIsOnlyInSupplyCenter: SubmittedMove = {
-    "created_at": "2023-12-03T15:19:05.411808+00:00",
-    "type": "BUILD",
-    "to": "Gas",
-    "from": null,
-    "origin": null,
-    "unit_type": "Army",
-    "player_game": "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    "player": "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    "phase": "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  };
-  const buildFleetsOnlyInCoastialSupplyCenters: SubmittedMove = {
-    "created_at": "2023-12-03T15:19:05.411808+00:00",
-    "type": "BUILD",
-    "to": "Vie",
-    "from": null,
-    "origin": null,
-    "unit_type": "Fleet",
-    "player_game": "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    "player": "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    "phase": "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  };
-  const buildFleetsOnlyInTwoCoastSupplyCenters: SubmittedMove = {
-    "created_at": "2023-12-03T15:19:05.411808+00:00",
-    "type": "BUILD",
-    "to": "StP",
-    "from": null,
-    "origin": null,
-    "unit_type": "Fleet",
-    "player_game": "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    "game": "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    "player": "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    "phase": "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  };
-  const movesToSubmit = individualMoveValidator([
-    provincesAreNotAdjacent,
-    armyCannotGoSea,
-    fleetCannotGoLand,
-    convoyCannotHappenToLand,
-    buildIsOnlyInSupplyCenter,
-    buildFleetsOnlyInCoastialSupplyCenters,
-    buildFleetsOnlyInTwoCoastSupplyCenters,
-    buildFleetsOnlyInTwoCoastSupplyCenters,
-  ]);
-  movesToSubmit.forEach((move) =>
+  const invalidMoves: SubmittedMove[] = [];
+  const playerGames: PlayerGame[] = [];
+  const game = createGame();
+  generateSubmittedMove("MOVE", "Ber", "Boh", null, "Army", "GERMANY", invalidMoves, playerGames, game);  // provinces are not adjacent
+  generateSubmittedMove("MOVE", "Ber", "Bal", null, "Army", "GERMANY", invalidMoves, playerGames, game);  // army cannot move to sea
+  generateSubmittedMove("MOVE", "Ber", "Sil", null, "Fleet", "GERMANY", invalidMoves, playerGames, game);  // fleet cannot move to land
+  generateSubmittedMove("CONVOY", "NAf", "Mos", null, "Army", "ENGLAND", invalidMoves, playerGames, game);  // convoy cannot end up in land
+  const invalidMovesToSubmit = individualMoveValidator(invalidMoves);
+  invalidMovesToSubmit.forEach((move) => assertEquals(move.status, "INVALID", JSON.stringify(move)));
+
+  invalidMovesToSubmit.forEach((move) =>
     assertEquals(
       move.status,
       "INVALID",
@@ -193,105 +76,42 @@ Deno.test("assert invalid moves receive status INVALID", () => {
 });
 
 Deno.test("assert validity of moves with respect to previous position", () => {
-  const gamePosition: GamePosition = {
-    domains: {
-      AUSTRIA: ["Boh", "Bud", "Gal", "Tri", "Tyr", "Vie"],
-      ENGLAND: ["Cly", "Edi", "Lvp", "Lon", "Wal", "Yor"],
-      FRANCE: ["Bre", "Bur", "Gas", "Mar", "Par", "Pic"],
-      GERMANY: ["Ber", "Kie", "Mun", "Pru", "Ruh", "Sil"],
-      ITALY: ["Apu", "Nap", "Pie", "Rom", "Tus", "Ven"],
-      RUSSIA: ["Lvn", "Mos", "Sev", "StP", "Ukr", "War"],
-      TURKEY: ["Ank", "Arm", "Con", "Smy", "Syr"],
-    },
-    unitPositions: {
-      AUSTRIA: [
-        { province: "Vie", unitType: "Army" },
-        { province: "Bud", unitType: "Army" },
-        { province: "Tri", unitType: "Fleet" },
-      ],
-      ENGLAND: [
-        { province: "Lon", unitType: "Fleet" },
-        { province: "Edi", unitType: "Fleet" },
-        { province: "Lvp", unitType: "Army" },
-      ],
-      FRANCE: [
-        { province: "Par", unitType: "Army" },
-        { province: "Mar", unitType: "Army" },
-        { province: "Bre", unitType: "Fleet" },
-      ],
-      GERMANY: [
-        { province: "Ber", unitType: "Army" },
-        { province: "Mun", unitType: "Army" },
-        { province: "Kie", unitType: "Fleet" },
-      ],
-      ITALY: [
-        { province: "Rom", unitType: "Army" },
-        { province: "Nap", unitType: "Fleet" },
-      ],
-      RUSSIA: [
-        { province: "Mos", unitType: "Army" },
-        { province: "Sev", unitType: "Army" },
-        { province: "War", unitType: "Army" },
-        { province: "StPS", unitType: "Fleet" },
-      ],
-      TURKEY: [
-        { province: "Ank", unitType: "Fleet" },
-        { province: "Con", unitType: "Army" },
-        { province: "Smy", unitType: "Army" },
-      ],
-    },
-  };
-  const validMoves: Move[] = [{
-    created_at: "2023-12-03T15:19:05.411808+00:00",
-    type: "MOVE",
-    to: "Kie",
-    from: null,
-    origin: "Ber",
-    unit_type: "Army",
-    status: "VALID",
-    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  }, {
-    created_at: "2023-12-03T18:20:15.186285+00:00",
-    type: "SUPPORT",
-    to: "Tyr",
-    from: "Ven",
-    origin: "Mun",
-    unit_type: "Army",
-    status: "VALID",
-    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  }, {
-    created_at: "2023-12-03T18:20:15.186285+00:00",
-    type: "HOLD",
-    to: "Kie",
-    from: null,
-    origin: "Kie",
-    unit_type: "Fleet",
-    status: "VALID",
-    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  }];
-  const movesToSubmit = moveInPositionValidator(gamePosition, [pgMock])(
+  const validMoves: Move[] = [];
+  const playerGames: PlayerGame[] = [];
+  const game = createGame();
+  generateMove("MOVE", "Ber", "Kie", null, "Army", "GERMANY", validMoves, playerGames, game);
+  generateMove("SUPPORT", "Mun", "Tyr", "Ven", "Army", "GERMANY", validMoves, playerGames, game);
+  generateMove("HOLD", "Kie", "Kie", null, "Fleet", "GERMANY", validMoves, playerGames, game);
+  generateMove("CONVOY", "Lon", "Spa", null, "Army", "ENGLAND", validMoves, playerGames, game);
+  generateMove("CONVOY", "StP", "Lon", null, "Fleet", "RUSSIA", validMoves, playerGames, game);
+  const movesToSubmit = moveInPositionValidator(game.game_position, playerGames)(
     validMoves,
   );
+  movesToSubmit.forEach((move) => assertEquals(move.status, "VALID", JSON.stringify(move)));
+
   movesToSubmit.forEach((move) => assertEquals(move.status, "VALID", move.id));
 });
 
 Deno.test("test invalid moves with respect to a game position", () => {
+  const moves: Move[] = [];
+  const playerGames: PlayerGame[] = [];
+  const game = createGame();
+  generateMove("MOVE", "Ber", "Kie", null, "Army", "GERMANY", moves, playerGames, game);
+  generateMove("SUPPORT", "Boh", "Tyr", "Ven", "Army", "GERMANY", moves, playerGames, game);
+  generateMove("MOVE", "Ber", "Mun", null, "Army", "GERMANY", moves, playerGames, game);
+  generateMove("MOVE", "Par", "Bur", null, "Army", "GERMANY", moves, playerGames, game);
+  generateMove("BUILD", "Hol", "Hol", null, "Army", "ENGLAND", moves, playerGames, game);
+  generateMove("BUILD", "Wal", "Wal", null, "Army", "ENGLAND", moves, playerGames, game);
+  generateMove("BUILD", "Lvp", "Lvp", null, "Fleet", "ENGLAND", moves, playerGames, game);
+  generateMove("BUILD", "Lon", "Lon", null, "Fleet", "ENGLAND", moves, playerGames, game);
+  generateMove("BUILD", "Edi", "Edi", null, "Fleet", "ENGLAND", moves, playerGames, game);
+  generateMove("BUILD", "Mos", "Mos", null, "Fleet", "RUSSIA", moves, playerGames, game);
+
+  
   const gamePosition: GamePosition = {
     domains: {
       AUSTRIA: ["Boh", "Bud", "Gal", "Tri", "Tyr", "Vie"],
-      ENGLAND: ["Cly", "Edi", "Lvp", "Lon", "Wal", "Yor"],
+      ENGLAND: ["Cly", "Edi", "Lvp", "Lon", "Wal", "Yor", "Nwy"],
       FRANCE: ["Bre", "Bur", "Gas", "Mar", "Par", "Pic"],
       GERMANY: ["Ber", "Kie", "Mun", "Pru", "Ruh", "Sil"],
       ITALY: ["Apu", "Nap", "Pie", "Rom", "Tus", "Ven"],
@@ -305,8 +125,8 @@ Deno.test("test invalid moves with respect to a game position", () => {
         { province: "Tri", unitType: "Fleet" },
       ],
       ENGLAND: [
-        { province: "Lon", unitType: "Fleet" },
-        { province: "Edi", unitType: "Fleet" },
+        { province: "Nwy", unitType: "Fleet" },
+        { province: "Nth", unitType: "Fleet" },
         { province: "Lvp", unitType: "Army" },
       ],
       FRANCE: [
@@ -325,7 +145,6 @@ Deno.test("test invalid moves with respect to a game position", () => {
         { province: "Nap", unitType: "Fleet" },
       ],
       RUSSIA: [
-        { province: "Mos", unitType: "Army" },
         { province: "Sev", unitType: "Army" },
         { province: "War", unitType: "Army" },
         { province: "StPS", unitType: "Fleet" },
@@ -337,79 +156,18 @@ Deno.test("test invalid moves with respect to a game position", () => {
       ],
     },
   };
-  const validMoves: Move[] = [{
-    created_at: "2023-12-03T15:19:05.411808+00:00",
-    type: "MOVE",
-    to: "Kie",
-    from: null,
-    origin: "Ber",
-    unit_type: "Army",
-    status: "VALID",
-    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  }, {
-    created_at: "2023-12-03T18:20:15.186285+00:00",
-    type: "SUPPORT",
-    to: "Tyr",
-    from: "Ven",
-    origin: "Boh",
-    unit_type: "Army",
-    status: "VALID",
-    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  }, {
-    created_at: "2023-12-03T18:20:15.186285+00:00",
-    type: "HOLD",
-    to: "Ber",
-    from: null,
-    origin: "Ber",
-    unit_type: "Army",
-    status: "VALID",
-    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  }, {
-    created_at: "2023-12-03T18:20:15.186285+00:00",
-    type: "MOVE",
-    to: "Bur",
-    from: null,
-    origin: "Par",
-    unit_type: "Army",
-    status: "VALID",
-    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  }, {
-    created_at: "2023-12-03T18:20:15.186285+00:00",
-    type: "BUILD",
-    to: "Hol",
-    from: null,
-    origin: null,
-    unit_type: "Fleet",
-    status: "VALID",
-    player_game: "f5cf6d8d-51d6-4275-aed2-d0c400fee701",
-    game: "d66a09ef-74bb-44b2-a2b2-c5871a754478",
-    player: "6e91afcb-aa82-4d1d-b980-f106dd82bbad",
-    phase: "d34974d1-c5fd-4212-a486-f9c37bc5fed0",
-    id: crypto.randomUUID(),
-  }];
   const movesToSubmit = moveInPositionValidator(
     gamePosition,
-    [pgMock],
-  )(validMoves);
+    playerGames,
+  )(moves);
   assertEquals(movesToSubmit[0].status, "INVALID"); // overriden by third move
   assertEquals(movesToSubmit[1].status, "INVALID"); // unit doesn't exist
   assertEquals(movesToSubmit[2].status, "VALID");
   assertEquals(movesToSubmit[3].status, "INVALID"); // attempt to move foreign unit
   assertEquals(movesToSubmit[4].status, "INVALID"); // attempt to build not in domestic supply centers
+  assertEquals(movesToSubmit[5].status, "INVALID"); // attempt to build not in supply center
+  assertEquals(movesToSubmit[6].status, "INVALID"); // attempt to build in occupied supply center
+  assertEquals(movesToSubmit[7].status, "INVALID"); // attempt to build over supply center limit
+  assertEquals(movesToSubmit[8].status, "VALID"); 
+  assertEquals(movesToSubmit[9].status, "INVALID"); // attempt to build a fleet inland
 });

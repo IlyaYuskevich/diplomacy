@@ -3,7 +3,8 @@ import { Game } from "types/game.ts";
 import { Country } from "types/country.ts";
 import { Move } from "types/moves.ts";
 import { isActiveMove, MoveIntention } from "types/intention.ts";
-import { PlayerGame } from "types/playerGames.ts";
+soimport { getCountry, PlayerGame } from "types/playerGames.ts";
+import { Dislodgement, GamePosition } from "types/gamePosition.ts";
 
 const occupyProvince = (
   occupant: NonNullable<Country>,
@@ -32,9 +33,51 @@ const moveUnit = (
   unit ? unit.province = nextProvince : null;
 };
 
+const disbandUnit = (
+  gamePosition: GamePosition,
+  country: NonNullable<Country>,
+  move: Move,
+) => {
+  /* Disband unit */
+  const unitIndex = gamePosition.unitPositions[country].findIndex((unit) =>
+    unit.province == move.to
+  )!;
+  const unit = gamePosition.unitPositions[country].splice(unitIndex, 1).at(0)!;
+  gamePosition.disbanded = gamePosition.disbanded || {
+    AUSTRIA: [],
+    ENGLAND: [],
+    FRANCE: [],
+    GERMANY: [],
+    ITALY: [],
+    RUSSIA: [],
+    TURKEY: [],
+  };
+  gamePosition.disbanded[country] = [...gamePosition.disbanded[country], unit];
+};
+
+const buildUnit = (
+  gamePosition: GamePosition,
+  country: NonNullable<Country>,
+  move: Move,
+) => {
+  /* Build unit */
+  const unit = {province: move.to, unitType: move.unit_type};
+  gamePosition.built = gamePosition.built || {
+    AUSTRIA: [],
+    ENGLAND: [],
+    FRANCE: [],
+    GERMANY: [],
+    ITALY: [],
+    RUSSIA: [],
+    TURKEY: [],
+  };
+  gamePosition.built[country] = [...gamePosition.built[country], unit];
+  gamePosition.unitPositions[country] = [...gamePosition.unitPositions[country], unit];
+};
+
 const addDislodgement = (
   country: NonNullable<Country>,
-  origin: ProvinceCode,
+  dislodgement: Dislodgement,
   game: Game,
 ) => {
   /* Add dislodgement  */
@@ -48,7 +91,7 @@ const addDislodgement = (
     TURKEY: [],
   };
   game.game_position.dislodged[country] = [
-    ...new Set([...game.game_position.dislodged[country], origin]),
+    ...new Set([...game.game_position.dislodged[country], dislodgement]),
   ];
 };
 
@@ -71,7 +114,7 @@ const markFailedMoves = (moves: Move[]) => (intention: MoveIntention): Move => {
   return move;
 };
 
-export function calcNextPosition(
+export function calcNextPositionDiplomatic(
   intentions: MoveIntention[],
   moves: Move[],
   game: Game,
@@ -81,9 +124,12 @@ export function calcNextPosition(
   intentions.map(markFailedMoves(moves))
     .forEach((mv) => {
       const intention = intentions.find((i) => i.move.id == mv.id)!;
-      const country = playerGames.find((pg) => pg.id == mv.player_game)!
-        .country!;
-      intention?.dislodged && addDislodgement(country, mv.origin!, game);
+      const country = getCountry(mv.player_game, playerGames)!;
+      intention?.dislodged &&
+        addDislodgement(country, {
+          province: mv.origin!,
+          dislodgedFrom: intention.dislodgedFrom!,
+        }, game);
       if (!isActiveMove(intention)) return;
       mv.status == "SUCCEED" && mv.type !== "HOLD" &&
         occupyProvince(country, mv.to, game);
@@ -92,5 +138,39 @@ export function calcNextPosition(
       intention?.standoffIn && addStandoff(intention.standoffIn, game);
     });
 
+  return [moves, game];
+}
+
+export function calcNextPositionDisbandAndRetreat(
+  moves: Move[],
+  game: Game,
+  playerGames: PlayerGame[],
+): [Move[], Game] {
+  /* Calculates next game position; finds auto disbands. */
+  moves.filter((mv) => moves.some((m) => m.to == mv.to)).forEach((mv) => {
+    const country = getCountry(mv.player_game, playerGames)!;
+    disbandUnit(game.game_position, country, mv);
+  });
+  moves.filter((mv) => !moves.some((m) => m.to == mv.to)).forEach((mv) => {
+    const country = getCountry(mv.player_game, playerGames)!;
+    moveUnit(country, mv.origin!, mv.to, game);
+  });
+  return [moves, game];
+}
+
+export function calcNextPositiongainingAndLosing(
+  moves: Move[],
+  game: Game,
+  playerGames: PlayerGame[],
+): [Move[], Game] {
+  /* Calculates next game position, adds builds and disbands. */
+  moves.filter((mv) => mv.type == "BUILD").forEach((mv) => {
+    const country = getCountry(mv.player_game, playerGames)!;
+    buildUnit(game.game_position, country, mv);
+  });
+  moves.filter((mv) => mv.type == "DISBAND").forEach((mv) => {
+    const country = getCountry(mv.player_game, playerGames)!;
+    disbandUnit(game.game_position, country, mv);
+  });
   return [moves, game];
 }
