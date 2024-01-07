@@ -21,13 +21,13 @@ export default function MovesRenderer() {
   );
 
   return (
-    <div class="bg-primary text-white rounded-lg p-3 text-center">
+    <div class="bg-slate-600 text-white rounded-lg p-3 text-center">
       {submittedMoves.value.map((move: SubmittedMoveInsert) => (
         <SubmittedMoveRenderer {...move} />
       ))}
       {!areAllSubmitted.value && (
         <button
-          class="px-4 py-2 bg-primary hover:bg-primaryLight rounded-md text-white border-2 border-white"
+          class="px-4 py-2 bg-slate-600 hover:bg-slate-400 rounded-md text-white border-2 border-white"
           onClick={() => void submitMoves()}
         >
           Submit

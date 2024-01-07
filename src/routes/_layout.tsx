@@ -14,7 +14,7 @@ export default function Layout({ Component, state }: LayoutProps) {
         <link rel="icon" type="image/x-icon" href={asset("/logo.svg")} />
       </Head>
 
-      <div class="bg-primary">
+      <div class="bg-slate-600">
         <nav class="flex items-center justify-between flex-wrap min-h-[80px] mx-auto p-4">
           <a href="/" class="pl-10">
             <div class="flex flex-shrink-0 border-white">

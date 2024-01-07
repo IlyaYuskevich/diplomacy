@@ -67,7 +67,7 @@ export default function GamePreparationView(props: GameProps) {
         <div class="text-xl">
           Players are joining.{" "}
           <button
-            class="bg-primary p-1 rounded border-primary text-white text-white hover:bg-primaryStrong"
+            class="bg-slate-600 p-1 rounded border-slate-600 text-white text-white hover:bg-slate-900"
             onClick={copyToClipboard}
           >
             Click here

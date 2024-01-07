@@ -24,6 +24,7 @@ export function addFinishPhaseJob(game: Game) {
   if (!game.phase?.ends_at) {
     return;
   }
+  console.log('!!', game.id);
   const job = new Cron(game.phase.ends_at, { name: game.phase.id }, () => {
     initNextPhase(game);
   });
@@ -36,6 +37,7 @@ export function addFinishPhaseJob(game: Game) {
 
 export async function initAllPhaseJobs() {
   /* In case pod restarted: fetches actve games (with retries), then set up jobs that do post-phases processing */
+  console.log('init all phase job')
   const queryActiveGames = superSupa.from("games").select("*, phase(*)")
     .eq(
       "status",

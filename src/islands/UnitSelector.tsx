@@ -35,7 +35,7 @@ export default function UnitSelector() {
       <div class="flex flex-row flex-wrap gap-2">
         {unitsToSelect.map((unit) => (
           <button
-            class="bg-primary hover:bg-primaryLight px-4 py-2 rounded-md text-white"
+            class="bg-slate-600 hover:bg-slate-400 px-4 py-2 rounded-md text-white"
             onClick={() => selectUnit(unit)}
           >
             {provinces[unit.province].name}
