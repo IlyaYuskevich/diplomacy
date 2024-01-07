@@ -44,3 +44,4 @@ _test
 .vscode
 # Fresh build directory
 _fresh/
+node_modules/

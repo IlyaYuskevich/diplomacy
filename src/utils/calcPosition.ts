@@ -3,7 +3,7 @@ import { Game } from "types/game.ts";
 import { Country } from "types/country.ts";
 import { Move } from "types/moves.ts";
 import { isActiveMove, MoveIntention } from "types/intention.ts";
-soimport { getCountry, PlayerGame } from "types/playerGames.ts";
+import { getCountry, PlayerGame } from "types/playerGames.ts";
 import { Dislodgement, GamePosition } from "types/gamePosition.ts";
 
 const occupyProvince = (

@@ -12,7 +12,6 @@ export default function Layout({ Component, state }: LayoutProps) {
       <Head>
         <title>Diplomacy</title>
         <link rel="icon" type="image/x-icon" href={asset("/logo.svg")} />
-        <link rel="stylesheet" href={asset("/style.css")} />
       </Head>
 
       <div class="bg-primary">
