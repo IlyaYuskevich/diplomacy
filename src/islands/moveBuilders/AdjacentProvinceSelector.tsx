@@ -7,12 +7,14 @@ import {
   provinces,
 } from "types/provinces.ts";
 import { computed } from "@preact/signals";
-import { submittedMoves } from "types/moves.ts";
+import { selectedMoveType, submittedMoves } from "types/moves.ts";
+import { StateButtonStyle } from "utils/moveSelectorsUtils.ts";
 
 export default function AdjacentProvinceSelector(
   props: {
     province: ProvinceCode;
     setter: hooks.StateUpdater<ProvinceCode | null>;
+    state: ProvinceCode | null,
     unitType?: UnitType;
   },
 ) {
@@ -28,7 +30,9 @@ export default function AdjacentProvinceSelector(
     return [...armyBorders[province] || [], ...fleetBorders[province] || []]
   }
 
-  const alreadyMovesToProvinces = computed(() => submittedMoves.value.filter(mv => mv.type == "MOVE").map(mv => mv.to))
+  const buttonStyle = computed(() => (key: ProvinceCode) => StateButtonStyle(key, props.state))
+
+  const alreadyMovesToProvinces = computed(() => submittedMoves.value.filter(mv => mv.type == "MOVE" && selectedMoveType.value == "MOVE").map(mv => mv.to))
 
   return (
     <div>
@@ -36,7 +40,7 @@ export default function AdjacentProvinceSelector(
         {props.province &&
           getMoves(props.province, props.unitType).filter(prov => !alreadyMovesToProvinces.value.includes(prov)).map((key: ProvinceCode) => (
             <button
-              class="bg-slate-600 hover:bg-slate-400 px-4 py-2 rounded-md text-white"
+              class={buttonStyle.value(key)}
               onClick={() => props.setter(key)}
             >
               {provinces[key].name}

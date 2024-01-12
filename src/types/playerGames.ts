@@ -1,4 +1,4 @@
-import { signal } from "@preact/signals";
+import { computed, signal } from "@preact/signals";
 import { Tables } from "lib/database.types.ts";
 
 export type PlayerGame = Tables<"player_games">
@@ -8,3 +8,5 @@ export function getCountry(playerGameId: string, playerGames: PlayerGame[]) {
 }
 
 export const selectedPlayerGame = signal<PlayerGame | null>(null);
+
+export const currentCountry = computed(() => selectedPlayerGame.value?.country)

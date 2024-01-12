@@ -22,22 +22,26 @@ import * as $game_middleware from "./routes/game/_middleware.ts";
 import * as $index from "./routes/index.tsx";
 import * as $my_games_middleware from "./routes/my-games/_middleware.ts";
 import * as $my_games_index from "./routes/my-games/index.tsx";
-import * as $AdjacentProvinceSelector from "./islands/AdjacentProvinceSelector.tsx";
 import * as $AuthForm from "./islands/AuthForm.tsx";
-import * as $CoastialProvinceSelector from "./islands/CoastialProvinceSelector.tsx";
-import * as $Controls from "./islands/Controls.tsx";
-import * as $ConvoyTheUnit from "./islands/ConvoyTheUnit.tsx";
-import * as $CountrySelector from "./islands/CountrySelector.tsx";
 import * as $GamePreparationView from "./islands/GamePreparationView.tsx";
 import * as $GameView from "./islands/GameView.tsx";
-import * as $MoveTheUnit from "./islands/MoveTheUnit.tsx";
-import * as $MoveTypeSelector from "./islands/MoveTypeSelector.tsx";
-import * as $MovesRenderer from "./islands/MovesRenderer.tsx";
 import * as $PlayerGames from "./islands/PlayerGames.tsx";
-import * as $SubmittedMoveRenderer from "./islands/SubmittedMoveRenderer.tsx";
-import * as $SupportTheUnit from "./islands/SupportTheUnit.tsx";
-import * as $UnitSelector from "./islands/UnitSelector.tsx";
 import * as $WorldMap from "./islands/WorldMap.tsx";
+import * as $moveBuilders_AdjacentProvinceSelector from "./islands/moveBuilders/AdjacentProvinceSelector.tsx";
+import * as $moveBuilders_CoastialProvinceSelector from "./islands/moveBuilders/CoastialProvinceSelector.tsx";
+import * as $moveBuilders_Controls from "./islands/moveBuilders/Controls.tsx";
+import * as $moveBuilders_ConvoyTheUnit from "./islands/moveBuilders/ConvoyTheUnit.tsx";
+import * as $moveBuilders_CountrySelector from "./islands/moveBuilders/CountrySelector.tsx";
+import * as $moveBuilders_DiplomaticMoveBuilder from "./islands/moveBuilders/DiplomaticMoveBuilder.tsx";
+import * as $moveBuilders_GainingAndLoosingBuilder from "./islands/moveBuilders/GainingAndLoosingBuilder.tsx";
+import * as $moveBuilders_MoveTheUnit from "./islands/moveBuilders/MoveTheUnit.tsx";
+import * as $moveBuilders_MoveTypeSelector from "./islands/moveBuilders/MoveTypeSelector.tsx";
+import * as $moveBuilders_MovesRenderer from "./islands/moveBuilders/MovesRenderer.tsx";
+import * as $moveBuilders_RetreatAndDisbandingMoveBuilder from "./islands/moveBuilders/RetreatAndDisbandingMoveBuilder.tsx";
+import * as $moveBuilders_SubmittedMoveRenderer from "./islands/moveBuilders/SubmittedMoveRenderer.tsx";
+import * as $moveBuilders_SupplyCentersSelector from "./islands/moveBuilders/SupplyCentersSelector.tsx";
+import * as $moveBuilders_SupportTheUnit from "./islands/moveBuilders/SupportTheUnit.tsx";
+import * as $moveBuilders_UnitSelector from "./islands/moveBuilders/UnitSelector.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -64,22 +68,34 @@ const manifest = {
     "./routes/my-games/index.tsx": $my_games_index,
   },
   islands: {
-    "./islands/AdjacentProvinceSelector.tsx": $AdjacentProvinceSelector,
     "./islands/AuthForm.tsx": $AuthForm,
-    "./islands/CoastialProvinceSelector.tsx": $CoastialProvinceSelector,
-    "./islands/Controls.tsx": $Controls,
-    "./islands/ConvoyTheUnit.tsx": $ConvoyTheUnit,
-    "./islands/CountrySelector.tsx": $CountrySelector,
     "./islands/GamePreparationView.tsx": $GamePreparationView,
     "./islands/GameView.tsx": $GameView,
-    "./islands/MoveTheUnit.tsx": $MoveTheUnit,
-    "./islands/MoveTypeSelector.tsx": $MoveTypeSelector,
-    "./islands/MovesRenderer.tsx": $MovesRenderer,
     "./islands/PlayerGames.tsx": $PlayerGames,
-    "./islands/SubmittedMoveRenderer.tsx": $SubmittedMoveRenderer,
-    "./islands/SupportTheUnit.tsx": $SupportTheUnit,
-    "./islands/UnitSelector.tsx": $UnitSelector,
     "./islands/WorldMap.tsx": $WorldMap,
+    "./islands/moveBuilders/AdjacentProvinceSelector.tsx":
+      $moveBuilders_AdjacentProvinceSelector,
+    "./islands/moveBuilders/CoastialProvinceSelector.tsx":
+      $moveBuilders_CoastialProvinceSelector,
+    "./islands/moveBuilders/Controls.tsx": $moveBuilders_Controls,
+    "./islands/moveBuilders/ConvoyTheUnit.tsx": $moveBuilders_ConvoyTheUnit,
+    "./islands/moveBuilders/CountrySelector.tsx": $moveBuilders_CountrySelector,
+    "./islands/moveBuilders/DiplomaticMoveBuilder.tsx":
+      $moveBuilders_DiplomaticMoveBuilder,
+    "./islands/moveBuilders/GainingAndLoosingBuilder.tsx":
+      $moveBuilders_GainingAndLoosingBuilder,
+    "./islands/moveBuilders/MoveTheUnit.tsx": $moveBuilders_MoveTheUnit,
+    "./islands/moveBuilders/MoveTypeSelector.tsx":
+      $moveBuilders_MoveTypeSelector,
+    "./islands/moveBuilders/MovesRenderer.tsx": $moveBuilders_MovesRenderer,
+    "./islands/moveBuilders/RetreatAndDisbandingMoveBuilder.tsx":
+      $moveBuilders_RetreatAndDisbandingMoveBuilder,
+    "./islands/moveBuilders/SubmittedMoveRenderer.tsx":
+      $moveBuilders_SubmittedMoveRenderer,
+    "./islands/moveBuilders/SupplyCentersSelector.tsx":
+      $moveBuilders_SupplyCentersSelector,
+    "./islands/moveBuilders/SupportTheUnit.tsx": $moveBuilders_SupportTheUnit,
+    "./islands/moveBuilders/UnitSelector.tsx": $moveBuilders_UnitSelector,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

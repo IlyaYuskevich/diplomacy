@@ -1,11 +1,11 @@
 import * as hooks from "preact/hooks";
-import AdjacentProvinceSelector from "islands/AdjacentProvinceSelector.tsx";
 import { SubmittedMoveInsert, submittedMoves, selectedMoveType } from "types/moves.ts";
 import { selectedUnit } from "types/units.ts";
 import { selectedCountry } from "types/country.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
 import { currentGame } from "types/game.ts";
 import { ProvinceCode } from "types/provinces.ts";
+import CoastialProvinceSelector from "islands/moveBuilders/CoastialProvinceSelector.tsx";
 
 export default function ConvoyTheUnit() {
 
@@ -27,18 +27,17 @@ export default function ConvoyTheUnit() {
       game: currentGame.value!.id,
       player: selectedPlayerGame.value!.player,
     }
-    submittedMoves.value = [...submittedMoves.value, newMove]
-    selectedCountry.value = null
-    selectedUnit.value = null
-    selectedMoveType.value = null
+    submittedMoves.value = [...submittedMoves.value, newMove];
+    selectedUnit.value = null;
+    selectedMoveType.value = null;
   }, [to, from])
 
   return (
     <div>
       <p>Select from which province you want to convoy the army</p>
-      <AdjacentProvinceSelector setter={setFrom} province={selectedUnit.value!.province} unitType={selectedUnit.value!.unitType}/>
+      <CoastialProvinceSelector setter={setFrom} state={from} />
       {from && <p>Select to which province you want to convoy the army</p>}
-      {from && <AdjacentProvinceSelector setter={setTo} province={selectedUnit.value!.province}/>}
+      {from && <CoastialProvinceSelector setter={setTo} state={to} />}
     </div>
   );
 }

@@ -24,7 +24,6 @@ export function addFinishPhaseJob(game: Game) {
   if (!game.phase?.ends_at) {
     return;
   }
-  console.log('!!', game.id);
   const job = new Cron(game.phase.ends_at, { name: game.phase.id }, () => {
     initNextPhase(game);
   });

@@ -1,6 +1,6 @@
-import { Unit } from "types/units.ts";
+import { Unit, UnitType } from "types/units.ts";
 import { Country, COUNTRY_ARRAY } from "types/country.ts";
-import { ProvinceCode } from "types/provinces.ts";
+import { ProvinceCode, armyBorders, fleetBorders } from "types/provinces.ts";
 import { Tables } from "lib/database.types.ts";
 
 export type Dislodgement = { province: ProvinceCode, dislodgedFrom: ProvinceCode }
@@ -105,4 +105,14 @@ export const SUPPLY_CENTERS: Partial<Record<ProvinceCode, Country>> = {
 export const isOccupied = (gamePosition: GamePosition) => (province: ProvinceCode) => {
   /* Finds out if the province is already occupied. */
   return COUNTRY_ARRAY.some(country => gamePosition.unitPositions[country].some(unit => unit.province == province));
+}
+
+export const retreatOptions = (dislodge: Dislodgement, unitType: UnitType, gamePosition: GamePosition) => {
+  const borders = unitType == "Army"
+  ? armyBorders[dislodge.province]
+  : fleetBorders[dislodge.province];
+  return borders!
+    .filter((province) => province != dislodge.dislodgedFrom)
+    .filter((province) => !isOccupied(gamePosition)(province))
+    .filter((province) => !gamePosition.standoffs?.includes(province));
 }

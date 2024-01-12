@@ -3,7 +3,7 @@ import { type Config } from "tailwindcss";
 
 export default {
   content: [
-    "{routes,islands,components}/**/*.{ts,tsx}",
+    "{routes,islands,components,utils}/**/*.{ts,tsx}",
   ],
   theme: {
     container: {

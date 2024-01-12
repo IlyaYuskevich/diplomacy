@@ -1,4 +1,4 @@
-import { MoveInsert, SubmittedMove } from "types/moves.ts";
+import { DIPLOMATIC_PHASE_MOVES, GAINING_LOSING_MOVES, MoveInsert, RETREAT_PHASE_MOVES, SubmittedMove } from "types/moves.ts";
 import {
   armyBorders,
   fleetBorders,
@@ -7,16 +7,18 @@ import {
   ProvinceType,
 } from "types/provinces.ts";
 import {
+Dislodgement,
   GamePosition,
   isOccupied,
+  retreatOptions,
   SUPPLY_CENTERS,
 } from "types/gamePosition.ts";
 import { Game, GamePhase } from "types/game.ts";
 import { getCountry, PlayerGame } from "types/playerGames.ts";
-import { Unit } from "types/units.ts";
+import { Unit, UnitType } from "types/units.ts";
 import { Country } from "types/country.ts";
 
-const getGainingLosingNumber = (
+export const getGainingLosingNumber = (
   gamePosition: GamePosition,
   country: NonNullable<Country>,
 ) => {
@@ -30,7 +32,7 @@ const getGainingLosingNumber = (
   return numOfSupplyCenters - numOfUnits;
 };
 
-const buildOrigins = (
+export const buildOrigins = (
   country: NonNullable<Country>,
   gamePosition: GamePosition,
 ) => {
@@ -40,7 +42,7 @@ const buildOrigins = (
     .filter((province) => !isOccupied(gamePosition)(province));
 };
 
-const getBuildsDisbandsBalance = (moves: MoveInsert[]) => {
+export const getBuildsDisbandsBalance = (moves: MoveInsert[]) => {
   /* returns total number of new units (built - disbanded). */
   return moves
       .map((move) => Number(move.type == "BUILD"))
@@ -159,15 +161,15 @@ const ruleInvalidateRedundantBuildsOrDisbands =
 const rulePhase = (phase: GamePhase) => (move: MoveInsert) => {
   switch (phase) {
     case "Diplomatic":
-      if (!["MOVE", "SUPPORT", "CONVOY", "HOLD"].includes(move.type)) {
+      if (!DIPLOMATIC_PHASE_MOVES.includes(move.type)) {
         move.status = "INVALID";
       }
       break;
     case "Retreat and Disbanding":
-      if (!["RETREAT"].includes(move.type)) move.status = "INVALID";
+      if (!RETREAT_PHASE_MOVES.includes(move.type)) move.status = "INVALID";
       break;
     case "Gaining and Losing":
-      if (!["BUILD", "DISBAND"].includes(move.type)) move.status = "INVALID";
+      if (!GAINING_LOSING_MOVES.includes(move.type)) move.status = "INVALID";
       break;
   }
   return move;
@@ -250,17 +252,9 @@ const pickRandomN = <T>(arr: Array<T>, len: number) => {
 };
 
 const retreatTo = (
-  unit: Unit,
-  gamePosition: GamePosition,
-  dislodgedFrom: ProvinceCode,
+  dislodge: Dislodgement, unitType: UnitType, gamePosition: GamePosition
 ) => {
-  const borders = unit.unitType == "Army"
-    ? armyBorders[unit.province]
-    : fleetBorders[unit.province];
-  const options = borders!
-    .filter((province) => province != dislodgedFrom)
-    .filter((province) => !isOccupied(gamePosition)(province))
-    .filter((province) => !gamePosition.standoffs?.includes(province));
+  const options = retreatOptions(dislodge, unitType, gamePosition)
   return pickRandomN(options, 1).at(0);
 };
 
@@ -282,7 +276,7 @@ const autoInsertRetreatMoves = (
       if (!isUnit(unit)) return;
       moves.push({
         type: "RETREAT",
-        to: retreatTo(unit, game.game_position, dislodge.dislodgedFrom),
+        to: retreatTo(dislodge, unit.unitType, game.game_position),
         from: null,
         origin: unit.province,
         unit_type: unit.unitType,

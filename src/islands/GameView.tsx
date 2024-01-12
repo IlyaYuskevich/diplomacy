@@ -1,6 +1,6 @@
 import { GameProps } from "routes/game/[gameId].tsx";
 import WorldMap from "islands/WorldMap.tsx";
-import Controls from "islands/Controls.tsx";
+import Controls from "./moveBuilders/Controls.tsx";
 import { submittedMoves } from "types/moves.ts";
 import { useEffect } from "preact/hooks";
 import { selectedPlayerGame } from "types/playerGames.ts";
@@ -10,7 +10,6 @@ import { createClient } from "@supabase";
 
 export default function GameView(props: GameProps) {
   useEffect(() => {
-    console.log('!!!', props.game.game_position);
     selectedPlayerGame.value = props.playerGame;
     currentGame.value = props.game;
     selectedCountry.value = props.playerGame.country;
@@ -45,7 +44,7 @@ export default function GameView(props: GameProps) {
   return (
     <>
       <div class="grid lg:grid-cols-3 grid-cols-1">
-        <div class="col-span-2">
+        <div class="col-span-2 mb-auto">
           <WorldMap />
         </div>
         <div>

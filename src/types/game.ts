@@ -15,3 +15,5 @@ export const currentGame = signal<Game | null>(null);
 
 export const gamePosition = computed(() => currentGame.value?.game_position || START_POSITION)
 
+export const currentPhase = computed(() => currentGame.value?.phase?.phase)
+

@@ -12,3 +12,14 @@ export type MoveType = Enums<"MoveType">
 export const units = signal<Move[]>([]);
 export const selectedMoveType = signal<MoveType | null>(null);
 export const submittedMoves = signal<SubmittedMoveInsert[]>([]);
+
+export const DIPLOMATIC_PHASE_MOVES: MoveType[] = [
+    "MOVE",
+    "HOLD",
+    "SUPPORT",
+    "CONVOY"
+  ];
+  export const RETREAT_PHASE_MOVES: MoveType[] = [
+    "RETREAT"
+  ];
+export const GAINING_LOSING_MOVES: MoveType[] = ["BUILD", "DISBAND"];

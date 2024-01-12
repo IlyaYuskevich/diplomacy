@@ -1,5 +1,5 @@
 import { useEffect, useState } from "preact/hooks";
-import AdjacentProvinceSelector from "islands/AdjacentProvinceSelector.tsx";
+import AdjacentProvinceSelector from "./AdjacentProvinceSelector.tsx";
 import {
   selectedMoveType,
   submittedMoves,
@@ -38,6 +38,7 @@ export default function MoveTheUnit() {
       <p>Select destination province:</p>
       <AdjacentProvinceSelector
         setter={setDestination}
+        state={destination}
         province={selectedUnit.value!.province}
         unitType={selectedUnit.value!.unitType}
       />

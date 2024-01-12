@@ -1,5 +1,5 @@
 import { SubmittedMoveInsert, submittedMoves } from "types/moves.ts";
-import { SubmittedMoveRenderer } from "islands/SubmittedMoveRenderer.tsx";
+import { SubmittedMoveRenderer } from "./SubmittedMoveRenderer.tsx";
 import { computed } from "@preact/signals";
 
 export default function MovesRenderer() {
@@ -13,7 +13,6 @@ export default function MovesRenderer() {
     });
     const jsonData = await response.json();
     submittedMoves.value = jsonData;
-    console.log(submittedMoves.value)
   }
 
   const areAllSubmitted = computed(() =>

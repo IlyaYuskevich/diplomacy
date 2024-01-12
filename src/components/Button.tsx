@@ -6,7 +6,7 @@ export function Button(props: JSX.HTMLAttributes<HTMLAnchorElement>) {
     <a
       {...props}
       disabled={!IS_BROWSER || props.disabled}
-      class={`inline-block cursor-pointer px-4 py-2 rounded border(gray-500 2) hover:bg-gray-200 disabled:(opacity-50 cursor-not-allowed) ${
+      class={`inline-block cursor-pointer px-4 py-2 rounded hover:bg-gray-200 disabled:(opacity-50 cursor-not-allowed) ${
         props.class ?? ""
       }`}
     />
