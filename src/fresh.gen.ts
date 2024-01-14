@@ -38,10 +38,12 @@ import * as $moveBuilders_MoveTheUnit from "./islands/moveBuilders/MoveTheUnit.t
 import * as $moveBuilders_MoveTypeSelector from "./islands/moveBuilders/MoveTypeSelector.tsx";
 import * as $moveBuilders_MovesRenderer from "./islands/moveBuilders/MovesRenderer.tsx";
 import * as $moveBuilders_RetreatAndDisbandingMoveBuilder from "./islands/moveBuilders/RetreatAndDisbandingMoveBuilder.tsx";
+import * as $moveBuilders_RetreatProvinceSelector from "./islands/moveBuilders/RetreatProvinceSelector.tsx";
 import * as $moveBuilders_SubmittedMoveRenderer from "./islands/moveBuilders/SubmittedMoveRenderer.tsx";
 import * as $moveBuilders_SupplyCentersSelector from "./islands/moveBuilders/SupplyCentersSelector.tsx";
 import * as $moveBuilders_SupportTheUnit from "./islands/moveBuilders/SupportTheUnit.tsx";
 import * as $moveBuilders_UnitSelector from "./islands/moveBuilders/UnitSelector.tsx";
+import * as $moveBuilders_UnitTypeSelector from "./islands/moveBuilders/UnitTypeSelector.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -90,12 +92,16 @@ const manifest = {
     "./islands/moveBuilders/MovesRenderer.tsx": $moveBuilders_MovesRenderer,
     "./islands/moveBuilders/RetreatAndDisbandingMoveBuilder.tsx":
       $moveBuilders_RetreatAndDisbandingMoveBuilder,
+    "./islands/moveBuilders/RetreatProvinceSelector.tsx":
+      $moveBuilders_RetreatProvinceSelector,
     "./islands/moveBuilders/SubmittedMoveRenderer.tsx":
       $moveBuilders_SubmittedMoveRenderer,
     "./islands/moveBuilders/SupplyCentersSelector.tsx":
       $moveBuilders_SupplyCentersSelector,
     "./islands/moveBuilders/SupportTheUnit.tsx": $moveBuilders_SupportTheUnit,
     "./islands/moveBuilders/UnitSelector.tsx": $moveBuilders_UnitSelector,
+    "./islands/moveBuilders/UnitTypeSelector.tsx":
+      $moveBuilders_UnitTypeSelector,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

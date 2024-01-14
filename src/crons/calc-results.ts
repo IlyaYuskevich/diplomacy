@@ -36,7 +36,6 @@ export function addFinishPhaseJob(game: Game) {
 
 export async function initAllPhaseJobs() {
   /* In case pod restarted: fetches actve games (with retries), then set up jobs that do post-phases processing */
-  console.log('init all phase job')
   const queryActiveGames = superSupa.from("games").select("*, phase(*)")
     .eq(
       "status",

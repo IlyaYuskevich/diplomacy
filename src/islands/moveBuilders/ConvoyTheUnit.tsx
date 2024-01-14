@@ -6,21 +6,23 @@ import { selectedPlayerGame } from "types/playerGames.ts";
 import { currentGame } from "types/game.ts";
 import { ProvinceCode } from "types/provinces.ts";
 import CoastialProvinceSelector from "islands/moveBuilders/CoastialProvinceSelector.tsx";
+import { computed } from "@preact/signals";
 
 export default function ConvoyTheUnit() {
 
   const [from, setFrom] = hooks.useState<ProvinceCode | null>(null)
   const [to, setTo] = hooks.useState<ProvinceCode | null>(null)
+  const selectDestination = computed(() => !!from || (selectedUnit.value?.unitType === "Army"))
 
   hooks.useEffect(() => {
-    if (!from || !to) {
+    if (!to) {
       return
     }
     const newMove: SubmittedMoveInsert = {
       type: selectedMoveType.value!,
       origin: selectedUnit.value!.province,
       to: to,
-      from: from,
+      from: selectedUnit.value?.unitType === "Fleet" ? from : null,
       unit_type: selectedUnit.value!.unitType,
       phase: currentGame.value!.phase!.id,
       player_game: selectedPlayerGame.value!.id,
@@ -34,10 +36,10 @@ export default function ConvoyTheUnit() {
 
   return (
     <div>
-      <p>Select from which province you want to convoy the army</p>
-      <CoastialProvinceSelector setter={setFrom} state={from} />
-      {from && <p>Select to which province you want to convoy the army</p>}
-      {from && <CoastialProvinceSelector setter={setTo} state={to} />}
+      {selectedUnit.value?.unitType === "Fleet" && <p>Select from which province you want to convoy the army</p>}
+      {selectedUnit.value?.unitType === "Fleet" && <CoastialProvinceSelector setter={setFrom} state={from} />}
+      {selectDestination && <p>Select to which province you want to convoy the army</p>}
+      {selectDestination && <CoastialProvinceSelector setter={setTo} state={to} />}
     </div>
   );
 }

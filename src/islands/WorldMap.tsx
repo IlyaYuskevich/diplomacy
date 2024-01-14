@@ -2,7 +2,7 @@ import { Country, COUNTRY_ARRAY } from "types/country.ts";
 import { Unit, UnitType } from "types/units.ts";
 import { computed } from "@preact/signals";
 import * as svg from "@svgdotjs/svg.js";
-import { drawLink } from "utils/worldMapUtils.ts";
+import { drawLink, drawHoldIcon } from "utils/worldMapUtils.ts";
 import { useEffect, useRef } from "preact/hooks";
 import { SubmittedMoveInsert, submittedMoves } from "types/moves.ts";
 import { currentGame, gamePosition } from "types/game.ts";
@@ -11,7 +11,8 @@ import { ProvinceCode, UNIT_LOC_MAP } from "types/provinces.ts";
 import { sentenceCase } from "case";
 
 export default function WorldMap() {
-  const arrowDrawer = useRef();
+  // deno-lint-ignore no-explicit-any
+  const arrowDrawer = useRef<any>();
 
   useEffect(() => {
     arrowDrawer.current = svg.SVG().addTo("#world-map").size("100%", "100%");
@@ -46,7 +47,8 @@ export default function WorldMap() {
   }
 
   useEffect(() => {
-    submittedMoves.value.forEach((val: SubmittedMoveInsert) =>
+    arrowDrawer.current?.clear();
+    submittedMoves.value.filter(mv => mv.type !== "HOLD").forEach((val: SubmittedMoveInsert) =>
       selectedPlayerGame.value?.country &&
       drawLink(
         arrowDrawer.current,
@@ -57,6 +59,9 @@ export default function WorldMap() {
         selectedPlayerGame.value.country,
       )
     );
+    submittedMoves.value.filter(mv => mv.type === "HOLD").forEach(mv => {
+      drawHoldIcon(arrowDrawer.current, mv.origin!, selectedPlayerGame.value!.country!)
+    })
   }, [submittedMoves.value]);
 
   const unitsWithLocation = computed(() => (

@@ -30,7 +30,7 @@ export default function AdjacentProvinceSelector(
     return [...armyBorders[province] || [], ...fleetBorders[province] || []]
   }
 
-  const buttonStyle = computed(() => (key: ProvinceCode) => StateButtonStyle(key, props.state))
+  const buttonStyle = computed(() => (key: ProvinceCode) => StateButtonStyle(key === props.state, !props.state))
 
   const alreadyMovesToProvinces = computed(() => submittedMoves.value.filter(mv => mv.type == "MOVE" && selectedMoveType.value == "MOVE").map(mv => mv.to))
 

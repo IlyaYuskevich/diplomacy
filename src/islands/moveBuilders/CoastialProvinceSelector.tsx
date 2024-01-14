@@ -18,7 +18,7 @@ export default function CoastialProvinceSelector(
           filterCoastialProvinces(key) && (
             <button
               onClick={() => props.setter(key)}
-              class={StateButtonStyle(key, props.state)}
+              class={StateButtonStyle(key === props.state, props.state === null)}
             >
               {provinces[key as ProvinceCode].name}
             </button>

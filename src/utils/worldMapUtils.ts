@@ -38,6 +38,25 @@ export function drawLink(
   }
 }
 
+export function drawHoldIcon(
+  drawer: any,
+  origin: ProvinceCode,
+  country: NonNullable<Country>,
+) {
+  if (!drawer) return;
+  const lineColor = Color(CountryColors[country]).darken(.5).alpha(0.8)
+    .toString();
+  // deno-lint-ignore no-explicit-any
+  const location = UNIT_LOC_MAP[origin];
+
+  drawer.path(
+    `m${location.X-5},${location.Y+10}l15,-15l20,0l15,15l0,20l-15,15l-20,0l-15,-15l0,-20z`
+  )
+    .stroke({ width: 8, color: lineColor }).fill("none").attr({
+      "stroke-linecap": "round",
+    });
+}
+
 function calcBezierShape(
   start: { X: number; Y: number },
   end: { X: number; Y: number },

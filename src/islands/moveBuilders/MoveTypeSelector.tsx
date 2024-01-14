@@ -6,7 +6,7 @@ import { GamePhase, currentGame } from "types/game.ts";
 import { computed } from "@preact/signals";
 import { StateButtonStyle } from "utils/moveSelectorsUtils.ts";
 
-export default function MoveTypeSelector(props: {state: MoveType | null}) {
+export default function MoveTypeSelector() {
   
   function getPossibleMoves(): MoveType[] {
     if (!selectedUnit.value || !currentGame.value?.phase) {
@@ -29,7 +29,7 @@ export default function MoveTypeSelector(props: {state: MoveType | null}) {
     }    
   }
 
-  const buttonStyle = computed(() => (key: MoveType) => StateButtonStyle(key, selectedMoveType.value))
+  const buttonStyle = computed(() => (key: MoveType) => StateButtonStyle(key === selectedMoveType.value, !selectedMoveType.value))
 
   function selectMoveType(moveType: MoveType) {
     selectedMoveType.value = moveType;

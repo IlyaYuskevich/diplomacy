@@ -6,7 +6,7 @@ import { computed } from "@preact/signals";
 import { gamePosition } from "types/game.ts";
 import { selectedCountry } from "types/country.ts";
 
-export default function UnitSelector(props: {state: ProvinceCode[] | null}) {
+export default function UnitSelector() {
   function selectUnit(unit: Unit) {
     selectedUnit.value = unit;
     selectedMoveType.value = null;
@@ -26,7 +26,7 @@ export default function UnitSelector(props: {state: ProvinceCode[] | null}) {
       <div class="flex flex-row flex-wrap gap-2">
         {unitsToSelect.value.map((unit) => (
           <button
-            class={StateButtonStyle(unit.province, props.state?.at(0) || null)}
+            class={StateButtonStyle(selectedUnit.value?.province === unit.province, !selectedUnit.value)}
             onClick={() => selectUnit(unit)}
           >
             {provinces[unit.province].name}

@@ -45,7 +45,6 @@ export default function GamePreparationView(props: GameProps) {
         table: "games",
       }, (v) => {
         const newValue = v.new as Game;
-        console.log(v, currentGame.value);
         if (newValue.id == currentGame.value!.id && newValue.status == "ACTIVE") {
           location.reload();
         }

@@ -48,8 +48,8 @@ export default function DiplomaticMoveBuilder() {
   return (
     <>
       {submittedMoves.value.length != 0 && <MovesRenderer />}
-      <UnitSelector state={[selectedUnit.value!.province] || null} />
-      {selectedUnit.value && <MoveTypeSelector state={selectedMoveType.value} />}
+      <UnitSelector />
+      {selectedUnit.value && <MoveTypeSelector />}
       {selectedMoveType.value && renderMoveBuilder()}
     </>
   );

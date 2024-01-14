@@ -238,6 +238,7 @@ const autoInsertUnmovedUnits = (
         phase: game.phase!.id,
       } as MoveInsert)
     );
+    return moves
 };
 
 const isUnit = (item: Unit | undefined): item is Unit => {
@@ -287,6 +288,7 @@ const autoInsertRetreatMoves = (
         phase: game.phase!.id,
       } as MoveInsert);
     });
+    return moves
 };
 
 const autoInsertBuildOrDisband = (
@@ -338,6 +340,7 @@ const autoInsertBuildOrDisband = (
         } as MoveInsert)
       );
   }
+  return moves
 };
 
 export const addAutoMoves = (
@@ -347,33 +350,34 @@ export const addAutoMoves = (
 (moves: MoveInsert[]) => {
   switch (game.phase!.phase) {
     case "Diplomatic":
-      playerGames.forEach((pg) =>
+      moves = [...playerGames.flatMap((pg) =>
         autoInsertUnmovedUnits(
           game,
           pg,
           moves.filter((mv) => mv.player_game == pg.id),
         )
-      );
+      )];
       break;
     case "Retreat and Disbanding":
-      playerGames.forEach((pg) =>
+      moves = [...playerGames.flatMap((pg) =>
         autoInsertRetreatMoves(
           game,
           pg,
           moves.filter((mv) => mv.player_game == pg.id),
         )
-      );
+      )];
       break;
     case "Gaining and Losing":
-      playerGames.forEach((pg) =>
+      moves = [...playerGames.flatMap((pg) =>
         autoInsertBuildOrDisband(
           game,
           pg,
           moves.filter((mv) => mv.player_game == pg.id),
         )
-      );
+      )];
       break;
   }
+  console.log("flatmap", moves)
   return moves;
 };
 
