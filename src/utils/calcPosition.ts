@@ -21,7 +21,6 @@ const occupyProvince = (
     index != -1 ? domains.splice(index, 1) : null;
   });
   game.game_position.domains[occupant].push(provinceMapped);
-  console.log(occupant, province, game);
 };
 
 const moveUnit = (
@@ -40,11 +39,12 @@ const moveUnit = (
 const disbandUnit = (
   gamePosition: GamePosition,
   country: NonNullable<Country>,
-  move: Move,
+  province: ProvinceCode,
+  move?: Move,
 ) => {
   /* Disband unit */
   const unitIndex = gamePosition.unitPositions[country].findIndex((unit) =>
-    unit.province == move.to
+    unit.province == province
   )!;
   const unit = gamePosition.unitPositions[country].splice(unitIndex, 1).at(0)!;
   gamePosition.disbanded = gamePosition.disbanded || {
@@ -57,6 +57,7 @@ const disbandUnit = (
     TURKEY: [],
   };
   gamePosition.disbanded[country] = [...gamePosition.disbanded[country], unit];
+  if (move) move.status = "FAILED";
 };
 
 const buildUnit = (
@@ -158,11 +159,26 @@ export function calcNextPositionDisbandAndRetreat(
     const country = getCountry(mv.player_game, playerGames)!;
     moveUnit(country, mv.origin!, mv.to, game);
   });
-  moves.filter((mv) => moves.some((m) => m.to == mv.to && mv.id != m.id))
+  moves
+    .filter((mv) =>
+      moves.some((m) =>
+        fleetToArmyBorder(m.to) == fleetToArmyBorder(mv.to) && mv.id != m.id
+      )
+    )
     .forEach((mv) => {
       const country = getCountry(mv.player_game, playerGames)!;
-      disbandUnit(game.game_position, country, mv);
+      disbandUnit(game.game_position, country, mv.to, mv);
     });
+  
+
+  COUNTRY_ARRAY.forEach((country) =>
+    game.game_position.dislodged &&
+    game.game_position.dislodged[country].map((dislodge) => dislodge.province)
+      .filter((province) => !moves.find(mv => mv.origin == province))
+      .forEach(
+        (province) => disbandUnit(game.game_position, country, province),
+      )
+  );
   // occupy provinces
   COUNTRY_ARRAY.forEach((country) =>
     game.game_position.unitPositions[country].map((unit) => unit.province)
@@ -186,7 +202,7 @@ export function calcNextPositionGainingAndLosing(
   });
   moves.filter((mv) => mv.type == "DISBAND").forEach((mv) => {
     const country = getCountry(mv.player_game, playerGames)!;
-    disbandUnit(game.game_position, country, mv);
+    disbandUnit(game.game_position, country, mv.to);
   });
   return [moves, game];
 }

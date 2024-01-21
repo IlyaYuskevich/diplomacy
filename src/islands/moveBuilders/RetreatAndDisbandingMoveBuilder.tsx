@@ -38,7 +38,7 @@ export default function RetreatAndDisbandingMoveBuilder() {
   }, [to]);
 
   return (
-    <div class="flex flex-row flex-wrap gap-2">
+    <div class="flex flex-col flex-wrap gap-2 items-start">
       {submittedMoves.value.length != 0 && <MovesRenderer />}
       {gamePosition.value.dislodged
         ? gamePosition.value.dislodged[currentCountry.value!].filter((dslg) =>
@@ -60,7 +60,7 @@ export default function RetreatAndDisbandingMoveBuilder() {
       {selectedUnit.value && dislodge &&
         (
           <div>
-            Select destination to which you wantt to retreat
+            Select destination to which you want to retreat
             <RetreatProvinceSelector
               dislodgement={dislodge}
               setter={setTo}

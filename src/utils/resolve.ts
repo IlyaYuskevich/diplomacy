@@ -86,7 +86,7 @@ const verifyConvoy =
       k += 1;
       if (k > 30) return;
       convIntentions.filter((i) => i.move.origin != prev).filter((i) =>
-        isConvoyFromPossible(i.move.origin!, current)
+        isConvoyFromPossible(current, i.move.origin!)
       ).forEach(
         (i) => findNextChainEl(i.move.origin!, current, k),
       );
@@ -213,13 +213,12 @@ export function phaseResolver(
     case "Diplomatic":
       delete game.game_position.built;
       delete game.game_position.disbanded;
-      return diplomaticPhaseResolver(moves, game, playerGames);
-    case "Retreat and Disbanding":
       delete game.game_position.standoffs;
       delete game.game_position.dislodged;
+      return diplomaticPhaseResolver(moves, game, playerGames);
+    case "Retreat and Disbanding":
       return calcNextPositionDisbandAndRetreat(moves, game, playerGames);;
     case "Gaining and Losing":
-      delete game.game_position.dislodged;
       return calcNextPositionGainingAndLosing(moves, game, playerGames);
   }
   return [moves, game];

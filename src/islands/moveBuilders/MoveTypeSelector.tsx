@@ -18,7 +18,7 @@ export default function MoveTypeSelector() {
     const curentPhase: GamePhase = currentGame.value.phase.phase;
     switch (curentPhase) {
       case "Diplomatic":
-        if (unitType =="Army" && provinceType == ProvinceType.Land) {
+        if ((unitType =="Army" && provinceType == ProvinceType.Land) || (unitType =="Fleet" && provinceType == ProvinceType.Coast)) {
           return DIPLOMATIC_PHASE_MOVES.filter(mv => mv != "CONVOY")
        }
        return DIPLOMATIC_PHASE_MOVES

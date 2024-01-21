@@ -1,7 +1,7 @@
 import { assert, assertEquals, assertArrayIncludes } from "assert";
 import { Move, MoveType } from "types/moves.ts";
 import { phaseResolver } from "utils/resolve.ts";
-import { Game } from "types/game.ts";
+import { Game, GamePhase } from "types/game.ts";
 import { PlayerGame } from "types/playerGames.ts";
 import { ProvinceCode, ProvinceType, provinces } from "types/provinces.ts";
 import { Unit, UnitType } from "types/units.ts";
@@ -9,7 +9,7 @@ import { Country } from "types/country.ts";
 import formatISO from "date-fns/formatISO/index.js";
 import add from "date-fns/add/index.ts";
 
-export function createGame(): Game {
+export function createGame(phase: GamePhase = 'Diplomatic'): Game {
   const gameId = crypto.randomUUID();
   return {
     id: gameId,
@@ -18,7 +18,7 @@ export function createGame(): Game {
     phase: {
       id: crypto.randomUUID(),
       year: 1901,
-      phase: "Diplomatic",
+      phase,
       turn: "SPRING",
       game: gameId,
       previous_phase: null,
@@ -1215,6 +1215,47 @@ Deno.test("Convoying army across one water province.", () => {
     ["Nwy", "Nth"],
   );
 });
+
+Deno.test("Convoying army across one water province (Spain).", () => {
+  const game = createGame();
+  const moves: Move[] = [];
+  const playerGames: PlayerGame[] = [];
+  generateMove(
+    "CONVOY",
+    "Spa",
+    "Tus",
+    null,
+    "Army",
+    "FRANCE",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "CONVOY",
+    "GoL",
+    "Tus",
+    "Spa",
+    "Fleet",
+    "FRANCE",
+    moves,
+    playerGames,
+    game,
+  );
+
+  const [resultMoves, { game_position }] = phaseResolver(
+    moves,
+    game,
+    playerGames,
+  );
+  assertEquals(resultMoves[0].status, "SUCCEED");
+  assertEquals(resultMoves[1].status, "SUCCEED");
+  assertArrayIncludes(
+    game_position.unitPositions.FRANCE.map((u) => u.province),
+    ["Tus", "GoL"],
+  );
+});
+
 
 Deno.test("Convoying army across several water provinces.", () => {
   const game = createGame();

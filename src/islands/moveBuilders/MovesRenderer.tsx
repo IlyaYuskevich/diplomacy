@@ -20,7 +20,7 @@ export default function MovesRenderer() {
   );
 
   return (
-    <div class="bg-slate-600 text-white rounded-lg p-3 text-center">
+    <div class="bg-slate-600 text-white rounded-lg p-3 text-center flex flex-col">
       {submittedMoves.value.map((move: SubmittedMoveInsert) => (
         <SubmittedMoveRenderer {...move} />
       ))}

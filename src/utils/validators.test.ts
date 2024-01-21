@@ -11,7 +11,7 @@ import { ProvinceCode } from "types/provinces.ts";
 import { UnitType } from "types/units.ts";
 import { Country } from "types/country.ts";
 import { Game } from "types/game.ts";
-import { createGame, findOrCreatePlayerGame, generateMove } from "utils/resolve.test.ts";
+import { createGame, findOrCreatePlayerGame, generateMove } from "./resolve_retreat_and_disbanding.test.ts";
 
 function generateSubmittedMove(
   moveType: MoveType,

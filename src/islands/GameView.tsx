@@ -48,18 +48,21 @@ export default function GameView(props: GameProps) {
 
   return (
     <>
-      <div class="grid lg:grid-cols-3 grid-cols-1">
+      <div class="grid lg:grid-cols-3 grid-cols-1 items-start">
         <div class="col-span-2 mb-auto">
           <WorldMap />
           <button
-            onMouseDown={() => setPrevMoveView(true)}
-            onMouseUp={() => setPrevMoveView(false)}
+            class={(prevMoveView
+              ? "bg-slate-600 text-white "
+              : "text-slate-800 ") +
+              "border-slate-800 rounded border-2 hover:bg-slate-400 my-1 p-2 ml-10"}
+            onClick={() => setPrevMoveView((v) => !v)}
           >
-            Previous move
+            {prevMoveView ? "Current phase" : "Previous phase"}
           </button>
         </div>
-        <div>
-          {prevMoveView ? <PreviousMovesRenderer /> : <Controls />}
+        <div class="h-full">
+            {prevMoveView ? <PreviousMovesRenderer /> : <Controls />}
         </div>
       </div>
     </>

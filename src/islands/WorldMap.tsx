@@ -87,7 +87,7 @@ export default function WorldMap() {
         color-rendering="optimizeQuality"
         preserveAspectRatio="xMinYMin"
         version="1.0"
-        viewBox="0 0 1835 1360"
+        viewBox="0 0 1900 1360"
         width="918px"
       >
         <defs>
@@ -1201,7 +1201,7 @@ export default function WorldMap() {
           <text className="labeltext18" x="447" y="972.8">GAS</text>
           <text className="labeltext18" x="981.4" y="1160.2">GRE</text>
           <text x="929.6" y="538.9">BOT</text>
-          <text x="525.8" y="1107">LYO</text>
+          <text x="525.8" y="1107">GOL</text>
           <text x="654.2" y="665.4">HEL</text>
           <text className="labeltext18" x="608.8" y="749.3">HOL</text>
           <text x="894.1" y="1251.7">ION</text>

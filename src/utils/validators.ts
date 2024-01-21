@@ -299,7 +299,7 @@ const autoInsertRetreatMoves = (
         unit.province == dislodge.province
       );
       if (!isUnit(unit)) return;
-      moves.push({
+      retreatTo(dislodge, unit.unitType, game.game_position) && moves.push({
         type: "RETREAT",
         to: retreatTo(dislodge, unit.unitType, game.game_position),
         from: null,

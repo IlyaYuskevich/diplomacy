@@ -12,7 +12,6 @@ export const handler: Handlers<SubmittedMove, ServerState> = {
       return ctx.render();
     }
 
-    console.log(ctx)
 
 
     const supa = await authSupabaseClient(ctx.state.supaMetadata);
