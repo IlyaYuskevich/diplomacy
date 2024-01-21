@@ -19,7 +19,7 @@ import {
   MoveIntention,
 } from "types/intention.ts";
 
-import { calcNextPositionDiplomatic, calcNextPositionDisbandAndRetreat, calcNextPositiongainingAndLosing } from "utils/calcPosition.ts";
+import { calcNextPositionDiplomatic, calcNextPositionDisbandAndRetreat, calcNextPositionGainingAndLosing } from "utils/calcPosition.ts";
 
 const findOccupant = (
   provinceCode: ProvinceCode,
@@ -220,7 +220,7 @@ export function phaseResolver(
       return calcNextPositionDisbandAndRetreat(moves, game, playerGames);;
     case "Gaining and Losing":
       delete game.game_position.dislodged;
-      return calcNextPositiongainingAndLosing(moves, game, playerGames);
+      return calcNextPositionGainingAndLosing(moves, game, playerGames);
   }
   return [moves, game];
 }

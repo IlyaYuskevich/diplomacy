@@ -30,9 +30,9 @@ export default function GamePreparationView(props: GameProps) {
         schema: "public",
         table: "player_games",
       }, (v) => {
-        console.log(v, currentGame.value);
         if (v.new?.game == currentGame.value!.id) {
           setPlayersCount((prevState) => prevState += 1);
+          // if (playersCount == 7) location.reload();
         }
       })
       .subscribe((status, err) => console.log(status, err));

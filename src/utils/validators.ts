@@ -1,4 +1,10 @@
-import { DIPLOMATIC_PHASE_MOVES, GAINING_LOSING_MOVES, MoveInsert, RETREAT_PHASE_MOVES, SubmittedMove } from "types/moves.ts";
+import {
+  DIPLOMATIC_PHASE_MOVES,
+  GAINING_LOSING_MOVES,
+  MoveInsert,
+  RETREAT_PHASE_MOVES,
+  SubmittedMove,
+} from "types/moves.ts";
 import {
   armyBorders,
   fleetBorders,
@@ -7,7 +13,7 @@ import {
   ProvinceType,
 } from "types/provinces.ts";
 import {
-Dislodgement,
+  Dislodgement,
   GamePosition,
   isOccupied,
   retreatOptions,
@@ -35,9 +41,11 @@ export const getGainingLosingNumber = (
 export const buildOrigins = (
   country: NonNullable<Country>,
   gamePosition: GamePosition,
+  exclude: ProvinceCode[] = [],
 ) => {
   /* Returns non-occupied provinces where build is possible. */
   return gamePosition.domains[country]
+    .filter((province) => !exclude.includes(province))
     .filter((province) => SUPPLY_CENTERS[province] == country)
     .filter((province) => !isOccupied(gamePosition)(province));
 };
@@ -45,14 +53,13 @@ export const buildOrigins = (
 export const getBuildsDisbandsBalance = (moves: MoveInsert[]) => {
   /* returns total number of new units (built - disbanded). */
   return moves
-      .map((move) => Number(move.type == "BUILD"))
-      .reduce((acc, val) => acc + val, 0) -
+    .map((move) => Number(move.type == "BUILD"))
+    .reduce((acc, val) => acc + val, 0) -
     moves.map((move) => Number(move.type == "DISBAND")).reduce(
       (acc, val) => acc + val,
       0,
     );
-}
-
+};
 
 const ruleAdjacency = (move: MoveInsert) => {
   /* Checking that provinces have common border */
@@ -126,7 +133,8 @@ const ruleSelfUnitShouldExist =
   };
 
 const ruleBuildOnlyInDomesticSupplyCenters =
-  (gamePosition: GamePosition, playerGames: PlayerGame[]) => (move: MoveInsert) => {
+  (gamePosition: GamePosition, playerGames: PlayerGame[]) =>
+  (move: MoveInsert) => {
     /* Build is possible only in own domestic supply centers, fleets should be built in the coast */
     if (move.type !== "BUILD") return move;
     const country = getCountry(move.player_game, playerGames);
@@ -141,22 +149,30 @@ const ruleBuildOnlyInDomesticSupplyCenters =
     return move;
   };
 
-const ruleInvalidateRedundantBuildsOrDisbands =
-  (gamePosition: GamePosition, playerGames: PlayerGame[] , moves: MoveInsert[]) => (move: MoveInsert) => {
-    /* Ensure that number of units is no more than number of supply centers */
-    if (!["BUILD", "DISBAND"].includes(move.type)) return move;
-    const country = getCountry(move.player_game, playerGames);
-    const capacity = getGainingLosingNumber(gamePosition, country!);
-    const newUnits = getBuildsDisbandsBalance(moves.filter(mv => mv.player_game == move.player_game).filter(mv => mv.status != "INVALID"));
+const ruleInvalidateRedundantBuildsOrDisbands = (
+  gamePosition: GamePosition,
+  playerGames: PlayerGame[],
+  moves: MoveInsert[],
+) =>
+(move: MoveInsert) => {
+  /* Ensure that number of units is no more than number of supply centers */
+  if (!["BUILD", "DISBAND"].includes(move.type)) return move;
+  const country = getCountry(move.player_game, playerGames);
+  const capacity = getGainingLosingNumber(gamePosition, country!);
+  const newUnits = getBuildsDisbandsBalance(
+    moves.filter((mv) => mv.player_game == move.player_game).filter((mv) =>
+      mv.status != "INVALID"
+    ),
+  );
 
-    if (newUnits > capacity && move.type == "BUILD") {
-      move.status = "INVALID";
-    }
-    if (newUnits < capacity && move.type == "DISBAND") {
-      move.status = "INVALID";
-    }
-    return move;
-  };
+  if (newUnits > capacity && move.type == "BUILD") {
+    move.status = "INVALID";
+  }
+  if (newUnits < capacity && move.type == "DISBAND") {
+    move.status = "INVALID";
+  }
+  return move;
+};
 
 const rulePhase = (phase: GamePhase) => (move: MoveInsert) => {
   switch (phase) {
@@ -203,7 +219,13 @@ export const moveInPositionValidator =
     moves
       .map(ruleSelfUnitShouldExist(gamePosition, playerGames))
       .map(ruleBuildOnlyInDomesticSupplyCenters(gamePosition, playerGames))
-      .map(ruleInvalidateRedundantBuildsOrDisbands(gamePosition, playerGames, moves))
+      .map(
+        ruleInvalidateRedundantBuildsOrDisbands(
+          gamePosition,
+          playerGames,
+          moves,
+        ),
+      )
       .reduceRight(ruleOneMovePerUnit, []);
     return moves;
   };
@@ -238,14 +260,14 @@ const autoInsertUnmovedUnits = (
         phase: game.phase!.id,
       } as MoveInsert)
     );
-    return moves
+  return moves;
 };
 
 const isUnit = (item: Unit | undefined): item is Unit => {
   return !!item;
 };
 
-const pickRandomN = <T>(arr: Array<T>, len: number) => {
+const pickRandomN = <T>(arr: Array<T>, len = 1) => {
   /* Random sample of N elements */
   const shuffled = arr.sort(() => 0.5 - Math.random());
 
@@ -253,9 +275,11 @@ const pickRandomN = <T>(arr: Array<T>, len: number) => {
 };
 
 const retreatTo = (
-  dislodge: Dislodgement, unitType: UnitType, gamePosition: GamePosition
+  dislodge: Dislodgement,
+  unitType: UnitType,
+  gamePosition: GamePosition,
 ) => {
-  const options = retreatOptions(dislodge, unitType, gamePosition)
+  const options = retreatOptions(dislodge, unitType, gamePosition);
   return pickRandomN(options, 1).at(0);
 };
 
@@ -288,7 +312,7 @@ const autoInsertRetreatMoves = (
         phase: game.phase!.id,
       } as MoveInsert);
     });
-    return moves
+  return moves;
 };
 
 const autoInsertBuildOrDisband = (
@@ -298,27 +322,35 @@ const autoInsertBuildOrDisband = (
 ) => {
   /* If player did not make gaining & loosing moves (the number of supply centers not equal to number of units) -- chose automatically which units to build or disband.  */
 
-  const gainingLosingNumber = getGainingLosingNumber(game.game_position, pg.country!) - getBuildsDisbandsBalance(moves);
+  const gainingLosingNumber =
+    getGainingLosingNumber(game.game_position, pg.country!) -
+    getBuildsDisbandsBalance(moves);
 
   if (gainingLosingNumber > 0) {
     pickRandomN(
-      buildOrigins(pg.country!, game.game_position),
+      buildOrigins(pg.country!, game.game_position, moves.map((mv) => mv.to)),
       Math.abs(gainingLosingNumber),
     )
-      .forEach((province) =>
+      .forEach((province) => {
+        const unitType: UnitType =
+          provinces[province].type == ProvinceType.Coast
+            ? pickRandomN(["Army", "Fleet"] as UnitType[]).at(0)!
+            : "Army";
         moves.push({
           type: "BUILD",
-          to: province,
+          to: (province == "StP" && unitType == "Fleet")
+            ? pickRandomN(["StPN", "StPS"] as ProvinceCode[]).at(0)!
+            : province,
           from: null,
           origin: null,
-          unit_type: "Army",
+          unit_type: unitType,
           player_game: pg.id,
           game: game.id,
           status: "VALID",
           player: pg.player,
           phase: game.phase!.id,
-        } as MoveInsert)
-      );
+        } as MoveInsert);
+      });
   }
   if (gainingLosingNumber < 0) {
     pickRandomN(
@@ -340,7 +372,7 @@ const autoInsertBuildOrDisband = (
         } as MoveInsert)
       );
   }
-  return moves
+  return moves;
 };
 
 export const addAutoMoves = (
@@ -377,7 +409,5 @@ export const addAutoMoves = (
       )];
       break;
   }
-  console.log("flatmap", moves)
   return moves;
 };
-

@@ -167,6 +167,7 @@ async function insertAndUpdatePhase(
     phase: nextPhase,
     turn: nextTurn,
     year: nextYear,
+    previous_phase: game.phase?.id,
     ends_at: calcEndsAt(nextPhaseDuration),
   }).select().single();
   const res = await createPhaseQuery;

@@ -37,6 +37,7 @@ import * as $moveBuilders_GainingAndLoosingBuilder from "./islands/moveBuilders/
 import * as $moveBuilders_MoveTheUnit from "./islands/moveBuilders/MoveTheUnit.tsx";
 import * as $moveBuilders_MoveTypeSelector from "./islands/moveBuilders/MoveTypeSelector.tsx";
 import * as $moveBuilders_MovesRenderer from "./islands/moveBuilders/MovesRenderer.tsx";
+import * as $moveBuilders_PreviousMovesRenderer from "./islands/moveBuilders/PreviousMovesRenderer.tsx";
 import * as $moveBuilders_RetreatAndDisbandingMoveBuilder from "./islands/moveBuilders/RetreatAndDisbandingMoveBuilder.tsx";
 import * as $moveBuilders_RetreatProvinceSelector from "./islands/moveBuilders/RetreatProvinceSelector.tsx";
 import * as $moveBuilders_SubmittedMoveRenderer from "./islands/moveBuilders/SubmittedMoveRenderer.tsx";
@@ -90,6 +91,8 @@ const manifest = {
     "./islands/moveBuilders/MoveTypeSelector.tsx":
       $moveBuilders_MoveTypeSelector,
     "./islands/moveBuilders/MovesRenderer.tsx": $moveBuilders_MovesRenderer,
+    "./islands/moveBuilders/PreviousMovesRenderer.tsx":
+      $moveBuilders_PreviousMovesRenderer,
     "./islands/moveBuilders/RetreatAndDisbandingMoveBuilder.tsx":
       $moveBuilders_RetreatAndDisbandingMoveBuilder,
     "./islands/moveBuilders/RetreatProvinceSelector.tsx":

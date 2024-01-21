@@ -13,6 +13,8 @@ export const units = signal<Move[]>([]);
 export const selectedMoveType = signal<MoveType | null>(null);
 export const submittedMoves = signal<SubmittedMoveInsert[]>([]);
 
+export const previousMoves = signal<Move[]>([]);
+
 export const DIPLOMATIC_PHASE_MOVES: MoveType[] = [
     "MOVE",
     "HOLD",

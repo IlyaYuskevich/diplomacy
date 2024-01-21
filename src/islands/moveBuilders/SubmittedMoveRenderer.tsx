@@ -1,8 +1,8 @@
-import { SubmittedMove, submittedMoves } from "types/moves.ts";
+import { Move, SubmittedMove, submittedMoves } from "types/moves.ts";
 import { SubmittedMoveInsert } from "types/moves.ts";
 
 export function SubmittedMoveRenderer(
-  props: SubmittedMove | SubmittedMoveInsert,
+  props: SubmittedMove | SubmittedMoveInsert | Move,
 ) {
   const moveFormatter = (move: SubmittedMove | SubmittedMoveInsert) => {
     switch (move.type) {

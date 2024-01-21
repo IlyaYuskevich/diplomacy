@@ -1,5 +1,5 @@
 import * as hooks from "preact/hooks";
-import { UnitType } from "types/units.ts";
+import { selectedUnit, UnitType } from "types/units.ts";
 import {
   armyBorders,
   fleetBorders,
@@ -9,6 +9,7 @@ import {
 import { computed } from "@preact/signals";
 import { selectedMoveType, submittedMoves } from "types/moves.ts";
 import { StateButtonStyle } from "utils/moveSelectorsUtils.ts";
+import { fleetToArmyBorder } from "types/provinces.ts";
 
 export default function AdjacentProvinceSelector(
   props: {
@@ -18,16 +19,19 @@ export default function AdjacentProvinceSelector(
     unitType?: UnitType;
   },
 ) {
+  function transformedFleetBorders(province: ProvinceCode) {
+    return Array.from(new Set((fleetBorders[province] || []).map(fleetToArmyBorder)))
+  }
   function getMoves(
     province: ProvinceCode,
     unitType?: UnitType,
   ): ProvinceCode[] {
     if (unitType == "Fleet") {
-      return fleetBorders[province] || [];
+      return selectedMoveType.value == "SUPPORT" ? transformedFleetBorders(province) : fleetBorders[province] || [];
     } else if (unitType == "Army") {
       return armyBorders[province] || [];
     } 
-    return [...armyBorders[province] || [], ...fleetBorders[province] || []]
+    return [...armyBorders[province] || [], ...transformedFleetBorders(province)] // this path works for selecting support from 
   }
 
   const buttonStyle = computed(() => (key: ProvinceCode) => StateButtonStyle(key === props.state, !props.state))

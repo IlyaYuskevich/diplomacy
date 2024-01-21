@@ -22,7 +22,10 @@ export default function GainingAndLoosingBuilder() {
     getGainingLosingNumber(
       currentGame.value!.game_position,
       currentCountry.value!,
-    ) - getBuildsDisbandsBalance(submittedMoves.value as MoveInsert[])
+    )
+  );
+  const remaining = computed(() =>
+    gainingLoosingNumber.value - getBuildsDisbandsBalance(submittedMoves.value as MoveInsert[])
   );
 
   hooks.useEffect(() => {
@@ -66,17 +69,18 @@ export default function GainingAndLoosingBuilder() {
       return (
         <div>
           {submittedMoves.value.length != 0 && <MovesRenderer />}
-          You need to build {gainingLoosingNumber.value} units
-          <SupplyCentersSelector state={supplyCenter} setter={setSupplyCenter}/>
+          You need to build {remaining.value} units
+          {remaining.value != 0 && <SupplyCentersSelector state={supplyCenter} setter={setSupplyCenter}/>}
           {supplyCenter && <UnitTypeSelector setter={setUnitType} supplyCenter={supplyCenter}/>}
         </div>
       );
     }
-    if (gainingLoosingNumber.value > 0) {
+    if (gainingLoosingNumber.value < 0) {
       return (
         <div>
-          You need to disband {gainingLoosingNumber.value} units
-          <UnitSelector />
+          {submittedMoves.value.length != 0 && <MovesRenderer />}
+          You need to disband {Math.abs(remaining.value)} units
+          {remaining.value != 0 && <UnitSelector />}
         </div>
       );
     }

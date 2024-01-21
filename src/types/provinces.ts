@@ -845,6 +845,7 @@ export function isCoast(provinceCode: ProvinceCode) {
 }
 
 export function fleetToArmyBorder(province: ProvinceCode) {
+  /* Normalizes only-fleet destinations, e.g.: BulS -> Bul, SpaN -> Spa, StPN -> StP */
   if (
     (["SpaN", "SpaS", "BulE", "BulS", "StPN", "StPS"] as ProvinceCode[])
       .includes(province)

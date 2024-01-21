@@ -36,7 +36,7 @@ export default function SupportTheUnit() {
       <p>Select attack on which province you want to support</p>
       <AdjacentProvinceSelector state={to} setter={setTo} province={selectedUnit.value!.province} unitType={selectedUnit.value!.unitType}/>
       {to && <p>Select attack from where you want to support</p>}
-      {to && <AdjacentProvinceSelector state={to} setter={setFrom} province={to}/>}
+      {to && <AdjacentProvinceSelector state={from} setter={setFrom} province={to}/>}
     </div>
   );
 }

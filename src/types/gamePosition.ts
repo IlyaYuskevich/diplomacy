@@ -76,7 +76,7 @@ export const SUPPLY_CENTERS: Partial<Record<ProvinceCode, Country>> = {
   Lvp: "ENGLAND",
   Edi: "ENGLAND",
   Mos: "RUSSIA",
-  StPS: "RUSSIA",
+  StP: "RUSSIA",
   Sev: "RUSSIA",
   War: "RUSSIA",
   Ank: "TURKEY",

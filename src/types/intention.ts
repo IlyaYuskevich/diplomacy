@@ -1,5 +1,5 @@
 import { Move } from "types/moves.ts";
-import { ProvinceCode, isCoast } from "types/provinces.ts";
+import { ProvinceCode, isCoast, fleetToArmyBorder } from "types/provinces.ts";
 
 export type MoveIntention = { // wrapper around move representing it the process of conflict resolution according to Diplomacy rules
     move: Move;
@@ -31,7 +31,7 @@ export type MoveIntention = { // wrapper around move representing it the process
     intention2: MoveIntention,
   ) => {
     /* Verifies that provided intentions target same province. */
-    return intention1.move.to == intention2.move.to;
+    return fleetToArmyBorder(intention1.move.to) == fleetToArmyBorder(intention2.move.to);
   };
   
   export const isTradingProvinceAttempt = (
@@ -39,8 +39,8 @@ export type MoveIntention = { // wrapper around move representing it the process
     intention2: MoveIntention,
   ) => {
     /* Verify if provided moves try to occupy each other's origin province. */
-    return intention1.move.origin == intention2.move.to &&
-      intention2.move.origin == intention1.move.to &&
+    return intention1.move.origin == fleetToArmyBorder(intention2.move.to) &&
+      intention2.move.origin == fleetToArmyBorder(intention1.move.to) &&
       intention1.move.id != intention2.move.id;
   };
   
@@ -48,7 +48,7 @@ export type MoveIntention = { // wrapper around move representing it the process
     /* Verify that argument supports second argument. */
     return support.move.type == "SUPPORT" &&
       support.move.from == supported.move.origin &&
-      support.move.to == supported.move.to;
+      support.move.to == fleetToArmyBorder(supported.move.to);
   };
   
   export const isConvoying = (convoyer: MoveIntention, convoyee: MoveIntention) => {
@@ -70,7 +70,7 @@ export type MoveIntention = { // wrapper around move representing it the process
     intention: MoveIntention,
     province: ProvinceCode,
   ) => {
-    return intention.move.type == "HOLD" && intention.move.origin == province;
+    return intention.move.type == "HOLD" && intention.move.origin == fleetToArmyBorder(province);
   };
   
   export const isDisrupted = (intention: MoveIntention) => {

@@ -128,6 +128,7 @@ export interface Database {
           game: string
           id: string
           phase: Database["public"]["Enums"]["Phase"]
+          previous_phase: string | null
           starts_at: string
           turn: Database["public"]["Enums"]["Turn"]
           year: number
@@ -137,6 +138,7 @@ export interface Database {
           game: string
           id?: string
           phase?: Database["public"]["Enums"]["Phase"]
+          previous_phase?: string | null
           starts_at?: string
           turn?: Database["public"]["Enums"]["Turn"]
           year?: number
@@ -146,6 +148,7 @@ export interface Database {
           game?: string
           id?: string
           phase?: Database["public"]["Enums"]["Phase"]
+          previous_phase?: string | null
           starts_at?: string
           turn?: Database["public"]["Enums"]["Turn"]
           year?: number
@@ -155,6 +158,12 @@ export interface Database {
             foreignKeyName: "phases_game_fkey"
             columns: ["game"]
             referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "phases_previous_phase_fkey"
+            columns: ["previous_phase"]
+            referencedRelation: "phases"
             referencedColumns: ["id"]
           }
         ]

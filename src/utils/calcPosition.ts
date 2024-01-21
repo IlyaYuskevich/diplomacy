@@ -1,10 +1,12 @@
-import { ProvinceCode } from "types/provinces.ts";
+import { fleetToArmyBorder, ProvinceCode } from "types/provinces.ts";
 import { Game } from "types/game.ts";
-import { Country } from "types/country.ts";
+import { Country, COUNTRY_ARRAY } from "types/country.ts";
 import { Move } from "types/moves.ts";
 import { isActiveMove, MoveIntention } from "types/intention.ts";
 import { getCountry, PlayerGame } from "types/playerGames.ts";
 import { Dislodgement, GamePosition } from "types/gamePosition.ts";
+import { provinces } from "types/provinces.ts";
+import { ProvinceType } from "types/provinces.ts";
 
 const occupyProvince = (
   occupant: NonNullable<Country>,
@@ -12,12 +14,14 @@ const occupyProvince = (
   game: Game,
 ) => {
   /* Change country owning the giving province */
+  const provinceMapped = fleetToArmyBorder(province);
   Object.keys(game.game_position.domains).forEach((country) => {
     const domains = game.game_position.domains[country as NonNullable<Country>];
-    const index = domains.indexOf(province);
+    const index = domains.indexOf(provinceMapped);
     index != -1 ? domains.splice(index, 1) : null;
   });
-  game.game_position.domains[occupant].push(province);
+  game.game_position.domains[occupant].push(provinceMapped);
+  console.log(occupant, province, game);
 };
 
 const moveUnit = (
@@ -61,7 +65,7 @@ const buildUnit = (
   move: Move,
 ) => {
   /* Build unit */
-  const unit = {province: move.to, unitType: move.unit_type};
+  const unit = { province: move.to, unitType: move.unit_type };
   gamePosition.built = gamePosition.built || {
     AUSTRIA: [],
     ENGLAND: [],
@@ -72,7 +76,10 @@ const buildUnit = (
     TURKEY: [],
   };
   gamePosition.built[country] = [...gamePosition.built[country], unit];
-  gamePosition.unitPositions[country] = [...gamePosition.unitPositions[country], unit];
+  gamePosition.unitPositions[country] = [
+    ...gamePosition.unitPositions[country],
+    unit,
+  ];
 };
 
 const addDislodgement = (
@@ -131,8 +138,8 @@ export function calcNextPositionDiplomatic(
           dislodgedFrom: intention.dislodgedFrom!,
         }, game);
       if (!isActiveMove(intention)) return;
-      mv.status == "SUCCEED" && mv.type !== "HOLD" &&
-        occupyProvince(country, mv.to, game);
+      // mv.status == "SUCCEED" && mv.type !== "HOLD" &&
+      //   occupyProvince(country, mv.to, game);
       mv.status == "SUCCEED" && mv.type !== "HOLD" &&
         moveUnit(country, mv.origin!, mv.to, game);
       intention?.standoffIn && addStandoff(intention.standoffIn, game);
@@ -147,18 +154,27 @@ export function calcNextPositionDisbandAndRetreat(
   playerGames: PlayerGame[],
 ): [Move[], Game] {
   /* Calculates next game position; finds auto disbands. */
-  moves.filter((mv) => moves.some((m) => m.to == mv.to)).forEach((mv) => {
-    const country = getCountry(mv.player_game, playerGames)!;
-    disbandUnit(game.game_position, country, mv);
-  });
-  moves.filter((mv) => !moves.some((m) => m.to == mv.to)).forEach((mv) => {
+  moves.forEach((mv) => {
     const country = getCountry(mv.player_game, playerGames)!;
     moveUnit(country, mv.origin!, mv.to, game);
   });
+  moves.filter((mv) => moves.some((m) => m.to == mv.to && mv.id != m.id))
+    .forEach((mv) => {
+      const country = getCountry(mv.player_game, playerGames)!;
+      disbandUnit(game.game_position, country, mv);
+    });
+  // occupy provinces
+  COUNTRY_ARRAY.forEach((country) =>
+    game.game_position.unitPositions[country].map((unit) => unit.province)
+      .filter((province) => provinces[province].type !== ProvinceType.Sea)
+      .forEach(
+        (province) => occupyProvince(country, province, game),
+      )
+  );
   return [moves, game];
 }
 
-export function calcNextPositiongainingAndLosing(
+export function calcNextPositionGainingAndLosing(
   moves: Move[],
   game: Game,
   playerGames: PlayerGame[],

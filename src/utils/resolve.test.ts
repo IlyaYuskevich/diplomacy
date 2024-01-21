@@ -21,6 +21,7 @@ export function createGame(): Game {
       phase: "Diplomatic",
       turn: "SPRING",
       game: gameId,
+      previous_phase: null,
       starts_at: formatISO(new Date(), {}),
       ends_at: formatISO(add(new Date(), { hours: 1 }), {}),
     },
@@ -159,6 +160,49 @@ Deno.test("standoff: units have equal strength", () => {
   );
 });
 
+Deno.test("standoff: when unit is ordered to go in two-coast province", () => {
+  const game = createGame();
+  const moves: Move[] = [];
+  const playerGames: PlayerGame[] = [];
+  generateMove(
+    "MOVE",
+    "Bot",
+    "StPS",
+    null,
+    "Fleet",
+    "RUSSIA",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "HOLD",
+    "StP",
+    "StP",
+    null,
+    "Army",
+    "RUSSIA",
+    moves,
+    playerGames,
+    game,
+  );
+
+  const [resultMoves, { game_position }] = phaseResolver(
+    moves,
+    game,
+    playerGames,
+  );
+  assertEquals(resultMoves[0].status, "FAILED");
+  assertEquals(resultMoves[1].status, "SUCCEED");
+  assertArrayIncludes(game_position.standoffs || [], [
+    "StPS",
+  ]);
+  assertArrayIncludes(
+    game_position.unitPositions.RUSSIA.map((u) => u.province),
+    ["Bot", "StP"],
+  );
+});
+
 Deno.test("Chain standoff: One unit not moving can stop a unit or series of units from moving", () => {
   const game = createGame();
   const moves: Move[] = [];
@@ -231,7 +275,7 @@ Deno.test("Chain standoff: One unit not moving can stop a unit or series of unit
   );
 });
 
-Deno.test("units trying to occupy the same province remain in origins", () => {
+Deno.test("units trying to exchange provinces remain in origins", () => {
   const game = createGame();
   const moves: Move[] = [];
   const playerGames: PlayerGame[] = [];
@@ -325,12 +369,6 @@ Deno.test("three or more units can rotate provinces", () => {
   assertEquals(resultMoves[0].status, "SUCCEED");
   assertEquals(resultMoves[1].status, "SUCCEED");
   assertEquals(resultMoves[2].status, "SUCCEED");
-  assertArrayIncludes(game_position.domains.FRANCE, [
-    "Hol",
-  ]);
-  assertArrayIncludes(game_position.domains.ENGLAND, [
-    "Bel",
-  ]);
   assertArrayIncludes(
     game_position.unitPositions.FRANCE.map((u) => u.province),
     ["Hol"],
@@ -390,14 +428,63 @@ Deno.test("simple support", () => {
   assertEquals(resultMoves[0].status, "SUCCEED");
   assertEquals(resultMoves[1].status, "SUCCEED");
   assertEquals(resultMoves[2].status, "FAILED");
-  assertArrayIncludes(game_position.domains.FRANCE, [
-    "Bur", "Gas", "Mar"
-  ]);
   assertArrayIncludes(
     game_position.unitPositions.FRANCE.map((u) => u.province),
     ["Gas", "Bur"],
   );
   assertArrayIncludes(game_position.dislodged!.GERMANY.map(dslg => dslg.province), ["Bur"])
+});
+
+Deno.test("simple support two coasts", () => {
+  const game = createGame();
+  const moves: Move[] = [];
+  const playerGames: PlayerGame[] = [];
+  generateMove(
+    "MOVE",
+    "Mid",
+    "SpaN",
+    null,
+    "Fleet",
+    "FRANCE",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "SUPPORT",
+    "Gas",
+    "Spa",
+    "Mid",
+    "Army",
+    "FRANCE",
+    moves,
+    playerGames,
+    game,
+  );
+  generateMove(
+    "HOLD",
+    "Spa",
+    "Spa",
+    null,
+    "Army",
+    "ITALY",
+    moves,
+    playerGames,
+    game,
+  );
+  const [resultMoves, { game_position }] = phaseResolver(
+    moves,
+    game,
+    playerGames,
+  );
+  assertEquals(resultMoves[0].status, "SUCCEED");
+  assertEquals(resultMoves[1].status, "SUCCEED");
+  assertEquals(resultMoves[2].status, "FAILED");
+  assertArrayIncludes(
+    game_position.unitPositions.FRANCE.map((u) => u.province),
+    ["Gas", "SpaN"],
+  );
+  assertArrayIncludes(game_position.dislodged!.ITALY.map(dslg => dslg.province), ["Spa"])
 });
 
 Deno.test("standoff while support", () => {
@@ -633,11 +720,6 @@ Deno.test("dislodged unit can cause standoff in other province than origin", () 
     game_position.unitPositions.RUSSIA.map((u) => u.province),
     ["War", "Pru"],
   );
-  assertArrayIncludes(game_position.domains.AUSTRIA, [
-    "Mun", "Boh", "Tyr"
-  ]);
-  assert(!game_position.domains.RUSSIA.includes("Sil"));
-  assert(!game_position.domains.GERMANY.includes("Sil"));
 });
 
 Deno.test("dislodged while exchange provinces by two units: dislodged must retreat", () => {
@@ -917,10 +999,6 @@ Deno.test("Cutting support from where support was given", () => {
     ["Sil", "War"],
   );
   assertArrayIncludes(
-    game_position.domains.GERMANY,
-    ["Sil", "War", "Pru"],
-  );
-  assertArrayIncludes(
     game_position.dislodged!.RUSSIA.map(dslg => dslg.province),
     ["War"],
   );
@@ -1003,10 +1081,6 @@ Deno.test("Cutting support from where support was given by dislodge", () => {
   assertArrayIncludes(
     game_position.unitPositions.RUSSIA.map((u) => u.province),
     ["Bal", "Sil", "War"],
-  );
-  assertArrayIncludes(
-    game_position.domains.RUSSIA,
-    ["War", "Pru", "Sil"],
   );
 });
 
@@ -1140,10 +1214,6 @@ Deno.test("Convoying army across one water province.", () => {
     game_position.unitPositions.ENGLAND.map((u) => u.province),
     ["Nwy", "Nth"],
   );
-  assertArrayIncludes(
-    game_position.domains.ENGLAND,
-    ["Lon", "Nwy"],
-  );
 });
 
 Deno.test("Convoying army across several water provinces.", () => {
@@ -1207,10 +1277,6 @@ Deno.test("Convoying army across several water provinces.", () => {
   assertArrayIncludes(
     game_position.unitPositions.ENGLAND.map((u) => u.province),
     ["Tun", "Mid", "Eng"],
-  );
-  assertArrayIncludes(
-    game_position.domains.ENGLAND,
-    ["Lon", "Tun"],
   );
 });
 
