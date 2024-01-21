@@ -2,7 +2,7 @@ import { Country, COUNTRY_ARRAY } from "types/country.ts";
 import { Unit, UnitType } from "types/units.ts";
 import { computed } from "@preact/signals";
 import * as svg from "@svgdotjs/svg.js";
-import { drawLink, drawHoldIcon } from "utils/worldMapUtils.ts";
+import { drawHoldIcon, drawLink } from "utils/worldMapUtils.ts";
 import { useEffect, useRef } from "preact/hooks";
 import { Move, SubmittedMoveInsert, submittedMoves } from "types/moves.ts";
 import { currentGame, gamePosition } from "types/game.ts";
@@ -10,8 +10,9 @@ import { getCountry, selectedPlayerGame } from "types/playerGames.ts";
 import { ProvinceCode, UNIT_LOC_MAP } from "types/provinces.ts";
 import { sentenceCase } from "case";
 import { playerGames } from "types/playerGames.ts";
+import { previousMoves } from "types/moves.ts";
 
-export default function WorldMap() {
+export default function WorldMap(props: { prevModeView: boolean }) {
   // deno-lint-ignore no-explicit-any
   const arrowDrawer = useRef<any>();
 
@@ -49,7 +50,7 @@ export default function WorldMap() {
 
   function drawMoves(moves: SubmittedMoveInsert[] | Move[]) {
     arrowDrawer.current?.clear();
-    moves.filter(mv => mv.type !== "HOLD").forEach((val) => {
+    moves.filter((mv) => mv.type !== "HOLD").forEach((val) => {
       const country = getCountry(val.player_game, playerGames.value);
       country && drawLink(
         arrowDrawer.current,
@@ -58,16 +59,25 @@ export default function WorldMap() {
         val.from,
         val.type!,
         country,
-      )}
-    );
-    moves.filter(mv => mv.type === "HOLD").forEach(mv => {
-      drawHoldIcon(arrowDrawer.current, mv.origin!, selectedPlayerGame.value!.country!)
-    })
+        (val as Move)?.status == "FAILED"
+      );
+    });
+    moves.filter((mv) => mv.type === "HOLD").forEach((mv) => {
+      const country = getCountry(mv.player_game, playerGames.value);
+      drawHoldIcon(
+        arrowDrawer.current,
+        mv.origin!,
+        country!,
+      );
+    });
   }
 
   useEffect(() => {
-    drawMoves(submittedMoves.value);
-  }, [submittedMoves.value]);
+    console.log(props.prevModeView);
+    props.prevModeView
+      ? drawMoves(previousMoves.value)
+      : drawMoves(submittedMoves.value);
+  }, [submittedMoves.value, props.prevModeView]);
 
   const unitsWithLocation = computed(() => (
     COUNTRY_ARRAY
@@ -78,7 +88,7 @@ export default function WorldMap() {
         )
       )
   ));
-  
+
   return (
     <div class="overflow-auto">
       <svg

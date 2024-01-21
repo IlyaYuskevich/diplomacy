@@ -50,7 +50,7 @@ export default function GameView(props: GameProps) {
     <>
       <div class="grid lg:grid-cols-3 grid-cols-1 items-start">
         <div class="col-span-2 mb-auto">
-          <WorldMap />
+          <WorldMap prevModeView={prevMoveView} />
           <button
             class={(prevMoveView
               ? "bg-slate-600 text-white "

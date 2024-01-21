@@ -10,6 +10,7 @@ export function drawLink(
   from: ProvinceCode | null,
   type: MoveType,
   country: NonNullable<Country>,
+  failed = false
 ) {
   if (!drawer || !to) return;
   const arrowColor = Color(CountryColors[country]).darken(.5).alpha(0.8)
@@ -32,6 +33,14 @@ export function drawLink(
       "stroke-linecap": "round",
     });
   path.marker("end", arrowHead.fill(arrowColor));
+  console.log(failed);
+  failed && path.marker("start", 3, 3, function(add: any) {
+    add.line(5, -5, 5, 5).center(0,0).transform({translate: [1.5, 0]}).stroke({ width: 1, color: "red" });
+    add.line(5, -5, 5, 5).center(0,0).transform({translate: [0, 1.5], rotate: 90}).stroke({ width: 1, color: "red" });
+  });
+  // failed && path.marker("start", 3, 3, function(add: any) {
+  //   add.line(-5, -5, 5, 5).stroke({ width: 1, color: "red" });
+  // })
   path.css({ "filter": "drop-shadow(0px 0px 2px white" });
   if (type == "SUPPORT") {
     path.attr({ "stroke-dasharray": "3,13" });
