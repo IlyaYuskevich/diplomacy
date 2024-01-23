@@ -6,7 +6,7 @@ import { drawHoldIcon, drawLink } from "utils/worldMapUtils.ts";
 import { useEffect, useRef } from "preact/hooks";
 import { Move, SubmittedMoveInsert, submittedMoves } from "types/moves.ts";
 import { currentGame, gamePosition } from "types/game.ts";
-import { getCountry, selectedPlayerGame } from "types/playerGames.ts";
+import { getCountry } from "types/playerGames.ts";
 import { ProvinceCode, UNIT_LOC_MAP } from "types/provinces.ts";
 import { sentenceCase } from "case";
 import { playerGames } from "types/playerGames.ts";
@@ -34,18 +34,26 @@ export default function WorldMap(props: { prevModeView: boolean }) {
     country: NonNullable<Country>;
     province: string;
     unitType: UnitType;
+    isDislodged: boolean;
   };
 
   function mapUnitPositions(
     country: NonNullable<Country>,
     unitPositions: { [K in NonNullable<Country>]: Unit[] },
+    dislodged: { province: ProvinceCode; country: Country }[],
   ): UnitPositionsType[] {
-    return unitPositions[country].map((unit) => ({
-      ...unit,
-      x: UNIT_LOC_MAP[unit.province].X,
-      y: UNIT_LOC_MAP[unit.province].Y,
-      country: country,
-    }));
+    return unitPositions[country].map((unit) => {
+      const isDislodged = dislodged.some((x) =>
+        x.province == unit.province && x.country == country
+      );
+      return {
+        ...unit,
+        x: UNIT_LOC_MAP[unit.province].X,
+        y: UNIT_LOC_MAP[unit.province].Y,
+        country: country,
+        isDislodged,
+      };
+    });
   }
 
   function drawMoves(moves: SubmittedMoveInsert[] | Move[]) {
@@ -59,7 +67,7 @@ export default function WorldMap(props: { prevModeView: boolean }) {
         val.from,
         val.type!,
         country,
-        (val as Move)?.status == "FAILED"
+        (val as Move)?.status == "FAILED",
       );
     });
     moves.filter((mv) => mv.type === "HOLD").forEach((mv) => {
@@ -73,7 +81,6 @@ export default function WorldMap(props: { prevModeView: boolean }) {
   }
 
   useEffect(() => {
-    console.log(props.prevModeView);
     props.prevModeView
       ? drawMoves(previousMoves.value)
       : drawMoves(submittedMoves.value);
@@ -85,8 +92,16 @@ export default function WorldMap(props: { prevModeView: boolean }) {
         mapUnitPositions(
           country as NonNullable<Country>,
           gamePosition.value.unitPositions,
+          COUNTRY_ARRAY.flatMap((cntry) =>
+            gamePosition.value.dislodged
+              ? gamePosition.value.dislodged[cntry].map((x) => ({
+                province: x.province,
+                country: cntry,
+              }))
+              : []
+          ),
         )
-      )
+      ).sort((a, b) => Number(a.isDislodged) - Number(b.isDislodged)) // make sure that dislodged units go on top
   ));
 
   return (
@@ -1168,10 +1183,10 @@ export default function WorldMap(props: { prevModeView: boolean }) {
           {unitsWithLocation.value.map((unit: UnitPositionsType) => (
             <use
               xlinkHref={unit.unitType === "Army" ? "#Army" : "#Fleet"}
-              x={unit.x}
-              y={unit.y}
-              width="40"
-              height="40"
+              x={unit.x + 10 * Number(unit.isDislodged)}
+              y={unit.y - 5 * Number(unit.isDislodged)}
+              width={unit.isDislodged ? "25" : "40"}
+              height={unit.isDislodged ? "25" : "40"}
               className={unit.country.toLowerCase()}
             >
             </use>
