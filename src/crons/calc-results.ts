@@ -11,7 +11,7 @@ import { retryAsync } from "https://deno.land/x/retry@v2.0.0/retry/retry.ts";
 import { isTooManyTries } from "https://deno.land/x/retry@v2.0.0/retry/tooManyTries.ts";
 import Logger from "https://deno.land/x/logger@v1.1.3/logger.ts";
 import {
-addAutoMoves,
+  addAutoMoves,
   individualMoveValidator,
   moveInPositionValidator,
   movePhaseValidator,
@@ -60,6 +60,7 @@ export async function initAllPhaseJobs() {
 }
 
 function initNextPhase(game: Game) {
+  if (game.status == "FINISHED") return 
   let nextPhase: PhaseType;
   let nextYear: number = game.phase!.year;
   let nextTurn = game.phase!.turn;
@@ -85,7 +86,7 @@ function initNextPhase(game: Game) {
     retryAsync(
       async () => {
         await fetchAndProcessResults(game);
-        await insertAndUpdatePhase(game, nextPhase, nextTurn, nextYear)
+        await insertAndUpdatePhase(game, nextPhase, nextTurn, nextYear);
       },
       { delay: 10e3, maxTry: 20 },
     );
@@ -121,17 +122,19 @@ async function fetchAndProcessResults(
     game.game_position,
     playerGames,
   )(validatedMoves1);
-  const validatedMoves3 = movePhaseValidator(game.phase!.phase)(validatedMoves2);
+  const validatedMoves3 = movePhaseValidator(game.phase!.phase)(
+    validatedMoves2,
+  );
   const validatedMoves4 = addAutoMoves(game, playerGames)(validatedMoves3);
 
   const insertValidatedMoves = superSupa.from("moves").insert(
-    validatedMoves4.filter(mv => mv.status == "VALID")
-  ).select(); 
+    validatedMoves4.filter((mv) => mv.status == "VALID"),
+  ).select();
   const resp = await insertValidatedMoves;
   if (resp.error) {
     logger.error(resp.error.message);
   }
-  const validatedMoves = resp.data
+  const validatedMoves = resp.data;
 
   if (!validatedMoves) return;
   const [resultMoves, { game_position }] = phaseResolver(
@@ -140,14 +143,14 @@ async function fetchAndProcessResults(
     playerGames,
   );
   const insertResolvedMoves = superSupa.from("moves").upsert(
-    resultMoves
+    resultMoves,
   );
   const respResolved = await insertResolvedMoves;
   if (respResolved.error) {
     logger.error(respResolved.error.message);
   }
   const updateGameQuery = superSupa.from("games").update(
-    {game_position}
+    { game_position, status: game.status },
   ).eq("id", game.id);
   await updateGameQuery;
 }

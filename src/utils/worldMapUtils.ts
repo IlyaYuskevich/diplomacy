@@ -33,7 +33,6 @@ export function drawLink(
       "stroke-linecap": "round",
     });
   path.marker("end", arrowHead.fill(arrowColor));
-  console.log(failed);
   failed && path.marker("start", 3, 3, function(add: any) {
     add.line(5, -5, 5, 5).center(0,0).transform({translate: [1.5, 0]}).stroke({ width: 1, color: "red" });
     add.line(5, -5, 5, 5).center(0,0).transform({translate: [0, 1.5], rotate: 90}).stroke({ width: 1, color: "red" });

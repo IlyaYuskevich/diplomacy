@@ -4,7 +4,7 @@ import parseISO from "date-fns/parseISO/index.js";
 
 export default function PlayerGameItem(props: PlayerGame) {
   return (
-    <div class="flex gap-5">
+    <div class="flex gap-5 pb-2">
       <div>{formatRelative(parseISO(props.created_at, {}), new Date())}</div>
       <div>{`${props.country ? props.country : "Not Started"}`}</div>
       <form action={`/game/${props.game}`}>

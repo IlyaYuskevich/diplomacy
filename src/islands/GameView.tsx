@@ -9,6 +9,7 @@ import { selectedCountry } from "types/country.ts";
 import { createClient } from "@supabase";
 import { previousMoves } from "types/moves.ts";
 import PreviousMovesRenderer from "islands/moveBuilders/PreviousMovesRenderer.tsx";
+import { winnerCountry } from "utils/calcPosition.ts";
 
 export default function GameView(props: GameProps) {
   const [prevMoveView, setPrevMoveView] = hooks.useState(false);
@@ -61,9 +62,13 @@ export default function GameView(props: GameProps) {
             {prevMoveView ? "Current phase" : "Previous phase"}
           </button>
         </div>
-        <div class="h-full">
-            {prevMoveView ? <PreviousMovesRenderer /> : <Controls />}
-        </div>
+        {currentGame.value?.status == "FINISHED"
+          ? <div class="text-3xl">The game is over. The winner is {winnerCountry(props.game)}</div>
+          : (
+            <div class="h-full">
+              {prevMoveView ? <PreviousMovesRenderer /> : <Controls />}
+            </div>
+          )}
       </div>
     </>
   );

@@ -4,7 +4,11 @@ import { Country, COUNTRY_ARRAY } from "types/country.ts";
 import { Move } from "types/moves.ts";
 import { isActiveMove, MoveIntention } from "types/intention.ts";
 import { getCountry, PlayerGame } from "types/playerGames.ts";
-import { Dislodgement, GamePosition } from "types/gamePosition.ts";
+import {
+  Dislodgement,
+  GamePosition,
+  SUPPLY_CENTERS,
+} from "types/gamePosition.ts";
 import { provinces } from "types/provinces.ts";
 import { ProvinceType } from "types/provinces.ts";
 
@@ -169,12 +173,11 @@ export function calcNextPositionDisbandAndRetreat(
       const country = getCountry(mv.player_game, playerGames)!;
       disbandUnit(game.game_position, country, mv.to, mv);
     });
-  
 
   COUNTRY_ARRAY.forEach((country) =>
     game.game_position.dislodged &&
     game.game_position.dislodged[country].map((dislodge) => dislodge.province)
-      .filter((province) => !moves.find(mv => mv.origin == province))
+      .filter((province) => !moves.find((mv) => mv.origin == province))
       .forEach(
         (province) => disbandUnit(game.game_position, country, province),
       )
@@ -187,7 +190,22 @@ export function calcNextPositionDisbandAndRetreat(
         (province) => occupyProvince(country, province, game),
       )
   );
+  if (winnerCountry(game)) {
+    game.status = "FINISHED";
+  }
   return [moves, game];
+}
+
+export function winnerCountry(game: Game) {
+  return COUNTRY_ARRAY.map((country) => {
+    const supplyCentersNum = game.game_position.domains[country].filter(
+      (provinceCode) => Object.keys(SUPPLY_CENTERS).includes(provinceCode)
+    ).reduce((a, _) => a + 1, 0);
+    if (supplyCentersNum >= 18) {
+      return country;
+    }
+    return null;
+  }).filter((x) => !!x).at(0) || null;
 }
 
 export function calcNextPositionGainingAndLosing(

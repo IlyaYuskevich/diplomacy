@@ -14,16 +14,19 @@ export const handler: Handlers<Props, ServerState> = {
     }
 
     const supa = await authSupabaseClient(ctx.state.supaMetadata);
-
-    const query = supa.from("player_games").select().eq(
-      "player",
-      ctx.state.user!.id,
-    );
+    const query = supa.from("player_games")
+      .select("*, game!inner (status, id)")
+      .neq("game.status", "FINISHED")
+      .eq("player", ctx.state.user!.id);
     const resp: DbResult<typeof query> = await query;
     if (resp.error) {
       return ctx.render();
     }
-    const playerGames = resp.data;
+    const playerGames = resp.data.map((pg) => {
+      // @ts-ignore: data inner joined
+      pg.game = pg.game.id; 
+      return pg;
+    });
     return ctx.render({
       playerGames: playerGames,
       state: ctx.state as ServerState,

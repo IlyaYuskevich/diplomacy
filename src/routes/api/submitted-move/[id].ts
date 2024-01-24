@@ -6,13 +6,10 @@ import { DbResult } from "lib/database.types.ts";
 import { SubmittedMove } from "types/moves.ts";
 
 export const handler: Handlers<SubmittedMove, ServerState> = {
-  async DELETE(req, ctx) {
-    console.log(req)
+  async DELETE(_, ctx) {
     if (!ctx.state.supaMetadata) {
       return ctx.render();
     }
-
-
 
     const supa = await authSupabaseClient(ctx.state.supaMetadata);
     const query = supa.from("submitted_moves").delete().eq('id', ctx.params.id)
