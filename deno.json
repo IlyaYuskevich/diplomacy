@@ -1,0 +1,59 @@
+{
+  "lock": false,
+  "nodeModulesDir": true,
+  "tasks": {
+    "start": "deno run -A --watch=static/,routes/ --allow-env ./src/dev.ts",
+    "crons": "deno run -A ./src/crons/calc-results.ts",
+    "esm:add": "deno run -A https://esm.sh/v133 add",
+    "esm:update": "deno run -A https://esm.sh/v133 update",
+    "esm:remove": "deno run -A https://esm.sh/v133 remove",
+    "build": "deno run -A ./src/dev.ts build",
+    "preview": "deno run -A ./src/main.ts",
+    "test": "deno test src/"
+  },
+  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
+  "imports": {
+    "components/": "./src/components/",
+    "islands/": "./src/islands/",
+    "lib/": "./src/lib/",
+    "routes/": "./src/routes/",
+    "types/": "./src/types/",
+    "utils/": "./src/utils/",
+    "middlewares/": "./src/middlewares/",
+    "std": "https://deno.land/std@0.202.0",
+    "std/": "https://deno.land/std@0.202.0/",
+    "dotenv/": "https://deno.land/std@0.204.0/dotenv/",
+    "$fresh/": "https://deno.land/x/fresh@1.6.3/",
+    "@supabase": "https://esm.sh/@supabase/supabase-js@2.37.0",
+    "@supabase/": "https://esm.sh/@supabase/supabase-js@2.37.0/",
+    "preact": "https://esm.sh/preact@10.19.2",
+    "preact/": "https://esm.sh/preact@10.19.2/",
+    "tailwindcss": "npm:tailwindcss@3.3.5",
+    "tailwindcss/": "npm:/tailwindcss@3.3.5/",
+    "tailwindcss/plugin": "npm:/tailwindcss@3.3.5/plugin.js",
+    "twind/": "https://esm.sh/twind@0.16.19/",
+    "case": "https://deno.land/x/case@2.2.0/mod.ts",
+    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.0",
+    "type-fest": "https://esm.sh/v133/type-fest@4.6.0",
+    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.1",
+    "@svgdotjs/svg.js": "https://esm.sh/v127/@svgdotjs/svg.js@3.2.0",
+    "color": "https://esm.sh/v127/*color@4.2.3",
+    "croner": "https://deno.land/x/croner@7.0.5/dist/croner.js",
+    "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.2.2",
+    "preact-render-to-string/": "https://esm.sh/v127/*preact-render-to-string@6.1.0/",
+    "date-fns/": "https://deno.land/x/date_fns@v2.22.1/",
+    "assert": "https://deno.land/std@0.208.0/assert/mod.ts"
+  },
+  "scopes": {
+    "https://esm.sh/v127/": {
+      "color-convert": "https://esm.sh/v127/color-convert@2.0.1",
+      "color-string": "https://esm.sh/v127/color-string@1.9.1",
+      "csstype": "https://esm.sh/v127/csstype@3.1.2",
+      "htmlparser2": "https://esm.sh/v127/htmlparser2@6.1.0",
+      "pretty-format": "https://esm.sh/v127/pretty-format@3.8.0",
+      "style-vendorizer": "https://esm.sh/v127/style-vendorizer@2.2.3"
+    }
+  },
+  "lint": { "rules": { "tags": ["fresh", "recommended"] } },
+  "exclude": ["**/_fresh/*"]
+}
