@@ -11,7 +11,10 @@
     "preview": "deno run -A ./src/main.ts",
     "test": "deno test src/"
   },
-  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
+  },
   "imports": {
     "components/": "./src/components/",
     "islands/": "./src/islands/",
@@ -54,6 +57,23 @@
       "style-vendorizer": "https://esm.sh/v127/style-vendorizer@2.2.3"
     }
   },
-  "lint": { "rules": { "tags": ["fresh", "recommended"] } },
-  "exclude": ["**/_fresh/*"]
+  "lint": {
+    "rules": {
+      "tags": [
+        "fresh",
+        "recommended"
+      ]
+    }
+  },
+  "exclude": [
+    "**/_fresh/*"
+  ],
+  "deploy": {
+    "project": "66ebe181-7af0-4f86-a907-cb4bf5a81bc4",
+    "exclude": [
+      "**/node_modules"
+    ],
+    "include": [],
+    "entrypoint": "src/main.ts"
+  }
 }
