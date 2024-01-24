@@ -1,0 +1,24 @@
+@tailwind base;
+
+@layer base {
+    div {
+        align-items: center;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    p {
+        margin: 8px 0px 8px 0px;
+    }
+}
+
+@tailwind components;
+@tailwind utilities;

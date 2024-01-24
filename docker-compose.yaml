@@ -1,22 +1,10 @@
 version: "3"
 services:
-  diplomacy:
-    build:
-      dockerfile: Dockerfile
-      context: ./
+
+  diplomacy-fe:
     volumes:
       - ./:/app
     ports:
-    - 8000:8000
-    env_file:
-      - .env.local
-
-  diplomacy-fe:
-    build:
-      context: ./web
-    volumes:
-      - ./web/:/app
-    ports:
     - 4000:4000
     env_file:
-      - .env.local
+      - .env

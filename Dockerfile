@@ -1,11 +1,13 @@
-FROM golang:1.20-alpine
+FROM denoland/deno:latest
+
+ARG GIT_REVISION
+ENV DENO_DEPLOYMENT_ID=${GIT_REVISION}
 
 WORKDIR /app
 
-RUN go install github.com/cosmtrek/air@latest
 COPY . .
-RUN go mod download && go mod verify
+RUN deno cache main.ts
 
 EXPOSE 4000
 
-CMD air
+CMD ["run", "-A", "--allow-net", "--allow-env", "--allow-read", "main.ts", "--import-map=import_map.json"]
