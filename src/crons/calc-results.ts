@@ -155,7 +155,7 @@ async function fetchAndProcessResults(
   await updateGameQuery;
 }
 
-async function insertAndUpdatePhase(
+export async function insertAndUpdatePhase(
   game: Game,
   nextPhase: PhaseType,
   nextTurn: Turn,

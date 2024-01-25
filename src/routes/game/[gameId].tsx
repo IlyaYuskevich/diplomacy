@@ -11,7 +11,7 @@ import { ISupaSettings } from "types/supaSettings.ts";
 import GamePreparationView from "islands/GamePreparationView.tsx";
 import formatISO from "date-fns/formatISO/index.js";
 import add from "date-fns/add/index.ts";
-import { addFinishPhaseJob } from "../../crons/calc-results.ts";
+import { addFinishPhaseJob, insertAndUpdatePhase } from "../../crons/calc-results.ts";
 
 export type GameProps = {
   playerGame: PlayerGame;
@@ -87,20 +87,11 @@ async function fetchPreviousMoves(
   return resp;
 }
 
-async function startGame(gid: string) {
-  await superSupa.rpc("assign_countries", { gid });
+async function startGame(game: Game) {
+  await superSupa.rpc("assign_countries", { gid: game.id });
+  game.status = "ACTIVE";
 
-  const query2 = superSupa.from("phases").insert({
-    game: gid,
-    ends_at: formatISO(add(Date.now(), { hours: 24 }), {}),
-  }).select("id").single();
-  const resp2: DbResult<typeof query2> = await query2;
-  const query3 = superSupa.from("games").update({ phase: resp2.data!.id }).eq(
-    "id",
-    gid,
-  ).select("*, player_games(count)").single();
-  const resp3 = await query3;
-  addFinishPhaseJob(resp3.data!);
+  await insertAndUpdatePhase(game, 'Diplomatic', 'SPRING', 1901)
 }
 
 export const handler: Handlers<GameProps, ServerState> = {
@@ -146,8 +137,7 @@ export const handler: Handlers<GameProps, ServerState> = {
       previousMoves = resp4?.data || [];
     } else if (game.status == "FORMING" && playerGamesCount == 7) {
       try {
-        await startGame(game.id);
-        game.status = "ACTIVE";
+        await startGame(game);
       } catch {
         ctx.render();
       }
