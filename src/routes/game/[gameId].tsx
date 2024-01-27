@@ -9,9 +9,7 @@ import GameView from "islands/GameView.tsx";
 import { Move, SubmittedMove, } from "types/moves.ts";
 import { ISupaSettings } from "types/supaSettings.ts";
 import GamePreparationView from "islands/GamePreparationView.tsx";
-import formatISO from "date-fns/formatISO/index.js";
-import add from "date-fns/add/index.ts";
-import { addFinishPhaseJob, insertAndUpdatePhase } from "../../crons/calc-results.ts";
+import { insertAndUpdatePhase } from "../../crons/calc-results.ts";
 
 export type GameProps = {
   playerGame: PlayerGame;
