@@ -9,7 +9,7 @@ import GameView from "islands/GameView.tsx";
 import { Move, SubmittedMove, } from "types/moves.ts";
 import { ISupaSettings } from "types/supaSettings.ts";
 import GamePreparationView from "islands/GamePreparationView.tsx";
-import { insertAndUpdatePhase } from "../../crons/calc-results.ts";
+import { insertAndUpdatePhase } from "../../queues/calc-results.ts";
 import { START_POSITION } from "types/gamePosition.ts";
 
 export type GameProps = {
@@ -134,7 +134,7 @@ export const handler: Handlers<GameProps, ServerState> = {
       submittedMoves = resp3.data;
       const resp4 = await fetchPreviousMoves(supa, game.phase.previous_phase);
       previousMoves = resp4?.data || [];
-    } else if (game.status == "FORMING" && playerGamesCount == 7) {
+    } else if (game.status == "FORMING" && playerGamesCount == game.number_of_players) {
       try {
         await startGame(game);
       } catch {

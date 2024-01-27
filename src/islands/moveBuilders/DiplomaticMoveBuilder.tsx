@@ -12,6 +12,7 @@ import { selectedPlayerGame } from "types/playerGames.ts";
 import MoveTheUnit from "./MoveTheUnit.tsx";
 import SupportTheUnit from "./SupportTheUnit.tsx";
 import ConvoyTheUnit from "./ConvoyTheUnit.tsx";
+import SupportHold from "islands/moveBuilders/SupportHold.tsx";
 
 export default function DiplomaticMoveBuilder() {
   function renderMoveBuilder() {
@@ -20,6 +21,8 @@ export default function DiplomaticMoveBuilder() {
         return <MoveTheUnit />;
       case "SUPPORT":
         return <SupportTheUnit />;
+      case "SUPPORT HOLD":
+        return <SupportHold />;
       case "CONVOY":
         return <ConvoyTheUnit />;
       case "HOLD":
@@ -30,7 +33,7 @@ export default function DiplomaticMoveBuilder() {
 
   function orderHold() {
     const newMove: SubmittedMoveInsert = {
-      type: selectedMoveType.value!,
+      type: "HOLD",
       origin: selectedUnit.value!.province,
       unit_type: selectedUnit.value!.unitType,
       phase: currentGame.value!.phase!.id,

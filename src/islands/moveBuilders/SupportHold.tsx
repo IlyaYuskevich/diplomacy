@@ -8,18 +8,17 @@ import { ProvinceCode } from "types/provinces.ts";
 
 export default function SupportTheUnit() {
 
-  const [from, setFrom] = useState<ProvinceCode | null>(null)
   const [to, setTo] = useState<ProvinceCode | null>(null)
 
   useEffect(() => {
-    if (!from || !to) {
+    if (!to) {
       return
     }
     const newMove: SubmittedMoveInsert = {
       type: "SUPPORT",
       origin: selectedUnit.value!.province,
       to: to,
-      from: from,
+      from: to,
       unit_type: selectedUnit.value!.unitType,
       player_game: selectedPlayerGame.value!.id,
       game: currentGame.value!.id,
@@ -29,14 +28,12 @@ export default function SupportTheUnit() {
     submittedMoves.value = [...submittedMoves.value, newMove];
     selectedUnit.value = null;
     selectedMoveType.value = null;
-  }, [to, from])
+  }, [to])
 
   return (
     <div>
-      <p>Select attack on which province you want to support</p>
+      <p>Select province where hold will be supported</p>
       <AdjacentProvinceSelector state={to} setter={setTo} province={selectedUnit.value!.province} unitType={selectedUnit.value!.unitType}/>
-      {to && <p>Select attack from where you want to support</p>}
-      {to && <AdjacentProvinceSelector state={from} setter={setFrom} province={to}/>}
     </div>
   );
 }

@@ -2,12 +2,12 @@
   "lock": false,
   "nodeModulesDir": true,
   "tasks": {
-    "start": "deno run -A --watch=static/,routes/ --allow-env ./src/dev.ts",
+    "start": "deno run -A --watch=static/,routes/ --allow-env --unstable ./src/dev.ts",
     "crons": "deno run -A ./src/crons/calc-results.ts",
     "esm:add": "deno run -A https://esm.sh/v133 add",
     "esm:update": "deno run -A https://esm.sh/v133 update",
     "esm:remove": "deno run -A https://esm.sh/v133 remove",
-    "build": "deno run -A ./src/dev.ts build",
+    "build": "deno run -A ./src/dev.ts build --unstable",
     "preview": "deno run -A ./src/main.ts",
     "test": "deno test src/"
   },

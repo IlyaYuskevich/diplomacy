@@ -1,4 +1,4 @@
-import { DIPLOMATIC_PHASE_MOVES, GAINING_LOSING_MOVES, MoveType, RETREAT_PHASE_MOVES, selectedMoveType } from "types/moves.ts";
+import { DIPLOMATIC_PHASE_MOVES, GAINING_LOSING_MOVES, MoveType, MoveTypeUi, RETREAT_PHASE_MOVES, selectedMoveType } from "types/moves.ts";
 import { selectedUnit } from "types/units.ts";
 import { ProvinceType, provinces } from "types/provinces.ts";
 import { sentenceCase } from "https://deno.land/x/case@2.2.0/mod.ts";
@@ -8,7 +8,7 @@ import { StateButtonStyle } from "utils/moveSelectorsUtils.ts";
 
 export default function MoveTypeSelector() {
   
-  function getPossibleMoves(): MoveType[] {
+  function getPossibleMoves(): MoveTypeUi[] {
     if (!selectedUnit.value || !currentGame.value?.phase) {
       return []
     }
@@ -29,9 +29,9 @@ export default function MoveTypeSelector() {
     }    
   }
 
-  const buttonStyle = computed(() => (key: MoveType) => StateButtonStyle(key === selectedMoveType.value, !selectedMoveType.value))
+  const buttonStyle = computed(() => (key: MoveTypeUi) => StateButtonStyle(key === selectedMoveType.value, !selectedMoveType.value))
 
-  function selectMoveType(moveType: MoveType) {
+  function selectMoveType(moveType: MoveTypeUi) {
     selectedMoveType.value = moveType;
   }
 

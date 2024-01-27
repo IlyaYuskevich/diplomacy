@@ -42,6 +42,7 @@ import * as $moveBuilders_RetreatAndDisbandingMoveBuilder from "./islands/moveBu
 import * as $moveBuilders_RetreatProvinceSelector from "./islands/moveBuilders/RetreatProvinceSelector.tsx";
 import * as $moveBuilders_SubmittedMoveRenderer from "./islands/moveBuilders/SubmittedMoveRenderer.tsx";
 import * as $moveBuilders_SupplyCentersSelector from "./islands/moveBuilders/SupplyCentersSelector.tsx";
+import * as $moveBuilders_SupportHold from "./islands/moveBuilders/SupportHold.tsx";
 import * as $moveBuilders_SupportTheUnit from "./islands/moveBuilders/SupportTheUnit.tsx";
 import * as $moveBuilders_UnitSelector from "./islands/moveBuilders/UnitSelector.tsx";
 import * as $moveBuilders_UnitTypeSelector from "./islands/moveBuilders/UnitTypeSelector.tsx";
@@ -101,6 +102,7 @@ const manifest = {
       $moveBuilders_SubmittedMoveRenderer,
     "./islands/moveBuilders/SupplyCentersSelector.tsx":
       $moveBuilders_SupplyCentersSelector,
+    "./islands/moveBuilders/SupportHold.tsx": $moveBuilders_SupportHold,
     "./islands/moveBuilders/SupportTheUnit.tsx": $moveBuilders_SupportTheUnit,
     "./islands/moveBuilders/UnitSelector.tsx": $moveBuilders_UnitSelector,
     "./islands/moveBuilders/UnitTypeSelector.tsx":

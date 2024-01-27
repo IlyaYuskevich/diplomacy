@@ -15,6 +15,7 @@ export interface Database {
           gaining_and_loosing_phase_duration: number
           game_type: string
           id: string
+          number_of_players: number
           phase: string | null
           retreat_and_disbanding_phase_duration: number
           started_at: string
@@ -26,6 +27,7 @@ export interface Database {
           gaining_and_loosing_phase_duration?: number
           game_type?: string
           id?: string
+          number_of_players?: number
           phase?: string | null
           retreat_and_disbanding_phase_duration?: number
           started_at?: string
@@ -37,6 +39,7 @@ export interface Database {
           gaining_and_loosing_phase_duration?: number
           game_type?: string
           id?: string
+          number_of_players?: number
           phase?: string | null
           retreat_and_disbanding_phase_duration?: number
           started_at?: string

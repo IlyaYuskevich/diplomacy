@@ -1,6 +1,6 @@
 import { submittedMoves, selectedMoveType, SubmittedMoveInsert } from "types/moves.ts";
 import { selectedUnit, Unit } from "types/units.ts";
-import { ProvinceCode, provinces } from "types/provinces.ts";
+import { provinces } from "types/provinces.ts";
 import { StateButtonStyle } from "utils/moveSelectorsUtils.ts";
 import { computed } from "@preact/signals";
 import { gamePosition } from "types/game.ts";

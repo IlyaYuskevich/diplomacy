@@ -9,7 +9,7 @@ import manifest from "./fresh.gen.ts";
 
 import config from "./fresh.config.ts";
 
-import { initAllPhaseJobs } from "./crons/calc-results.ts";
+import { initAllPhaseJobs } from "./queues/calc-results.ts";
 
 await initAllPhaseJobs();
 
