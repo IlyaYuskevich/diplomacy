@@ -84,7 +84,7 @@ Deno.test("assert validity of moves with respect to previous position", () => {
   generateMove("HOLD", "Kie", "Kie", null, "Fleet", "GERMANY", validMoves, playerGames, game);
   generateMove("CONVOY", "Lon", "Spa", null, "Army", "ENGLAND", validMoves, playerGames, game);
   generateMove("CONVOY", "StP", "Lon", null, "Fleet", "RUSSIA", validMoves, playerGames, game);
-  const movesToSubmit = moveInPositionValidator(game.game_position, playerGames)(
+  const movesToSubmit = moveInPositionValidator(game.phase!.game_position, playerGames)(
     validMoves,
   );
   movesToSubmit.forEach((move) => assertEquals(move.status, "VALID", JSON.stringify(move)));

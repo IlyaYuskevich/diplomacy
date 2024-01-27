@@ -5,7 +5,7 @@ import {
   ProvinceCode,
 } from "types/provinces.ts";
 import { PlayerGame } from "types/playerGames.ts";
-import { Game } from "types/game.ts";
+import { Game, Phase } from "types/game.ts";
 import {
   createIntentions,
   isActiveMove,
@@ -20,6 +20,7 @@ import {
 } from "types/intention.ts";
 
 import { calcNextPositionDiplomatic, calcNextPositionDisbandAndRetreat, calcNextPositionGainingAndLosing } from "utils/calcPosition.ts";
+import { GamePosition } from "types/gamePosition.ts";
 
 const findOccupant = (
   provinceCode: ProvinceCode,
@@ -177,9 +178,9 @@ const resolveContestedRegions =
 
 function diplomaticPhaseResolver(
   moves: Move[],
-  game: Game,
+  game_position: GamePosition,
   playerGames: PlayerGame[],
-): [Move[], Game] {
+): [Move[], GamePosition] {
   const intentions = createIntentions(moves);
   let prevDisrupted = intentions.map(isDisrupted);
 
@@ -201,25 +202,25 @@ function diplomaticPhaseResolver(
       .map(resolveContestedRegions(intentions));
   }
 
-  return calcNextPositionDiplomatic(intentions, moves, game, playerGames);
+  return calcNextPositionDiplomatic(intentions, moves, game_position, playerGames);
 }
 
 export function phaseResolver(
   moves: Move[],
-  game: Game,
+  phase: Phase,
   playerGames: PlayerGame[],
-): [Move[], Game] {
-  switch (game.phase?.phase) {
+): [Move[], GamePosition] {
+  switch (phase?.phase) {
     case "Diplomatic":
-      delete game.game_position.built;
-      delete game.game_position.disbanded;
-      delete game.game_position.standoffs;
-      delete game.game_position.dislodged;
-      return diplomaticPhaseResolver(moves, game, playerGames);
+      delete phase!.game_position.built;
+      delete phase!.game_position.disbanded;
+      delete phase!.game_position.standoffs;
+      delete phase!.game_position.dislodged;
+      return diplomaticPhaseResolver(moves, phase.game_position, playerGames);
     case "Retreat and Disbanding":
-      return calcNextPositionDisbandAndRetreat(moves, game, playerGames);;
+      return calcNextPositionDisbandAndRetreat(moves, phase.game_position, playerGames, phase.turn);
     case "Gaining and Losing":
-      return calcNextPositionGainingAndLosing(moves, game, playerGames);
+      return calcNextPositionGainingAndLosing(moves, phase.game_position, playerGames);
   }
-  return [moves, game];
+  return [moves, phase.game_position];
 }

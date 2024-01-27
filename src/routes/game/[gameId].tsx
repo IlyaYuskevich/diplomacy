@@ -10,6 +10,7 @@ import { Move, SubmittedMove, } from "types/moves.ts";
 import { ISupaSettings } from "types/supaSettings.ts";
 import GamePreparationView from "islands/GamePreparationView.tsx";
 import { insertAndUpdatePhase } from "../../crons/calc-results.ts";
+import { START_POSITION } from "types/gamePosition.ts";
 
 export type GameProps = {
   playerGame: PlayerGame;
@@ -89,7 +90,7 @@ async function startGame(game: Game) {
   await superSupa.rpc("assign_countries", { gid: game.id });
   game.status = "ACTIVE";
 
-  await insertAndUpdatePhase(game, 'Diplomatic', 'SPRING', 1901)
+  await insertAndUpdatePhase(game, 'Diplomatic', 'SPRING', 1901, START_POSITION)
 }
 
 export const handler: Handlers<GameProps, ServerState> = {

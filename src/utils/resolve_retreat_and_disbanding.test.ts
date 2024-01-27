@@ -1,4 +1,4 @@
-import { assert, assertEquals, assertArrayIncludes } from "assert";
+import { assert, assertEquals } from "assert";
 import { Move, MoveType } from "types/moves.ts";
 import { phaseResolver } from "utils/resolve.ts";
 import { Game, GamePhase } from "types/game.ts";
@@ -24,31 +24,33 @@ export function createGame(phase: GamePhase = 'Diplomatic'): Game {
       previous_phase: null,
       starts_at: formatISO(new Date(), {}),
       ends_at: formatISO(add(new Date(), { hours: 1 }), {}),
+      game_position: {
+        domains: {
+          AUSTRIA: [],
+          ENGLAND: [],
+          FRANCE: [],
+          GERMANY: [],
+          ITALY: [],
+          RUSSIA: [],
+          TURKEY: [],
+        },
+        unitPositions: {
+          AUSTRIA: [],
+          ENGLAND: [],
+          FRANCE: [],
+          GERMANY: [],
+          ITALY: [],
+          RUSSIA: [],
+          TURKEY: [],
+        },
+      },
     },
     status: "ACTIVE",
-    game_position: {
-      domains: {
-        AUSTRIA: [],
-        ENGLAND: [],
-        FRANCE: [],
-        GERMANY: [],
-        ITALY: [],
-        RUSSIA: [],
-        TURKEY: [],
-      },
-      unitPositions: {
-        AUSTRIA: [],
-        ENGLAND: [],
-        FRANCE: [],
-        GERMANY: [],
-        ITALY: [],
-        RUSSIA: [],
-        TURKEY: [],
-      },
-    },
+    game_position: {},
     turn_duration: 60,
     retreat_and_disbanding_phase_duration: 15,
     gaining_and_loosing_phase_duration: 15,
+    created_by: crypto.randomUUID(),
   } as Game;
 }
 
@@ -100,12 +102,12 @@ export function generateMove(
     phase: game.phase!.id,
     status: "VALID",
   } as Move;
-  provinces[origin].type != ProvinceType.Sea ? game.game_position.domains[country] = [
-    ...game.game_position.domains[country],
+  provinces[origin].type != ProvinceType.Sea ? game.phase!.game_position.domains[country] = [
+    ...game.phase!.game_position.domains[country],
     origin,
   ] : null;
-  game.game_position.unitPositions[country] = [
-    ...game.game_position.unitPositions[country],
+  game.phase!.game_position.unitPositions[country] = [
+    ...game.phase!.game_position.unitPositions[country],
     { province: origin, unitType } as Unit,
   ];
   moves.push(move);
@@ -113,7 +115,7 @@ export function generateMove(
 
 Deno.test("French province Bre is occupied by England", () => {
   const game = createGame("Retreat and Disbanding");
-  game.game_position = {
+  game.phase!.game_position = {
     domains: {
       AUSTRIA: [],
       ENGLAND: ["Cly", "Edi", "Lvp", "Lon", "Wal", "Yor"],
@@ -149,9 +151,9 @@ Deno.test("French province Bre is occupied by England", () => {
   const moves: Move[] = [];
   const playerGames: PlayerGame[] = [];
 
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [_, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assert(!game_position.domains.FRANCE.includes("Bre"));
@@ -187,9 +189,9 @@ Deno.test("Two units trying to retreat in the same province are disbanded", () =
     game,
   );
 
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "FAILED");
@@ -202,7 +204,7 @@ Deno.test("If there's no retreat options -- disband", () => {
   const game = createGame("Retreat and Disbanding");
   const moves: Move[] = [];
   const playerGames: PlayerGame[] = [];
-  game.game_position = {
+  game.phase!.game_position = {
     domains: {
       AUSTRIA: [],
       ENGLAND: [],
@@ -246,9 +248,9 @@ Deno.test("If there's no retreat options -- disband", () => {
   };
 
 
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [_, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assert(game_position.disbanded?.ITALY.at(0)?.province == "Rom");

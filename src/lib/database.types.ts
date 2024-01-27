@@ -49,17 +49,14 @@ export type Database = MergeDeep<
         };
         games: {
           Row: {
-            game_position: GamePosition;
-            phase?: DatabaseGenerated["public"]["Tables"]["phases"]["Row"];
+            phase?: DatabaseGenerated["public"]["Tables"]["phases"]["Row"] & {game_position: GamePosition};
           };
           Insert: {
             id?: string;
             phase?: string;
-            game_position: GamePosition;
           };
           Update: {
             id?: string;
-            game_position?: GamePosition;
           };
         };
         player_games: {
@@ -71,6 +68,19 @@ export type Database = MergeDeep<
             id?: string;
           };
         };
+        phases: {
+          Row: {
+            game_position: GamePosition;
+          };
+          Insert: {
+            id?: string;
+            game_position: GamePosition;
+          };
+          Update: {
+            id?: string;
+            game_position: GamePosition;
+          };
+        }
       };
       Enums: {
         Country: DatabaseGenerated["public"]["Enums"]["country"] | null;

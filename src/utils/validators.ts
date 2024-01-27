@@ -243,7 +243,7 @@ const autoInsertUnmovedUnits = (
   moves: MoveInsert[],
 ) => {
   /* Automatically orders unmoved units to hold the position. */
-  game.game_position.unitPositions[pg.country!].filter((unit) =>
+  game.phase!.game_position.unitPositions[pg.country!].filter((unit) =>
     !moves.map((mv) => mv.origin).includes(unit.province)
   )
     .forEach((unit) =>
@@ -289,19 +289,19 @@ const autoInsertRetreatMoves = (
   moves: MoveInsert[],
 ) => {
   /* Orders dislodged units that were not moved to retreat to random province.  */
-  if (!game.game_position.dislodged) return moves;
-  game.game_position.dislodged[pg.country!]
+  if (!game.phase!.game_position.dislodged) return moves;
+  game.phase!.game_position.dislodged[pg.country!]
     .filter((dislodge) =>
       !moves.map((mv) => mv.origin).includes(dislodge.province)
     )
     .forEach((dislodge) => {
-      const unit = game.game_position.unitPositions[pg.country!].find((unit) =>
+      const unit = game.phase!.game_position.unitPositions[pg.country!].find((unit) =>
         unit.province == dislodge.province
       );
       if (!isUnit(unit)) return;
-      retreatTo(dislodge, unit.unitType, game.game_position) && moves.push({
+      retreatTo(dislodge, unit.unitType, game.phase!.game_position) && moves.push({
         type: "RETREAT",
-        to: retreatTo(dislodge, unit.unitType, game.game_position),
+        to: retreatTo(dislodge, unit.unitType, game.phase!.game_position),
         from: null,
         origin: unit.province,
         unit_type: unit.unitType,
@@ -323,12 +323,12 @@ const autoInsertBuildOrDisband = (
   /* If player did not make gaining & loosing moves (the number of supply centers not equal to number of units) -- chose automatically which units to build or disband.  */
 
   const gainingLosingNumber =
-    getGainingLosingNumber(game.game_position, pg.country!) -
+    getGainingLosingNumber(game.phase!.game_position, pg.country!) -
     getBuildsDisbandsBalance(moves);
 
   if (gainingLosingNumber > 0) {
     pickRandomN(
-      buildOrigins(pg.country!, game.game_position, moves.map((mv) => mv.to)),
+      buildOrigins(pg.country!, game.phase!.game_position, moves.map((mv) => mv.to)),
       Math.abs(gainingLosingNumber),
     )
       .forEach((province) => {
@@ -354,7 +354,7 @@ const autoInsertBuildOrDisband = (
   }
   if (gainingLosingNumber < 0) {
     pickRandomN(
-      game.game_position.unitPositions[pg.country!],
+      game.phase!.game_position.unitPositions[pg.country!],
       Math.abs(gainingLosingNumber),
     )
       .forEach((unit) =>

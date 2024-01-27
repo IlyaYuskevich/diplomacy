@@ -17,6 +17,8 @@ import {
   movePhaseValidator,
 } from "utils/validators.ts";
 import { phaseResolver } from "utils/resolve.ts";
+import { winnerCountry } from "utils/calcPosition.ts";
+import { GamePosition } from "types/gamePosition.ts";
 export const logger = new Logger();
 
 const cronJobs: Cron[] = [];
@@ -85,8 +87,9 @@ function initNextPhase(game: Game) {
   try {
     retryAsync(
       async () => {
-        await fetchAndProcessResults(game);
-        await insertAndUpdatePhase(game, nextPhase, nextTurn, nextYear);
+        const game_position = await fetchAndProcessResults(game);
+        if (!game_position) return
+        await insertAndUpdatePhase(game, nextPhase, nextTurn, nextYear, game_position);
       },
       { delay: 10e3, maxTry: 20 },
     );
@@ -102,8 +105,8 @@ function initNextPhase(game: Game) {
 
 async function fetchAndProcessResults(
   game: Game,
-) {
-  if (!game.phase) return;
+): Promise<GamePosition | null> {
+  if (!game.phase) return Promise.resolve(null);;
   const submittedMovesQuery = superSupa.from("submitted_moves").select().eq(
     "phase",
     game.phase.id,
@@ -115,11 +118,11 @@ async function fetchAndProcessResults(
   );
   const playerGames = (await playerGamesQuery).data;
 
-  if (!submittedMoves) return;
-  if (!playerGames) return;
+  if (!submittedMoves) return Promise.resolve(null);
+  if (!playerGames) return Promise.resolve(null);
   const validatedMoves1 = individualMoveValidator(submittedMoves);
   const validatedMoves2 = moveInPositionValidator(
-    game.game_position,
+    game.phase!.game_position,
     playerGames,
   )(validatedMoves1);
   const validatedMoves3 = movePhaseValidator(game.phase!.phase)(
@@ -136,12 +139,15 @@ async function fetchAndProcessResults(
   }
   const validatedMoves = resp.data;
 
-  if (!validatedMoves) return;
-  const [resultMoves, { game_position }] = phaseResolver(
+  if (!validatedMoves) return Promise.resolve(null);
+  const [resultMoves, game_position] = phaseResolver(
     validatedMoves,
-    game,
+    game.phase,
     playerGames,
   );
+  if (winnerCountry(game.phase.game_position)) { // defines if there's winner
+    game.status = "FINISHED";
+  }
   const insertResolvedMoves = superSupa.from("moves").upsert(
     resultMoves,
   );
@@ -153,6 +159,7 @@ async function fetchAndProcessResults(
     { game_position, status: game.status },
   ).eq("id", game.id);
   await updateGameQuery;
+  return Promise.resolve(game.phase.game_position);
 }
 
 export async function insertAndUpdatePhase(
@@ -160,6 +167,7 @@ export async function insertAndUpdatePhase(
   nextPhase: PhaseType,
   nextTurn: Turn,
   nextYear: number,
+  gamePosition: GamePosition,
 ) {
   const nextPhaseDuration = intervalToDuration(
     { start: 0, end: calcNextPhaseDuration(game, nextPhase) * 1e3 },
@@ -172,6 +180,7 @@ export async function insertAndUpdatePhase(
     year: nextYear,
     previous_phase: game.phase?.id,
     ends_at: calcEndsAt(nextPhaseDuration),
+    game_position: gamePosition
   }).select().single();
   const res = await createPhaseQuery;
   const updateGameQuery = superSupa.from("games").update({

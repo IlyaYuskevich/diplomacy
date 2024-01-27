@@ -1,15 +1,15 @@
-import { assert, assertEquals, assertArrayIncludes } from "assert";
+import { assert, assertArrayIncludes, assertEquals } from "assert";
 import { Move, MoveType } from "types/moves.ts";
 import { phaseResolver } from "utils/resolve.ts";
 import { Game, GamePhase } from "types/game.ts";
 import { PlayerGame } from "types/playerGames.ts";
-import { ProvinceCode, ProvinceType, provinces } from "types/provinces.ts";
+import { ProvinceCode, provinces, ProvinceType } from "types/provinces.ts";
 import { Unit, UnitType } from "types/units.ts";
 import { Country } from "types/country.ts";
 import formatISO from "date-fns/formatISO/index.js";
 import add from "date-fns/add/index.ts";
 
-export function createGame(phase: GamePhase = 'Diplomatic'): Game {
+export function createGame(phase: GamePhase = "Diplomatic"): Game {
   const gameId = crypto.randomUUID();
   return {
     id: gameId,
@@ -24,31 +24,33 @@ export function createGame(phase: GamePhase = 'Diplomatic'): Game {
       previous_phase: null,
       starts_at: formatISO(new Date(), {}),
       ends_at: formatISO(add(new Date(), { hours: 1 }), {}),
+      game_position: {
+        domains: {
+          AUSTRIA: [],
+          ENGLAND: [],
+          FRANCE: [],
+          GERMANY: [],
+          ITALY: [],
+          RUSSIA: [],
+          TURKEY: [],
+        },
+        unitPositions: {
+          AUSTRIA: [],
+          ENGLAND: [],
+          FRANCE: [],
+          GERMANY: [],
+          ITALY: [],
+          RUSSIA: [],
+          TURKEY: [],
+        },
+      },
     },
     status: "ACTIVE",
-    game_position: {
-      domains: {
-        AUSTRIA: [],
-        ENGLAND: [],
-        FRANCE: [],
-        GERMANY: [],
-        ITALY: [],
-        RUSSIA: [],
-        TURKEY: [],
-      },
-      unitPositions: {
-        AUSTRIA: [],
-        ENGLAND: [],
-        FRANCE: [],
-        GERMANY: [],
-        ITALY: [],
-        RUSSIA: [],
-        TURKEY: [],
-      },
-    },
+    game_position: {},
     turn_duration: 60,
     retreat_and_disbanding_phase_duration: 15,
     gaining_and_loosing_phase_duration: 15,
+    created_by: crypto.randomUUID(),
   } as Game;
 }
 
@@ -100,12 +102,14 @@ export function generateMove(
     phase: game.phase!.id,
     status: "VALID",
   } as Move;
-  provinces[origin].type != ProvinceType.Sea ? game.game_position.domains[country] = [
-    ...game.game_position.domains[country],
-    origin,
-  ] : null;
-  game.game_position.unitPositions[country] = [
-    ...game.game_position.unitPositions[country],
+  provinces[origin].type != ProvinceType.Sea
+    ? game.phase!.game_position.domains[country] = [
+      ...game.phase!.game_position.domains[country],
+      origin,
+    ]
+    : null;
+  game.phase!.game_position.unitPositions[country] = [
+    ...game.phase!.game_position.unitPositions[country],
     { province: origin, unitType } as Unit,
   ];
   moves.push(move);
@@ -138,9 +142,9 @@ Deno.test("standoff: units have equal strength", () => {
     game,
   );
 
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "FAILED");
@@ -187,9 +191,9 @@ Deno.test("standoff: when unit is ordered to go in two-coast province", () => {
     game,
   );
 
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "FAILED");
@@ -240,9 +244,9 @@ Deno.test("Chain standoff: One unit not moving can stop a unit or series of unit
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "FAILED");
@@ -301,9 +305,9 @@ Deno.test("units trying to exchange provinces remain in origins", () => {
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "FAILED");
@@ -361,9 +365,9 @@ Deno.test("three or more units can rotate provinces", () => {
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "SUCCEED");
@@ -420,9 +424,9 @@ Deno.test("simple support", () => {
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "SUCCEED");
@@ -432,7 +436,10 @@ Deno.test("simple support", () => {
     game_position.unitPositions.FRANCE.map((u) => u.province),
     ["Gas", "Bur"],
   );
-  assertArrayIncludes(game_position.dislodged!.GERMANY.map(dslg => dslg.province), ["Bur"])
+  assertArrayIncludes(
+    game_position.dislodged!.GERMANY.map((dslg) => dslg.province),
+    ["Bur"],
+  );
 });
 
 Deno.test("simple support hold", () => {
@@ -483,9 +490,9 @@ Deno.test("simple support hold", () => {
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "SUCCEED");
@@ -493,13 +500,13 @@ Deno.test("simple support hold", () => {
   assertEquals(resultMoves[2].status, "FAILED");
   assertEquals(resultMoves[3].status, "FAILED");
   assertArrayIncludes(
-  game_position.unitPositions.FRANCE.map((u) => u.province),
+    game_position.unitPositions.FRANCE.map((u) => u.province),
     ["Gas", "Mar"],
   );
   assertArrayIncludes(
     game_position.unitPositions.ITALY.map((u) => u.province),
-      ["GoL", "Pie"],
-    );
+    ["GoL", "Pie"],
+  );
   assertArrayIncludes(game_position.standoffs!, ["Mar"]);
 });
 
@@ -540,9 +547,9 @@ Deno.test("simple support two coasts", () => {
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "SUCCEED");
@@ -552,7 +559,10 @@ Deno.test("simple support two coasts", () => {
     game_position.unitPositions.FRANCE.map((u) => u.province),
     ["Gas", "SpaN"],
   );
-  assertArrayIncludes(game_position.dislodged!.ITALY.map(dslg => dslg.province), ["Spa"])
+  assertArrayIncludes(
+    game_position.dislodged!.ITALY.map((dslg) => dslg.province),
+    ["Spa"],
+  );
 });
 
 Deno.test("standoff while support", () => {
@@ -603,9 +613,9 @@ Deno.test("standoff while support", () => {
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "FAILED");
@@ -671,16 +681,16 @@ Deno.test("standoff while support with defence", () => {
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "FAILED");
   assertEquals(resultMoves[1].status, "SUCCEED");
   assertEquals(resultMoves[2].status, "SUCCEED");
   assertEquals(resultMoves[3].status, "SUCCEED");
-  assertArrayIncludes(game_position.standoffs!, ["Tyn"])
+  assertArrayIncludes(game_position.standoffs!, ["Tyn"]);
   assertArrayIncludes(
     game_position.unitPositions.FRANCE.map((u) => u.province),
     ["GoL", "Wes"],
@@ -739,9 +749,9 @@ Deno.test("support of convoyed army", () => {
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "SUCCEED");
@@ -757,7 +767,7 @@ Deno.test("support of convoyed army", () => {
     ["Bel", "Nth"] as ProvinceCode[],
   );
   assertArrayIncludes(
-    game_position.dislodged!.GERMANY.map(dslg => dslg.province),
+    game_position.dislodged!.GERMANY.map((dslg) => dslg.province),
     ["Bel"] as ProvinceCode[],
   );
 });
@@ -832,9 +842,9 @@ Deno.test("dislodged unit can cause standoff in other province than origin", () 
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "SUCCEED");
@@ -852,7 +862,7 @@ Deno.test("dislodged unit can cause standoff in other province than origin", () 
     ["Ber"],
   );
   assertArrayIncludes(
-    game_position.dislodged!.GERMANY.map(dslg => dslg.province),
+    game_position.dislodged!.GERMANY.map((dslg) => dslg.province),
     ["Mun"],
   );
   assertArrayIncludes(
@@ -909,9 +919,9 @@ Deno.test("dislodged while exchange provinces by two units: dislodged must retre
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "FAILED");
@@ -919,7 +929,7 @@ Deno.test("dislodged while exchange provinces by two units: dislodged must retre
   assertEquals(resultMoves[2].status, "SUCCEED");
   assertEquals(resultMoves[3].status, "SUCCEED");
   assertArrayIncludes(
-    game_position.dislodged!.TURKEY.map(dslg => dslg.province),
+    game_position.dislodged!.TURKEY.map((dslg) => dslg.province),
     ["Bul"],
   );
   assertArrayIncludes(
@@ -998,9 +1008,9 @@ Deno.test("dislodged while exchange provinces by two units: dislodged must retre
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "FAILED");
@@ -1010,7 +1020,7 @@ Deno.test("dislodged while exchange provinces by two units: dislodged must retre
   assertEquals(resultMoves[4].status, "SUCCEED");
   assertEquals(resultMoves[5].status, "SUCCEED");
   assertArrayIncludes(
-    game_position.dislodged!.TURKEY.map(dslg => dslg.province),
+    game_position.dislodged!.TURKEY.map((dslg) => dslg.province),
     ["Bul"],
   );
   assertArrayIncludes(
@@ -1068,9 +1078,9 @@ Deno.test("Cutting support", () => {
     game,
   );
 
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "FAILED");
@@ -1125,9 +1135,9 @@ Deno.test("Cutting support from where support was given", () => {
     game,
   );
 
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "SUCCEED");
@@ -1138,7 +1148,7 @@ Deno.test("Cutting support from where support was given", () => {
     ["Sil", "War"],
   );
   assertArrayIncludes(
-    game_position.dislodged!.RUSSIA.map(dslg => dslg.province),
+    game_position.dislodged!.RUSSIA.map((dslg) => dslg.province),
     ["War"],
   );
 });
@@ -1203,9 +1213,9 @@ Deno.test("Cutting support from where support was given by dislodge", () => {
     game,
   );
 
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "FAILED");
@@ -1214,7 +1224,7 @@ Deno.test("Cutting support from where support was given by dislodge", () => {
   assertEquals(resultMoves[3].status, "SUCCEED");
   assertEquals(resultMoves[4].status, "FAILED");
   assertArrayIncludes(
-    game_position.dislodged!.GERMANY.map(dslg => dslg.province),
+    game_position.dislodged!.GERMANY.map((dslg) => dslg.province),
     ["Sil"],
   );
   assertArrayIncludes(
@@ -1294,9 +1304,9 @@ Deno.test("Dislodged army can still cut support", () => {
     game,
   );
 
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "SUCCEED");
@@ -1306,7 +1316,7 @@ Deno.test("Dislodged army can still cut support", () => {
   assertEquals(resultMoves[4].status, "SUCCEED");
   assertEquals(resultMoves[5].status, "SUCCEED");
   assertArrayIncludes(
-    game_position.dislodged!.GERMANY.map(dslg => dslg.province),
+    game_position.dislodged!.GERMANY.map((dslg) => dslg.province),
     ["Mun"],
   );
   assertArrayIncludes(
@@ -1342,9 +1352,9 @@ Deno.test("Convoying army across one water province.", () => {
     game,
   );
 
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "SUCCEED");
@@ -1382,9 +1392,9 @@ Deno.test("Convoying army across one water province (Spain).", () => {
     game,
   );
 
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "SUCCEED");
@@ -1394,7 +1404,6 @@ Deno.test("Convoying army across one water province (Spain).", () => {
     ["Tus", "GoL"],
   );
 });
-
 
 Deno.test("Convoying army across several water provinces.", () => {
   const game = createGame();
@@ -1445,9 +1454,9 @@ Deno.test("Convoying army across several water provinces.", () => {
     game,
   );
 
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "SUCCEED");
@@ -1520,9 +1529,9 @@ Deno.test("Cutting convoy.", () => {
     game,
   );
 
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "FAILED");
@@ -1539,7 +1548,7 @@ Deno.test("Cutting convoy.", () => {
     ["Tyn", "Tun"],
   );
   assertArrayIncludes(
-    game_position.dislodged!.FRANCE.map(dslg => dslg.province),
+    game_position.dislodged!.FRANCE.map((dslg) => dslg.province),
     ["Tyn"],
   );
 });
@@ -1581,9 +1590,9 @@ Deno.test("Self dislodgement is not possible", () => {
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "FAILED");
@@ -1639,9 +1648,9 @@ Deno.test("Self dislodgement is not possible-2", () => {
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "FAILED");
@@ -1701,9 +1710,9 @@ Deno.test(
       playerGames,
       game,
     );
-    const [resultMoves, { game_position }] = phaseResolver(
+    const [resultMoves, game_position ] = phaseResolver(
       moves,
-      game,
+      game.phase!,
       playerGames,
     );
     assertEquals(resultMoves[0].status, "FAILED");
@@ -1750,9 +1759,9 @@ Deno.test("Foreign support of self-standoff", () => {
     playerGames,
     game,
   );
-  const [resultMoves, { game_position }] = phaseResolver(
+  const [resultMoves, game_position ] = phaseResolver(
     moves,
-    game,
+    game.phase!,
     playerGames,
   );
   assertEquals(resultMoves[0].status, "SUCCEED");

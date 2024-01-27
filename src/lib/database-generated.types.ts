@@ -11,8 +11,8 @@ export interface Database {
     Tables: {
       games: {
         Row: {
+          created_by: string | null
           gaining_and_loosing_phase_duration: number
-          game_position: Json | null
           game_type: string
           id: string
           phase: string | null
@@ -22,8 +22,8 @@ export interface Database {
           turn_duration: number
         }
         Insert: {
+          created_by?: string | null
           gaining_and_loosing_phase_duration?: number
-          game_position?: Json | null
           game_type?: string
           id?: string
           phase?: string | null
@@ -33,8 +33,8 @@ export interface Database {
           turn_duration?: number
         }
         Update: {
+          created_by?: string | null
           gaining_and_loosing_phase_duration?: number
-          game_position?: Json | null
           game_type?: string
           id?: string
           phase?: string | null
@@ -44,6 +44,12 @@ export interface Database {
           turn_duration?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "games_created_by_fkey"
+            columns: ["created_by"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "games_phase_fkey"
             columns: ["phase"]
@@ -126,6 +132,7 @@ export interface Database {
         Row: {
           ends_at: string
           game: string
+          game_position: Json
           id: string
           phase: Database["public"]["Enums"]["Phase"]
           previous_phase: string | null
@@ -136,6 +143,7 @@ export interface Database {
         Insert: {
           ends_at: string
           game: string
+          game_position: Json
           id?: string
           phase?: Database["public"]["Enums"]["Phase"]
           previous_phase?: string | null
@@ -146,6 +154,7 @@ export interface Database {
         Update: {
           ends_at?: string
           game?: string
+          game_position?: Json
           id?: string
           phase?: Database["public"]["Enums"]["Phase"]
           previous_phase?: string | null
