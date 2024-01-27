@@ -183,7 +183,7 @@ export function calcNextPositionDisbandAndRetreat(
       )
   );
   // occupy provinces
-  COUNTRY_ARRAY.forEach((country) =>
+  game.phase?.turn == "FALL" && COUNTRY_ARRAY.forEach((country) =>
     game.game_position.unitPositions[country].map((unit) => unit.province)
       .filter((province) => provinces[province].type !== ProvinceType.Sea)
       .forEach(

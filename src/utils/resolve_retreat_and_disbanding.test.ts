@@ -19,7 +19,7 @@ export function createGame(phase: GamePhase = 'Diplomatic'): Game {
       id: crypto.randomUUID(),
       year: 1901,
       phase,
-      turn: "SPRING",
+      turn: "FALL",
       game: gameId,
       previous_phase: null,
       starts_at: formatISO(new Date(), {}),
