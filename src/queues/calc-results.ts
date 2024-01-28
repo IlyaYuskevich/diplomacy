@@ -1,11 +1,8 @@
-import { Cron } from "croner";
 import { Game, PhaseType, Turn } from "types/game.ts";
 import { superSupa } from "lib/supabase.ts";
 import add from "date-fns/add/index.ts";
 import formatISO from "date-fns/formatISO/index.js";
 import intervalToDuration from "date-fns/intervalToDuration/index.ts";
-import isPast from "date-fns/isPast/index.ts";
-import parseISO from "date-fns/parseISO/index.js";
 import { Duration } from "date-fns/types.ts";
 import { retryAsync } from "https://deno.land/x/retry@v2.0.0/retry/retry.ts";
 import { isTooManyTries } from "https://deno.land/x/retry@v2.0.0/retry/tooManyTries.ts";
@@ -19,50 +16,18 @@ import {
 import { phaseResolver } from "utils/resolve.ts";
 import { winnerCountry } from "utils/calcPosition.ts";
 import { GamePosition } from "types/gamePosition.ts";
+import { PhaseIsOverMessage } from "./types.ts";
+import { fetchGame } from "utils/queries.ts";
+import { enqueuePhaseEnd } from "./publishers.ts";
 export const logger = new Logger();
 
-const cronJobs: Cron[] = [];
-export function addFinishPhaseJob(game: Game) {
-  if (!game.phase?.ends_at) {
-    return;
-  }
-  const job = new Cron(game.phase.ends_at, { name: game.phase.id }, () => {
-    initNextPhase(game);
-  });
-  logger.info(job);
-  if (isPast(parseISO(game.phase.ends_at, {}))) {
-    job.trigger();
-  }
-  cronJobs.push(job);
-}
-
-export async function initAllPhaseJobs() {
-  /* In case pod restarted: fetches actve games (with retries), then set up jobs that do post-phases processing */
-  const queryActiveGames = superSupa.from("games").select("*, phase(*)")
-    .eq(
-      "status",
-      "ACTIVE",
-    );
-  try {
-    const activeGames = await retryAsync(async () => {
-      const resp = await queryActiveGames;
-      if (resp.error) {
-        throw new Error(resp.error.message);
-      }
-      return resp.data;
-    }, { delay: 10e3, maxTry: 20 });
-    activeGames.forEach((game) => addFinishPhaseJob(game));
-  } catch (err) {
-    if (isTooManyTries(err)) {
-      logger.error(`Too many retries on start fresh service`);
-    } else {
-      logger.error(err);
-    }
-  }
-}
-
-function initNextPhase(game: Game) {
-  if (game.status == "FINISHED") return 
+export async function initNextPhase(phaseIsOverMessage: PhaseIsOverMessage) {
+  console.log('init next phase', phaseIsOverMessage)
+  const resp = await fetchGame(superSupa, phaseIsOverMessage.gameId);
+  if (resp.error) logger.error(resp.error);
+  const game = resp.data as Game;
+  console.log('game', game)
+  if (game.status == "FINISHED") return;
   let nextPhase: PhaseType;
   let nextYear: number = game.phase!.year;
   let nextTurn = game.phase!.turn;
@@ -88,8 +53,14 @@ function initNextPhase(game: Game) {
     retryAsync(
       async () => {
         const game_position = await fetchAndProcessResults(game);
-        if (!game_position) return
-        await insertAndUpdatePhase(game, nextPhase, nextTurn, nextYear, game_position);
+        if (!game_position) return;
+        await insertAndUpdatePhase(
+          game,
+          nextPhase,
+          nextTurn,
+          nextYear,
+          game_position,
+        );
       },
       { delay: 10e3, maxTry: 20 },
     );
@@ -106,7 +77,7 @@ function initNextPhase(game: Game) {
 async function fetchAndProcessResults(
   game: Game,
 ): Promise<GamePosition | null> {
-  if (!game.phase) return Promise.resolve(null);;
+  if (!game.phase) return Promise.resolve(null);
   const submittedMovesQuery = superSupa.from("submitted_moves").select().eq(
     "phase",
     game.phase.id,
@@ -169,8 +140,9 @@ export async function insertAndUpdatePhase(
   nextYear: number,
   gamePosition: GamePosition,
 ) {
+  const durationInSecs = calcNextPhaseDuration(game, nextPhase);
   const nextPhaseDuration = intervalToDuration(
-    { start: 0, end: calcNextPhaseDuration(game, nextPhase) * 1e3 },
+    { start: 0, end: durationInSecs * 1e3 },
   );
 
   const createPhaseQuery = superSupa.from("phases").insert({
@@ -180,7 +152,7 @@ export async function insertAndUpdatePhase(
     year: nextYear,
     previous_phase: game.phase?.id,
     ends_at: calcEndsAt(nextPhaseDuration),
-    game_position: gamePosition
+    game_position: gamePosition,
   }).select().single();
   const res = await createPhaseQuery;
   const updateGameQuery = superSupa.from("games").update({
@@ -189,8 +161,8 @@ export async function insertAndUpdatePhase(
     "id",
     game.id,
   ).select("*, phase(*)").single();
-  const updatedGame = await updateGameQuery;
-  addFinishPhaseJob(updatedGame.data!);
+  await updateGameQuery;
+  await enqueuePhaseEnd(game.id, res.data!.id, durationInSecs);
   return true;
 }
 

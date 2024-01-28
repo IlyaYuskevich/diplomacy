@@ -63,42 +63,45 @@ export interface Database {
       }
       moves: {
         Row: {
+          country: Database["public"]["Enums"]["country"]
           created_at: string
           from: string | null
           game: string
           id: string
           origin: string | null
           phase: string
-          player: string
-          player_game: string
+          player: string | null
+          player_game: string | null
           status: Database["public"]["Enums"]["MoveStatus"]
           to: string
           type: Database["public"]["Enums"]["MoveType"]
           unit_type: Database["public"]["Enums"]["UnitType"]
         }
         Insert: {
+          country: Database["public"]["Enums"]["country"]
           created_at?: string
           from?: string | null
           game: string
           id?: string
           origin?: string | null
           phase: string
-          player?: string
-          player_game: string
+          player?: string | null
+          player_game?: string | null
           status: Database["public"]["Enums"]["MoveStatus"]
           to: string
           type: Database["public"]["Enums"]["MoveType"]
           unit_type: Database["public"]["Enums"]["UnitType"]
         }
         Update: {
+          country?: Database["public"]["Enums"]["country"]
           created_at?: string
           from?: string | null
           game?: string
           id?: string
           origin?: string | null
           phase?: string
-          player?: string
-          player_game?: string
+          player?: string | null
+          player_game?: string | null
           status?: Database["public"]["Enums"]["MoveStatus"]
           to?: string
           type?: Database["public"]["Enums"]["MoveType"]
@@ -278,6 +281,49 @@ export interface Database {
           },
           {
             foreignKeyName: "submitted_moves_player_game_fkey"
+            columns: ["player_game"]
+            referencedRelation: "player_games"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      votes: {
+        Row: {
+          game: string
+          id: string
+          player: string
+          player_game: string
+          ready: boolean | null
+        }
+        Insert: {
+          game: string
+          id?: string
+          player: string
+          player_game: string
+          ready?: boolean | null
+        }
+        Update: {
+          game?: string
+          id?: string
+          player?: string
+          player_game?: string
+          ready?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "votes_game_fkey"
+            columns: ["game"]
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "votes_player_fkey"
+            columns: ["player"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "votes_player_game_fkey"
             columns: ["player_game"]
             referencedRelation: "player_games"
             referencedColumns: ["id"]

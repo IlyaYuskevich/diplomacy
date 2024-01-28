@@ -14,6 +14,7 @@ import * as $api_middleware from "./routes/api/_middleware.ts";
 import * as $api_create_game from "./routes/api/create-game.ts";
 import * as $api_create_moves from "./routes/api/create-moves.ts";
 import * as $api_submitted_move_id_ from "./routes/api/submitted-move/[id].ts";
+import * as $api_vote from "./routes/api/vote.ts";
 import * as $auth_confirm_email from "./routes/auth/confirm-email.tsx";
 import * as $auth_sign_in from "./routes/auth/sign-in.tsx";
 import * as $auth_sign_up from "./routes/auth/sign-up.tsx";
@@ -62,6 +63,7 @@ const manifest = {
     "./routes/api/create-game.ts": $api_create_game,
     "./routes/api/create-moves.ts": $api_create_moves,
     "./routes/api/submitted-move/[id].ts": $api_submitted_move_id_,
+    "./routes/api/vote.ts": $api_vote,
     "./routes/auth/confirm-email.tsx": $auth_confirm_email,
     "./routes/auth/sign-in.tsx": $auth_sign_in,
     "./routes/auth/sign-up.tsx": $auth_sign_up,

@@ -9,8 +9,7 @@ import GameView from "islands/GameView.tsx";
 import { Move, SubmittedMove, } from "types/moves.ts";
 import { ISupaSettings } from "types/supaSettings.ts";
 import GamePreparationView from "islands/GamePreparationView.tsx";
-import { insertAndUpdatePhase } from "../../queues/calc-results.ts";
-import { START_POSITION } from "types/gamePosition.ts";
+import { fetchGame, fetchPlayerGame, fetchPlayerGames, fetchPreviousMoves, fetchSubmittedMoves, startGame } from "utils/queries.ts";
 
 export type GameProps = {
   playerGame: PlayerGame;
@@ -22,76 +21,7 @@ export type GameProps = {
   supaMetadata: ISupaSettings;
 };
 
-async function fetchPlayerGame(
-  supa: Awaited<ReturnType<typeof authSupabaseClient>>,
-  pid: string,
-  gid: string,
-) {
-  const query = supa.rpc("insert_player_game", {
-    pid,
-    gid,
-  });
-  const resp: DbResult<typeof query> = await query;
-  return resp;
-}
 
-async function fetchGame(
-  supa: Awaited<ReturnType<typeof authSupabaseClient>>,
-  gid: string,
-) {
-  const query = supa.from("games").select("*, phase(*)")
-    .eq(
-      "id",
-      gid,
-    ).single();
-  const resp: DbResult<typeof query> = await query;
-  return resp;
-}
-
-async function fetchPlayerGames(
-  supa: Awaited<ReturnType<typeof authSupabaseClient>>,
-  gid: string,
-) {
-  const query = supa.from("player_games").select("*")
-    .eq(
-      "game",
-      gid,
-    );
-  const resp: DbResult<typeof query> = await query;
-  return resp;
-}
-
-async function fetchSubmittedMoves(
-  supa: Awaited<ReturnType<typeof authSupabaseClient>>,
-  phaseId: string,
-) {
-  const query = supa.from("submitted_moves").select("*").eq(
-    "phase",
-    phaseId,
-  );
-  const resp: DbResult<typeof query> = await query;
-  return resp;
-}
-
-async function fetchPreviousMoves(
-  supa: Awaited<ReturnType<typeof authSupabaseClient>>,
-  phaseId: string | null,
-) {
-  if (!phaseId) return null
-  const query = supa.from("moves").select("*").eq(
-    "phase",
-    phaseId,
-  );
-  const resp: DbResult<typeof query> = await query;
-  return resp;
-}
-
-async function startGame(game: Game) {
-  await superSupa.rpc("assign_countries", { gid: game.id });
-  game.status = "ACTIVE";
-
-  await insertAndUpdatePhase(game, 'Diplomatic', 'SPRING', 1901, START_POSITION)
-}
 
 export const handler: Handlers<GameProps, ServerState> = {
   async GET(_, ctx) {

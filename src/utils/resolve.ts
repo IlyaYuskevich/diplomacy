@@ -17,7 +17,7 @@ import {
   isTargetingSameProvince,
   isTradingProvinceAttempt,
   MoveIntention,
-} from "types/intention.ts";
+} from "../types/intentions-utils.ts";
 
 import { calcNextPositionDiplomatic, calcNextPositionDisbandAndRetreat, calcNextPositionGainingAndLosing } from "utils/calcPosition.ts";
 import { GamePosition } from "types/gamePosition.ts";
@@ -160,10 +160,9 @@ const resolveContestedRegions =
     /* Create a group for each contested region and determines if it's occupied. */
     if (!isActiveMove(intention)) return intention;
     const group = intentions
-      .filter((i) => isActiveMove(i))
+      // .filter((i) => isActiveMove(i))
       .filter((i) =>
-        isTargetingSameProvince(i, intention) ||
-        isHoldingProvince(i, intention.move.to)
+        isTargetingSameProvince(i, intention)
       ) // select moves attacking or holding province
       .filter((i) => !(i.dislodged && i.dislodgedFrom == i.move.to)); // dislodged units have no effect on provinces that disloded it
 
@@ -184,12 +183,14 @@ function diplomaticPhaseResolver(
   const intentions = createIntentions(moves);
   let prevDisrupted = intentions.map(isDisrupted);
 
+
   intentions
     .map(cutSupports(intentions))
     .map(verifyConvoy(intentions))
     .map(calcScores(intentions))
     .map(resolveProvinceSwitch(intentions))
-    .map(resolveContestedRegions(intentions));
+    .map(resolveContestedRegions(intentions));  
+
 
   while (
     intentions.some((i, index) => isDisrupted(i) !== prevDisrupted[index])

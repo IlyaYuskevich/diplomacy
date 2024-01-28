@@ -17,13 +17,15 @@ export type Database = MergeDeep<
             origin: ProvinceCode | null;
             to: ProvinceCode;
             created_at?: string;
+            player_game: string; // in database this is not true, this is needed for feature of playing with absent players
           };
           Insert: {
             id?: string;
             from: ProvinceCode | null;
             origin: ProvinceCode | null;
             to: ProvinceCode;
-            status: DatabaseGenerated["public"]["Enums"]["MoveStatus"]
+            status: DatabaseGenerated["public"]["Enums"]["MoveStatus"];
+            player_game: string;
           };
           Update: {
             id?: string;
