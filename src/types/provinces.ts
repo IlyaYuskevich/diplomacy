@@ -419,7 +419,7 @@ export const fleetBorders: Partial<Record<ProvinceCode, ProvinceCode[]>> = {
   "Tyn": ["Tus", "GoL", "Wes", "Tun", "Ion", "Nap", "Rom"],
   "Ven": ["Adr", "Apu", "Tri"],
   "Wal": ["Eng", "Iri", "Lvp", "Lon"],
-  "Wes": ["Mid", "NAf", "Tus", "SpaS", "Tun", "Tyn"],
+  "Wes": ["Mid", "NAf", "SpaS", "Tun", "Tyn"],
   "Yor": ["Edi", "Lon", "Nth"],
 };
 

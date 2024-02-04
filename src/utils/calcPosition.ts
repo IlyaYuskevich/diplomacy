@@ -1,5 +1,4 @@
 import { fleetToArmyBorder, ProvinceCode } from "types/provinces.ts";
-import { Game } from "types/game.ts";
 import { Country, COUNTRY_ARRAY } from "types/country.ts";
 import { Move } from "types/moves.ts";
 import { isActiveMove, MoveIntention } from "../types/intentions-utils.ts";
@@ -11,7 +10,6 @@ import {
 } from "types/gamePosition.ts";
 import { provinces } from "types/provinces.ts";
 import { ProvinceType } from "types/provinces.ts";
-import { Phase } from "types/gamePosition.ts";
 import { Turn } from "types/game.ts";
 
 const occupyProvince = (
