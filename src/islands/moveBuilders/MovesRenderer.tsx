@@ -1,9 +1,12 @@
 import { SubmittedMoveInsert, submittedMoves } from "types/moves.ts";
 import { SubmittedMoveRenderer } from "./SubmittedMoveRenderer.tsx";
 import { computed } from "@preact/signals";
+import * as hooks from "preact/hooks";
 
 export default function MovesRenderer() {
+  const [pending, setPending] = hooks.useState(false);
   async function submitMoves() {
+    setPending(true);
     const response = await fetch(`/api/create-moves`, {
       method: "POST",
       headers: {
@@ -13,6 +16,7 @@ export default function MovesRenderer() {
     });
     const jsonData = await response.json();
     submittedMoves.value = jsonData;
+    setPending(false);
   }
 
   const areAllSubmitted = computed(() =>
@@ -27,6 +31,7 @@ export default function MovesRenderer() {
       {!areAllSubmitted.value && (
         <button
           class="px-4 py-2 bg-slate-600 hover:bg-slate-400 rounded-md text-white border-2 border-white"
+          disabled={pending}
           onClick={() => void submitMoves()}
         >
           Submit

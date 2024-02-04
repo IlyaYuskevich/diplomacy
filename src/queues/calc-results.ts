@@ -15,18 +15,16 @@ import {
 } from "utils/validators.ts";
 import { phaseResolver } from "utils/resolve.ts";
 import { winnerCountry } from "utils/calcPosition.ts";
-import { GamePosition } from "types/gamePosition.ts";
+import { GamePosition, Phase } from "types/gamePosition.ts";
 import { PhaseIsOverMessage } from "./types.ts";
 import { fetchGame } from "utils/queries.ts";
 import { enqueuePhaseEnd } from "./publishers.ts";
 export const logger = new Logger();
 
 export async function initNextPhase(phaseIsOverMessage: PhaseIsOverMessage) {
-  console.log('init next phase', phaseIsOverMessage)
   const resp = await fetchGame(superSupa, phaseIsOverMessage.gameId);
   if (resp.error) logger.error(resp.error);
   const game = resp.data as Game;
-  console.log('game', game)
   if (game.status == "FINISHED") return;
   let nextPhase: PhaseType;
   let nextYear: number = game.phase!.year;
@@ -163,7 +161,7 @@ export async function insertAndUpdatePhase(
   ).select("*, phase(*)").single();
   await updateGameQuery;
   await enqueuePhaseEnd(game.id, res.data!.id, durationInSecs);
-  return true;
+  return res.data as Phase;
 }
 
 function calcEndsAt(duration: Duration) {

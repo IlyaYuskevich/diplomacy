@@ -63,7 +63,7 @@ export default function GameView(props: GameProps) {
           </button>
         </div>
         {currentGame.value?.status == "FINISHED"
-          ? <div class="text-3xl">The game is over. The winner is {winnerCountry(props.game)}</div>
+          ? <div class="text-3xl">The game is over. The winner is {winnerCountry(props.game.phase!.game_position)}</div>
           : (
             <div class="h-full">
               {prevMoveView ? <PreviousMovesRenderer /> : <Controls />}

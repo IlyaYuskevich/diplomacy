@@ -4,7 +4,9 @@ import { DbResult } from "lib/database.types.ts";
 import { authSupabaseClient, superSupa } from "lib/supabase.ts";
 
 export type Vote = {
-    voteType: "READY"
+    gameId: string
+    ready?: boolean
+    wait?: boolean
 }
 
 export const handler: Handlers<unknown, ServerState> = {
@@ -12,23 +14,21 @@ export const handler: Handlers<unknown, ServerState> = {
       if (!ctx.state.supaMetadata) {
         return ctx.render();
       }
+      
+      const payload = await req.json() as Vote
 
-    //   superSupa.from("phases").update({"votes", })
-  
-  
-    //   const payload = await req.json() as SubmittedMoveInsert[]
-    //   if (payload.length == 0) {
-    //     return new Response(null, { status: STATUS_CODE.BadRequest });
-    //   }
-    //   const query = supa.from("submitted_moves").insert(payload)
-  
-    //   const resp: DbResult<typeof query> = await query;
-    //   if (resp.error) {
-    //     return new Response(null, { status: STATUS_CODE.BadRequest });
-    //   }
-  
-    //   const query2 = supa.from("submitted_moves").select().eq("phase", payload.at(0)!.phase)
-    //   const resp2: DbResult<typeof query2> = await query2;
+      if (payload.ready === undefined && payload.wait === undefined) {
+        return new Response(null, { status: STATUS_CODE.BadRequest });
+      }
+
+      const supa = await authSupabaseClient(ctx.state.supaMetadata);
+
+      const query = supa.from("votes").update(payload).eq("player", ctx.state.user!.id);
+
+      const resp: DbResult<typeof query> = await query;
+      if (resp.error) {
+        return new Response(null, { status: STATUS_CODE.BadRequest });
+      }
   
       return new Response(null, { status: STATUS_CODE.OK });
     },

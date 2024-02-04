@@ -63,7 +63,7 @@ export interface Database {
       }
       moves: {
         Row: {
-          country: Database["public"]["Enums"]["country"]
+          country: Database["public"]["Enums"]["country"] | null
           created_at: string
           from: string | null
           game: string
@@ -78,7 +78,7 @@ export interface Database {
           unit_type: Database["public"]["Enums"]["UnitType"]
         }
         Insert: {
-          country: Database["public"]["Enums"]["country"]
+          country?: Database["public"]["Enums"]["country"] | null
           created_at?: string
           from?: string | null
           game: string
@@ -93,7 +93,7 @@ export interface Database {
           unit_type: Database["public"]["Enums"]["UnitType"]
         }
         Update: {
-          country?: Database["public"]["Enums"]["country"]
+          country?: Database["public"]["Enums"]["country"] | null
           created_at?: string
           from?: string | null
           game?: string
@@ -293,21 +293,24 @@ export interface Database {
           id: string
           player: string
           player_game: string
-          ready: boolean | null
+          ready: boolean
+          wait: boolean
         }
         Insert: {
           game: string
           id?: string
           player: string
           player_game: string
-          ready?: boolean | null
+          ready?: boolean
+          wait?: boolean
         }
         Update: {
           game?: string
           id?: string
           player?: string
           player_game?: string
-          ready?: boolean | null
+          ready?: boolean
+          wait?: boolean
         }
         Relationships: [
           {

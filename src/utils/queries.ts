@@ -70,7 +70,8 @@ export async function fetchPlayerGame(
   
   export async function startGame(game: Game) {
     await superSupa.rpc("assign_countries", { gid: game.id });
-    game.status = "ACTIVE";
   
-    await insertAndUpdatePhase(game, 'Diplomatic', 'SPRING', 1901, START_POSITION)
+    const phase = await insertAndUpdatePhase(game, 'Diplomatic', 'SPRING', 1901, START_POSITION);
+    game.status = "ACTIVE";
+    game.phase = phase;
   }

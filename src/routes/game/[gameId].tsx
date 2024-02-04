@@ -74,6 +74,7 @@ export const handler: Handlers<GameProps, ServerState> = {
 
     const supaMetadata = ctx.state.supaMetadata;
 
+
     return ctx.render({
       playerGame,
       game,

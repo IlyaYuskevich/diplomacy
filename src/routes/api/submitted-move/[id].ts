@@ -16,7 +16,6 @@ export const handler: Handlers<SubmittedMove, ServerState> = {
 
     const resp: DbResult<typeof query> = await query;
     if (resp.error) {
-      console.log(resp.error)
       return new Response(null, { status: STATUS_CODE.BadRequest });
     }
 

@@ -1,6 +1,7 @@
 import PlayerGameItem from "components/PlayerGameItem.tsx";
 import { PlayerGame } from "types/playerGames.ts";
 import { FormButton } from "components/index.ts";
+import * as hooks from "preact/hooks";
 
 type Props = {
   playerGames: PlayerGame[];
@@ -8,6 +9,17 @@ type Props = {
 };
 
 export default function PlayerGames(props: Props) {
+  const [pending, setPending] = hooks.useState(false);
+  async function createGame() {
+    setPending(true);
+    const response = await fetch(`"/api/create-game`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    setPending(false);
+  }
   return (
     <div>
       {props.playerGames.length > 0
@@ -27,6 +39,7 @@ export default function PlayerGames(props: Props) {
             type="submit"
             formAction="/api/create-game"
             class="inline-block mr-2"
+            onSubmit={createGame}
           >
             Create game
             <svg
