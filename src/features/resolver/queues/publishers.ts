@@ -1,12 +1,11 @@
 import { initNextPhase } from "./calc-results.ts";
-import { PhaseIsOverMessage } from "./types.ts";
+import { PhaseIsOverMessage } from "../types/PhaseIsOverMessage.ts";
 
 const kv = await Deno.openKv();
 
-
-
 kv.listenQueue(async (msg: PhaseIsOverMessage) => {
-    console.log(`message arrived!! ${msg}`)
+  /* Handles phase over timer event */
+  console.log(`message arrived!! ${msg}`);
   const nonce = await kv.get(["nonces", msg.nonce]);
   if (nonce.value === null) {
     // This messaged was already processed
@@ -23,7 +22,7 @@ kv.listenQueue(async (msg: PhaseIsOverMessage) => {
     .delete(nonce.key)
     .commit();
 
-    await initNextPhase(msg)
+  await initNextPhase(msg);
 });
 
 export async function enqueuePhaseEnd(

@@ -21,7 +21,7 @@ export const DIPLOMATIC_PHASE_MOVES: MoveTypeUi[] = [
     "HOLD",
     "SUPPORT",
     "CONVOY",
-    "SUPPORT HOLD",
+    "SUPPORT HOLD",  // this choice does not exist in database
   ];
   export const RETREAT_PHASE_MOVES: MoveType[] = [
     "RETREAT"

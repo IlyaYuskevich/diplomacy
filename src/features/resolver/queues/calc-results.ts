@@ -12,11 +12,11 @@ import {
   individualMoveValidator,
   moveInPositionValidator,
   movePhaseValidator,
-} from "utils/validators.ts";
-import { phaseResolver } from "utils/resolve.ts";
-import { winnerCountry } from "utils/calcPosition.ts";
+} from "features/resolver/utils/validators.ts";
+import { phaseResolver } from "../utils/resolve.ts";
+import { winnerCountry } from "../utils/calcPosition.ts";
 import { GamePosition, Phase } from "types/gamePosition.ts";
-import { PhaseIsOverMessage } from "./types.ts";
+import { PhaseIsOverMessage } from "../types/PhaseIsOverMessage.ts";
 import { fetchGame } from "utils/queries.ts";
 import { enqueuePhaseEnd } from "./publishers.ts";
 export const logger = new Logger();

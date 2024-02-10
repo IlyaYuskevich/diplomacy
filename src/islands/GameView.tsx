@@ -1,6 +1,6 @@
 import { GameProps } from "routes/game/[gameId].tsx";
 import WorldMap from "islands/WorldMap.tsx";
-import Controls from "./moveBuilders/Controls.tsx";
+import Controls from "features/moveBuilder/islands/Controls.tsx";
 import { submittedMoves } from "types/moves.ts";
 import * as hooks from "preact/hooks";
 import { playerGames, selectedPlayerGame } from "types/playerGames.ts";
@@ -8,8 +8,8 @@ import { currentGame } from "types/game.ts";
 import { selectedCountry } from "types/country.ts";
 import { createClient } from "@supabase";
 import { previousMoves } from "types/moves.ts";
-import PreviousMovesRenderer from "islands/moveBuilders/PreviousMovesRenderer.tsx";
-import { winnerCountry } from "utils/calcPosition.ts";
+import PreviousMovesRenderer from "features/moveBuilder/islands/PreviousMovesRenderer.tsx";
+import { winnerCountry } from "../features/resolver/utils/calcPosition.ts";
 
 export default function GameView(props: GameProps) {
   const [prevMoveView, setPrevMoveView] = hooks.useState(false);

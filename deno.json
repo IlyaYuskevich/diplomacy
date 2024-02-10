@@ -16,6 +16,7 @@
     "jsxImportSource": "preact"
   },
   "imports": {
+    "features/": "./src/features/",
     "components/": "./src/components/",
     "islands/": "./src/islands/",
     "lib/": "./src/lib/",

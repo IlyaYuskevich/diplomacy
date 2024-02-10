@@ -5,9 +5,9 @@ import formatDuration from "date-fns/formatDuration/index.js";
 import parseISO from "date-fns/parseISO/index.js";
 import intervalToDuration from "date-fns/intervalToDuration/index.ts";
 import isPast from "date-fns/isPast/index.ts";
-import DiplomaticMoveBuilder from "islands/moveBuilders/DiplomaticMoveBuilder.tsx";
-import RetreatAndDisbandingMoveBuilder from "islands/moveBuilders/RetreatAndDisbandingMoveBuilder.tsx";
-import GainingAndLoosingBuilder from "islands/moveBuilders/GainingAndLoosingBuilder.tsx";
+import DiplomaticMoveBuilder from "features/moveBuilder/islands/DiplomaticMoveBuilder.tsx";
+import RetreatAndDisbandingMoveBuilder from "features/moveBuilder/islands/RetreatAndDisbandingMoveBuilder.tsx";
+import GainingAndLoosingBuilder from "features/moveBuilder/islands/GainingAndLoosingBuilder.tsx";
 
 export default function Controls() {
 

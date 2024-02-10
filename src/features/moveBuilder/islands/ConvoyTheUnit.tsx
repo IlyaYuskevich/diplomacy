@@ -1,11 +1,10 @@
 import * as hooks from "preact/hooks";
 import { SubmittedMoveInsert, submittedMoves, selectedMoveType } from "types/moves.ts";
 import { selectedUnit } from "types/units.ts";
-import { selectedCountry } from "types/country.ts";
 import { selectedPlayerGame } from "types/playerGames.ts";
 import { currentGame } from "types/game.ts";
 import { ProvinceCode } from "types/provinces.ts";
-import CoastialProvinceSelector from "islands/moveBuilders/CoastialProvinceSelector.tsx";
+import CoastialProvinceSelector from "features/moveBuilder/islands/CoastialProvinceSelector.tsx";
 import { computed } from "@preact/signals";
 
 export default function ConvoyTheUnit() {
@@ -19,7 +18,7 @@ export default function ConvoyTheUnit() {
       return
     }
     const newMove: SubmittedMoveInsert = {
-      type: selectedMoveType.value!,
+      type: "CONVOY",
       origin: selectedUnit.value!.province,
       to: to,
       from: selectedUnit.value?.unitType === "Fleet" ? from : null,

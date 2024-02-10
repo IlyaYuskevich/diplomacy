@@ -5,9 +5,9 @@ import * as hooks from "preact/hooks";
 import { SubmittedMoveInsert, submittedMoves } from "types/moves.ts";
 import { selectedUnit } from "types/units.ts";
 import { StateButtonStyle } from "utils/moveSelectorsUtils.ts";
-import RetreatProvinceSelector from "islands/moveBuilders/RetreatProvinceSelector.tsx";
+import RetreatProvinceSelector from "features/moveBuilder/islands/RetreatProvinceSelector.tsx";
 import { Dislodgement } from "types/gamePosition.ts";
-import MovesRenderer from "islands/moveBuilders/MovesRenderer.tsx";
+import MovesRenderer from "features/moveBuilder/islands/MovesRenderer.tsx";
 
 export default function RetreatAndDisbandingMoveBuilder() {
   const [to, setTo] = hooks.useState<ProvinceCode | null>(null);

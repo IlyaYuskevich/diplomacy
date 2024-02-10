@@ -17,9 +17,9 @@ import {
   isTargetingSameProvince,
   isTradingProvinceAttempt,
   MoveIntention,
-} from "../types/intentions-utils.ts";
+} from "types/intentions-utils.ts";
 
-import { calcNextPositionDiplomatic, calcNextPositionDisbandAndRetreat, calcNextPositionGainingAndLosing } from "utils/calcPosition.ts";
+import { calcNextPositionDiplomatic, calcNextPositionDisbandAndRetreat, calcNextPositionGainingAndLosing } from "features/resolver/utils/calcPosition.ts";
 import { GamePosition } from "types/gamePosition.ts";
 
 const findOccupant = (

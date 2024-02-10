@@ -1,18 +1,18 @@
 import {
   getBuildsDisbandsBalance,
   getGainingLosingNumber,
-} from "utils/validators.ts";
+} from "features/resolver/utils/validators.ts";
 import { currentGame } from "types/game.ts";
 import { currentCountry, selectedPlayerGame } from "types/playerGames.ts";
 import { MoveInsert, SubmittedMoveInsert, submittedMoves } from "types/moves.ts";
 import { computed } from "@preact/signals";
-import UnitSelector from "islands/moveBuilders/UnitSelector.tsx";
-import SupplyCentersSelector from "islands/moveBuilders/SupplyCentersSelector.tsx";
+import UnitSelector from "features/moveBuilder/islands/UnitSelector.tsx";
+import SupplyCentersSelector from "features/moveBuilder/islands/SupplyCentersSelector.tsx";
 import * as hooks from "preact/hooks";
 import { ProvinceCode } from "types/provinces.ts";
 import { UnitType, selectedUnit } from "types/units.ts";
-import UnitTypeSelector from "islands/moveBuilders/UnitTypeSelector.tsx";
-import MovesRenderer from "islands/moveBuilders/MovesRenderer.tsx";
+import UnitTypeSelector from "features/moveBuilder/islands/UnitTypeSelector.tsx";
+import MovesRenderer from "features/moveBuilder/islands/MovesRenderer.tsx";
 
 export default function GainingAndLoosingBuilder() {
 
@@ -20,7 +20,7 @@ export default function GainingAndLoosingBuilder() {
   const [unitType, setUnitType] = hooks.useState<UnitType | null>(null);
   const gainingLoosingNumber = computed(() =>
     getGainingLosingNumber(
-      currentGame.value!.game_position,
+      currentGame.value!.phase!.game_position,
       currentCountry.value!,
     )
   );

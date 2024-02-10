@@ -1,6 +1,6 @@
 import { assert, assertEquals } from "assert";
 import { Move } from "types/moves.ts";
-import { phaseResolver } from "utils/resolve.ts";
+import { phaseResolver } from "features/resolver/utils/resolve.ts";
 import { PlayerGame } from "types/playerGames.ts";
 import { createGame, generateMove } from "utils/test-utils.ts";
 

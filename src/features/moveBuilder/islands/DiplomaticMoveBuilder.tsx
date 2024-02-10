@@ -12,7 +12,7 @@ import { selectedPlayerGame } from "types/playerGames.ts";
 import MoveTheUnit from "./MoveTheUnit.tsx";
 import SupportTheUnit from "./SupportTheUnit.tsx";
 import ConvoyTheUnit from "./ConvoyTheUnit.tsx";
-import SupportHold from "islands/moveBuilders/SupportHold.tsx";
+import SupportHold from "features/moveBuilder/islands/SupportHold.tsx";
 
 export default function DiplomaticMoveBuilder() {
   function renderMoveBuilder() {

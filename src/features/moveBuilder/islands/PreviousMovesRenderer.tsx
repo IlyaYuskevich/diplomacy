@@ -1,5 +1,5 @@
 import { Move } from "types/moves.ts";
-import { SubmittedMoveRenderer } from "islands/moveBuilders/SubmittedMoveRenderer.tsx";
+import { SubmittedMoveRenderer } from "features/moveBuilder/islands/SubmittedMoveRenderer.tsx";
 import { previousMoves } from "types/moves.ts";
 import { playerGames } from "types/playerGames.ts";
 

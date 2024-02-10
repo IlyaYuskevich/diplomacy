@@ -3,7 +3,7 @@ import { Move, MoveType, SubmittedMove } from "types/moves.ts";
 import {
   individualMoveValidator,
   moveInPositionValidator,
-} from "utils/validators.ts";
+} from "features/resolver/utils/validators.ts";
 import { GamePosition } from "types/gamePosition.ts";
 import { PlayerGame } from "types/playerGames.ts";
 import formatISO from "date-fns/formatISO/index.js";

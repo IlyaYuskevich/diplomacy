@@ -28,25 +28,6 @@ import * as $GamePreparationView from "./islands/GamePreparationView.tsx";
 import * as $GameView from "./islands/GameView.tsx";
 import * as $PlayerGames from "./islands/PlayerGames.tsx";
 import * as $WorldMap from "./islands/WorldMap.tsx";
-import * as $moveBuilders_AdjacentProvinceSelector from "./islands/moveBuilders/AdjacentProvinceSelector.tsx";
-import * as $moveBuilders_CoastialProvinceSelector from "./islands/moveBuilders/CoastialProvinceSelector.tsx";
-import * as $moveBuilders_Controls from "./islands/moveBuilders/Controls.tsx";
-import * as $moveBuilders_ConvoyTheUnit from "./islands/moveBuilders/ConvoyTheUnit.tsx";
-import * as $moveBuilders_CountrySelector from "./islands/moveBuilders/CountrySelector.tsx";
-import * as $moveBuilders_DiplomaticMoveBuilder from "./islands/moveBuilders/DiplomaticMoveBuilder.tsx";
-import * as $moveBuilders_GainingAndLoosingBuilder from "./islands/moveBuilders/GainingAndLoosingBuilder.tsx";
-import * as $moveBuilders_MoveTheUnit from "./islands/moveBuilders/MoveTheUnit.tsx";
-import * as $moveBuilders_MoveTypeSelector from "./islands/moveBuilders/MoveTypeSelector.tsx";
-import * as $moveBuilders_MovesRenderer from "./islands/moveBuilders/MovesRenderer.tsx";
-import * as $moveBuilders_PreviousMovesRenderer from "./islands/moveBuilders/PreviousMovesRenderer.tsx";
-import * as $moveBuilders_RetreatAndDisbandingMoveBuilder from "./islands/moveBuilders/RetreatAndDisbandingMoveBuilder.tsx";
-import * as $moveBuilders_RetreatProvinceSelector from "./islands/moveBuilders/RetreatProvinceSelector.tsx";
-import * as $moveBuilders_SubmittedMoveRenderer from "./islands/moveBuilders/SubmittedMoveRenderer.tsx";
-import * as $moveBuilders_SupplyCentersSelector from "./islands/moveBuilders/SupplyCentersSelector.tsx";
-import * as $moveBuilders_SupportHold from "./islands/moveBuilders/SupportHold.tsx";
-import * as $moveBuilders_SupportTheUnit from "./islands/moveBuilders/SupportTheUnit.tsx";
-import * as $moveBuilders_UnitSelector from "./islands/moveBuilders/UnitSelector.tsx";
-import * as $moveBuilders_UnitTypeSelector from "./islands/moveBuilders/UnitTypeSelector.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -79,36 +60,6 @@ const manifest = {
     "./islands/GameView.tsx": $GameView,
     "./islands/PlayerGames.tsx": $PlayerGames,
     "./islands/WorldMap.tsx": $WorldMap,
-    "./islands/moveBuilders/AdjacentProvinceSelector.tsx":
-      $moveBuilders_AdjacentProvinceSelector,
-    "./islands/moveBuilders/CoastialProvinceSelector.tsx":
-      $moveBuilders_CoastialProvinceSelector,
-    "./islands/moveBuilders/Controls.tsx": $moveBuilders_Controls,
-    "./islands/moveBuilders/ConvoyTheUnit.tsx": $moveBuilders_ConvoyTheUnit,
-    "./islands/moveBuilders/CountrySelector.tsx": $moveBuilders_CountrySelector,
-    "./islands/moveBuilders/DiplomaticMoveBuilder.tsx":
-      $moveBuilders_DiplomaticMoveBuilder,
-    "./islands/moveBuilders/GainingAndLoosingBuilder.tsx":
-      $moveBuilders_GainingAndLoosingBuilder,
-    "./islands/moveBuilders/MoveTheUnit.tsx": $moveBuilders_MoveTheUnit,
-    "./islands/moveBuilders/MoveTypeSelector.tsx":
-      $moveBuilders_MoveTypeSelector,
-    "./islands/moveBuilders/MovesRenderer.tsx": $moveBuilders_MovesRenderer,
-    "./islands/moveBuilders/PreviousMovesRenderer.tsx":
-      $moveBuilders_PreviousMovesRenderer,
-    "./islands/moveBuilders/RetreatAndDisbandingMoveBuilder.tsx":
-      $moveBuilders_RetreatAndDisbandingMoveBuilder,
-    "./islands/moveBuilders/RetreatProvinceSelector.tsx":
-      $moveBuilders_RetreatProvinceSelector,
-    "./islands/moveBuilders/SubmittedMoveRenderer.tsx":
-      $moveBuilders_SubmittedMoveRenderer,
-    "./islands/moveBuilders/SupplyCentersSelector.tsx":
-      $moveBuilders_SupplyCentersSelector,
-    "./islands/moveBuilders/SupportHold.tsx": $moveBuilders_SupportHold,
-    "./islands/moveBuilders/SupportTheUnit.tsx": $moveBuilders_SupportTheUnit,
-    "./islands/moveBuilders/UnitSelector.tsx": $moveBuilders_UnitSelector,
-    "./islands/moveBuilders/UnitTypeSelector.tsx":
-      $moveBuilders_UnitTypeSelector,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

@@ -1,6 +1,6 @@
 import { assertArrayIncludes } from "assert";
 import { GamePosition } from "types/gamePosition.ts";
-import { findAllConvoys } from "utils/rules-convoys.ts";
+import { findAllConvoys } from "features/resolver/utils/rules-convoys.ts";
 
 Deno.test("Return all possible convoys", () => {
   const position: GamePosition = {
