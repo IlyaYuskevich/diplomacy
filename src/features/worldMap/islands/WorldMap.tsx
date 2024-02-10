@@ -1,22 +1,21 @@
 import { Country, COUNTRY_ARRAY } from "types/country.ts";
-import { Unit, UnitType } from "types/units.ts";
+import { Unit } from "types/units.ts";
 import { computed } from "@preact/signals";
 import * as svg from "@svgdotjs/svg.js";
-import { drawHoldIcon, drawLink } from "utils/worldMapUtils.ts";
-import { useEffect, useRef } from "preact/hooks";
-import { Move, SubmittedMoveInsert, submittedMoves } from "types/moves.ts";
-import { currentGame, gamePosition } from "types/game.ts";
-import { getCountry } from "types/playerGames.ts";
-import { ProvinceCode, UNIT_LOC_MAP } from "types/provinces.ts";
+import {  submittedMoves } from "types/moves.ts";
 import { sentenceCase } from "case";
-import { playerGames } from "types/playerGames.ts";
 import { previousMoves } from "types/moves.ts";
+import { UnitPositionsType } from "features/worldMap/types/UnitPositionsType.ts";
+import { drawMoves } from "features/worldMap/utils/drawMoves.ts";
+import * as hooks from "preact/hooks";
+import { currentGame, gamePosition } from "types/game.ts";
+import { ProvinceCode } from "types/provinces.ts";
 
 export default function WorldMap(props: { prevModeView: boolean }) {
   // deno-lint-ignore no-explicit-any
-  const arrowDrawer = useRef<any>();
+  const arrowDrawer = hooks.useRef<any>();
 
-  useEffect(() => {
+  hooks.useEffect(() => {
     arrowDrawer.current = svg.SVG().addTo("#world-map").size("100%", "100%");
   }, []);
 
@@ -28,62 +27,10 @@ export default function WorldMap(props: { prevModeView: boolean }) {
     )?.toLowerCase() || "nopower";
   }
 
-  type UnitPositionsType = {
-    x: number;
-    y: number;
-    country: NonNullable<Country>;
-    province: string;
-    unitType: UnitType;
-    isDislodged: boolean;
-  };
-
-  function mapUnitPositions(
-    country: NonNullable<Country>,
-    unitPositions: { [K in NonNullable<Country>]: Unit[] },
-    dislodged: { province: ProvinceCode; country: Country }[],
-  ): UnitPositionsType[] {
-    return unitPositions[country].map((unit) => {
-      const isDislodged = dislodged.some((x) =>
-        x.province == unit.province && x.country == country
-      );
-      return {
-        ...unit,
-        x: UNIT_LOC_MAP[unit.province].X,
-        y: UNIT_LOC_MAP[unit.province].Y,
-        country: country,
-        isDislodged,
-      };
-    });
-  }
-
-  function drawMoves(moves: SubmittedMoveInsert[] | Move[]) {
-    arrowDrawer.current?.clear();
-    moves.filter((mv) => mv.type !== "HOLD").forEach((val) => {
-      const country = getCountry(val.player_game, playerGames.value);
-      country && drawLink(
-        arrowDrawer.current,
-        val.origin!,
-        val.to,
-        val.from,
-        val.type!,
-        country,
-        (val as Move)?.status == "FAILED",
-      );
-    });
-    moves.filter((mv) => mv.type === "HOLD").forEach((mv) => {
-      const country = getCountry(mv.player_game, playerGames.value);
-      drawHoldIcon(
-        arrowDrawer.current,
-        mv.origin!,
-        country!,
-      );
-    });
-  }
-
-  useEffect(() => {
+  hooks.useEffect(() => {
     props.prevModeView
-      ? drawMoves(previousMoves.value)
-      : drawMoves(submittedMoves.value);
+      ? drawMoves(arrowDrawer, previousMoves.value)
+      : drawMoves(arrowDrawer, submittedMoves.value);
   }, [submittedMoves.value, props.prevModeView]);
 
   const unitsWithLocation = computed(() => (
@@ -1647,4 +1594,8 @@ export default function WorldMap(props: { prevModeView: boolean }) {
       </svg>
     </div>
   );
+}
+
+function mapUnitPositions(arg0: string, unitPositions: { FRANCE: Unit[]; GERMANY: Unit[]; ITALY: Unit[]; RUSSIA: Unit[]; AUSTRIA: Unit[]; ENGLAND: Unit[]; TURKEY: Unit[]; }, arg2: { province: "Adr" | "Aeg" | "Alb" | "Ank" | "Apu" | "Arm" | "Bar" | "Bal" | "Bel" | "Ber" | "Bla" | "Boh" | "Bot" | "Bre" | "Bud" | "Bul" | "BulS" | "BulE" | "Bur" | "Cly" | "Con" | "Den" | "Eas" | "Edi" | "Eng" | "Fin" | "Gal" | "Gas" | "Gre" | "GoL" | "Hol" | "Ion" | "Iri" | "Kie" | "Hel" | "Lon" | "Lvn" | "Lvp" | "Mar" | "Mid" | "Mos" | "Mun" | "NAf" | "Nap" | "NAt" | "Nrg" | "Nwy" | "Nth" | "Par" | "Pic" | "Pie" | "Por" | "Pru" | "Rom" | "Ruh" | "Rum" | "Ser" | "Sev" | "Sil" | "Ska" | "Smy" | "Spa" | "SpaS" | "SpaN" | "StP" | "StPN" | "StPS" | "Swe" | "Syr" | "Tri" | "Tun" | "Tus" | "Tyn" | "Tyr" | "Ukr" | "Ven" | "Vie" | "Wal" | "War" | "Wes" | "Yor"; country: NonNullable<Country>; }[]): any {
+  throw new Error("Function not implemented.");
 }

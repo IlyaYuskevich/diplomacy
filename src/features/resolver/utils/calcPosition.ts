@@ -1,7 +1,7 @@
 import { fleetToArmyBorder, ProvinceCode } from "types/provinces.ts";
 import { Country, COUNTRY_ARRAY } from "types/country.ts";
 import { Move } from "types/moves.ts";
-import { isActiveMove, MoveIntention } from "../../../types/intentions-utils.ts";
+import { isActiveMove, MoveIntention } from "features/resolver/utils/intentions-utils.ts";
 import { getCountry, PlayerGame } from "types/playerGames.ts";
 import {
   Dislodgement,

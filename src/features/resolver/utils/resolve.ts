@@ -17,7 +17,7 @@ import {
   isTargetingSameProvince,
   isTradingProvinceAttempt,
   MoveIntention,
-} from "types/intentions-utils.ts";
+} from "features/resolver/utils/intentions-utils.ts";
 
 import { calcNextPositionDiplomatic, calcNextPositionDisbandAndRetreat, calcNextPositionGainingAndLosing } from "features/resolver/utils/calcPosition.ts";
 import { GamePosition } from "types/gamePosition.ts";

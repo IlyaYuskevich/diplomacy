@@ -27,7 +27,6 @@ import * as $AuthForm from "./islands/AuthForm.tsx";
 import * as $GamePreparationView from "./islands/GamePreparationView.tsx";
 import * as $GameView from "./islands/GameView.tsx";
 import * as $PlayerGames from "./islands/PlayerGames.tsx";
-import * as $WorldMap from "./islands/WorldMap.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -59,7 +58,6 @@ const manifest = {
     "./islands/GamePreparationView.tsx": $GamePreparationView,
     "./islands/GameView.tsx": $GameView,
     "./islands/PlayerGames.tsx": $PlayerGames,
-    "./islands/WorldMap.tsx": $WorldMap,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

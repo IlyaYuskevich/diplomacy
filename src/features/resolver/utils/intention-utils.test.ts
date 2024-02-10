@@ -3,7 +3,7 @@ import {
   isHoldingProvince,
   isSupporting,
   MoveIntention,
-} from "types/intentions-utils.ts";
+} from "features/resolver/utils/intentions-utils.ts";
 import { createGame, generateMove } from "utils/test-utils.ts";
 import { Move } from "types/moves.ts";
 import { PlayerGame } from "types/playerGames.ts";

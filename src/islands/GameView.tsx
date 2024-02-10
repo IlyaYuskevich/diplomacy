@@ -1,5 +1,5 @@
 import { GameProps } from "routes/game/[gameId].tsx";
-import WorldMap from "islands/WorldMap.tsx";
+import WorldMap from "features/worldMap/islands/WorldMap.tsx";
 import Controls from "features/moveBuilder/islands/Controls.tsx";
 import { submittedMoves } from "types/moves.ts";
 import * as hooks from "preact/hooks";

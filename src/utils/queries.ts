@@ -1,5 +1,5 @@
 import { authSupabaseClient, superSupa } from "lib/supabase.ts";
-import { insertAndUpdatePhase } from "../features/resolver/queues/calc-results.ts";
+import { insertAndUpdatePhase } from "features/resolver/queues/calc-results.ts";
 import { START_POSITION } from "types/gamePosition.ts";
 import { DbResult } from "lib/database.types.ts";
 import { Game } from "types/game.ts";
